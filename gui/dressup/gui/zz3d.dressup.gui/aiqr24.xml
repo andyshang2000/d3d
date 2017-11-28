@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="64,64" extention="Button">
+  <displayList>
+    <image id="n54" name="n54" src="tzxv1i" xy="0,0" size="64,64">
+      <relation target="" sidePair="height-height,width-width"/>
+    </image>
+  </displayList>
+  <Button downEffect="dark" downEffectValue="0.80"/>
+</component>

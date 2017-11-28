@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="225,225">
+  <displayList>
+    <image id="n30" name="image" src="tzxv1u" xy="0,-65" size="225,387" aspect="true">
+      <relation target="" sidePair=""/>
+    </image>
+    <graph id="n31" name="n31" xy="0,0" size="225,225" aspect="true" type="rect" lineSize="0" forMask="true"/>
+  </displayList>
+</component>

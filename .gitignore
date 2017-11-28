@@ -1,0 +1,15 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+/gui/dressup/gui-export/zz3d.dressup.gui.zip
+/gui/dressup/gui-export/zz3d.dressup.gui@res.zip
+/gui/dressup/gui/恢复_resource.fla
+/gui/gui-export/zz3d.dressup.gui.zip
+/gui/gui-export/zz3d.dressup.gui@res.zip
+/gui/gui/恢复_resource.fla

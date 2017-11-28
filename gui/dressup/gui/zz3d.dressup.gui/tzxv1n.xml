@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="420,693">
+  <displayList>
+    <graph id="n31" name="n31" xy="0,0" size="420,693" type="rect" lineSize="0" lineColor="#ff339933">
+      <relation target="" sidePair="width-width,height-height"/>
+    </graph>
+    <image id="n30" name="image" src="hp1h1" xy="5,5" size="410,683" aspect="true">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+  </displayList>
+</component>

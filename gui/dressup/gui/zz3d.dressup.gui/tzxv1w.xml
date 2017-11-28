@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="64,64">
+  <displayList>
+    <image id="n42" name="n42" src="tzxv1j" xy="0,0" pivot="0.5,0.5" size="64,64" aspect="true" rotation="-90" flip="hz"/>
+  </displayList>
+</component>

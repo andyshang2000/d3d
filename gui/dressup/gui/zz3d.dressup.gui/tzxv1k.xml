@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="64,64">
+  <displayList>
+    <image id="n26" name="n26" src="tzxv1i" xy="0,0" size="64,64" aspect="true" flip="hz"/>
+  </displayList>
+</component>

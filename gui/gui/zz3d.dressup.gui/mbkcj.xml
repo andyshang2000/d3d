@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="124,656">
+  <controller name="sceneControl" exported="true" pages="0,start,1,map,2,game,3,show" selected="0"/>
+  <displayList>
+    <image id="n9" name="background" src="mbkck" xy="0,2" size="124,656" flip="hz"/>
+    <list id="n10" name="list" xy="15,20" size="102,555" overflow="scroll" margin="0,0,0,0" defaultItem="ui://iznig4xzmbkcs" autoItemSize="false">
+      <relation target="n9" sidePair="left-left,top-top"/>
+      <item title="4444"/>
+      <item title="123"/>
+      <item title="123"/>
+      <item title="13"/>
+      <item title="123"/>
+      <item title="4124"/>
+      <item title="345345"/>
+      <item title="567567"/>
+    </list>
+  </displayList>
+</component>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="110,110" extention="Button">
+  <displayList>
+    <image id="n28" name="n28" src="tzxv1l" xy="0,0" size="110,110" aspect="true" alpha="0.6" forHitTest="true">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+  </displayList>
+  <Button downEffect="scale" downEffectValue="0.90"/>
+</component>

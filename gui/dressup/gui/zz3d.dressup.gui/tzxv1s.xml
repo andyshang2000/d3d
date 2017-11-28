@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="64,64">
+  <displayList>
+    <image id="n44" name="image" src="tzxv1u" xy="-10,-25" pivot="0.5,0.5" size="85,141" aspect="true"/>
+    <graph id="n42" name="n42" xy="0,0" size="64,64" aspect="true" type="eclipse" lineSize="0" fillColor="#ff333333" forMask="true"/>
+  </displayList>
+</component>
