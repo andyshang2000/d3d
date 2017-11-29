@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="85,85" extention="Button">
+  <displayList>
+    <image id="n13" name="n13" src="tzxv1g" xy="0,0" size="85,85" aspect="true"/>
+  </displayList>
+  <Button/>
+</component>
