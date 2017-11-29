@@ -4,7 +4,6 @@ package diary.ui.view
 
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
-	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
 
 	import diary.avatar.AnimationTicker;
@@ -13,12 +12,9 @@ package diary.ui.view
 	import diary.ui.Carousel;
 
 	import fairygui.GComponent;
-	import fairygui.GList;
 	import fairygui.GLoader;
 	import fairygui.GObject;
 	import fairygui.GRoot;
-	import fairygui.RelationType;
-	import fairygui.ScreenMatchMode;
 	import fairygui.UIPackage;
 
 	import flare.basic.Scene3D;
@@ -44,6 +40,7 @@ package diary.ui.view
 		private var backImage:Image;
 		private var backList:Carousel;
 		private var avatar:Avatar;
+		private var avatarlist:Object = {};
 
 		public function getFront():Sprite
 		{
@@ -159,21 +156,27 @@ package diary.ui.view
 			this.scene = scene;
 		}
 
-		public function addAvatar():void
+		public function addAvatar(name:String):void
 		{
-			if (avatar == null)
-			{
-				avatar = new Avatar;
+			if (avatarlist[name] != null)
+				return;
+			avatar = new Avatar;
 
-				avatar.addComponent(new RotationComponent);
-				avatar.addComponent(new AnimationTicker);
+			avatar.addComponent(new RotationComponent);
+			avatar.addComponent(new AnimationTicker);
 
-				scene.addChild(avatar);
-				scene.camera.setPosition(0, 195, -450);
-				scene.camera.setRotation(12, 0, 0);
-				scene.camera.fovMode = Camera3D.FOV_VERTICAL;
-				scene.camera.fieldOfView = 28;
-			}
+			scene.addChild(avatar);
+			scene.camera.setPosition(0, 195, -450);
+			scene.camera.setRotation(12, 0, 0);
+			scene.camera.fovMode = Camera3D.FOV_VERTICAL;
+			scene.camera.fieldOfView = 28;
+
+			avatarlist[name] = avatar
+		}
+
+		public function getAvatar(name):Avatar
+		{
+			return avatarlist[name]
 		}
 
 		public function updatePart(id:String):void

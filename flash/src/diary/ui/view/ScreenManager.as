@@ -3,15 +3,11 @@ package diary.ui.view
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
 	import flash.events.Event;
-
+	
 	import diary.ui.RenderManager;
-
+	
 	import starling.utils.AssetManager;
-
-	import zzsdk.display.Screen;
 
 	[Event(name = "complete", type = "flash.events.Event")]
 	public class ScreenManager extends Sprite
@@ -73,26 +69,6 @@ package diary.ui.view
 		public function addScreen(name:String, view:Class, ctrl:Class):void
 		{
 			screenMap[name] = {view: view, ctrl: ctrl};
-		}
-
-		public function showSplash(name:String = "default"):void
-		{
-			addChild(currentSplash = splashMap[name]);
-			Screen.fitBackground(currentSplash, 1, 0, 0, false);
-			stage.scaleMode = StageScaleMode.NO_BORDER;
-			stage.align = StageAlign.TOP;
-		}
-
-		public function hideSplash():void
-		{
-			removeChild(currentSplash);
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-		}
-
-		public function addSplash(name:String, splashObj:DisplayObject):void
-		{
-			splashMap[name] = splashObj;
 		}
 
 		public function requestChange(request:String):void
