@@ -192,7 +192,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
-        return wrapper.onCreateView(name, context, attrs, super.onCreateView(name, context, attrs));
+        View retval = super.onCreateView(name, context, attrs);
+        try {
+            return wrapper.onCreateView(name, context, attrs, retval);
+        }catch(Exception e){
+        }
+        return retval;
     }
 
     @Override

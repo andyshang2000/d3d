@@ -6,7 +6,7 @@
       <gearDisplay controller="sceneControl" pages="7"/>
     </graph>
     <group id="n48" name="n48" xy="0,0" size="480,800" locked="true"/>
-    <component id="n29" name="cameraButton" src="tzxv1m" xy="185,670" pivot="0.5,0.5" aspect="true">
+    <component id="n29" name="cameraButton" src="tzxv1m" xy="185,670" pivot="0.5,0.5" size="110,110" aspect="true">
       <gearDisplay controller="sceneControl" pages="3"/>
       <relation target="" sidePair="bottom-bottom,center-center"/>
     </component>
@@ -16,37 +16,32 @@
     <component id="n1" name="worldmap" src="mbkc9" xy="0,0">
       <gearDisplay controller="sceneControl" pages="1"/>
     </component>
-    <image id="n2" name="indexBackground" src="mbkce" xy="0,0" fillMethod="hz">
-      <gearDisplay controller="sceneControl" pages="0"/>
-      <relation target="" sidePair="leftext-left,rightext-right"/>
-      <relation target="" sidePair="topext-top,bottomext-bottom"/>
-      <relation target="" sidePair="center-center,middle-middle"/>
-    </image>
-    <component id="n13" name="startButton" src="mbkco" xy="137,503">
-      <gearDisplay controller="sceneControl" pages="0"/>
-      <Button controller="sceneControl" page="0"/>
-    </component>
-    <component id="n8" name="rightBar" src="mbkcj" xy="356,104">
+    <component id="n8" name="rightBar" src="mbkcj" xy="356,84">
       <gearDisplay controller="sceneControl" pages="2"/>
       <relation target="" sidePair="right-right,bottom-bottom"/>
     </component>
-    <component id="n10" name="leftBar" src="mbkcl" xy="0,163">
+    <component id="n10" name="leftBar" src="mbkcl" xy="0,123">
       <gearDisplay controller="sceneControl" pages="2"/>
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
     <loader id="n14" name="tpage" xy="0,0" size="480,800" touchable="false" url="ui://iznig4xzhp1h1" align="center" vAlign="middle" fill="scale" autoSize="true">
-      <gearDisplay controller="sceneControl" pages="4"/>
+      <gearDisplay controller="sceneControl" pages="4,0"/>
       <relation target="" sidePair="width-width,height-height"/>
     </loader>
+    <component id="n13" name="startButton" src="mbkco" xy="137,503">
+      <gearDisplay controller="sceneControl" pages="0"/>
+      <relation target="" sidePair="width-width,center-center"/>
+      <Button controller="sceneControl" page="0"/>
+    </component>
     <graph id="n15" name="transferMask" xy="0,0" size="480,800" hideByEditor="true" touchable="false" type="rect">
       <gearDisplay controller="sceneControl" pages="4,0"/>
       <relation target="" sidePair="width-width,center-center"/>
     </graph>
-    <component id="n16" name="yesButton" src="jl4j1a" xy="370,671">
+    <component id="n16" name="yesButton" src="jl4j1a" xy="383,642">
       <gearDisplay controller="sceneControl" pages="2"/>
       <relation target="n8" sidePair="right-right,bottom-bottom"/>
     </component>
-    <component id="n17" name="backButton" src="jl4j1a" xy="0,111">
+    <component id="n17" name="backButton" src="i5z126" xy="0,71">
       <gearDisplay controller="sceneControl" pages="2"/>
       <relation target="n10" sidePair="left-left,top-bottom"/>
     </component>
@@ -61,39 +56,27 @@
     <component id="n23" name="showLeftButton" src="jl4j1d" xy="5,350">
       <gearDisplay controller="sceneControl" pages="3"/>
     </component>
-    <component id="n40" name="photoButton" src="tzxv1s" xy="20,719" visible="false">
+    <component id="n40" name="photoButton" src="tzxv1s" xy="20,690" visible="false">
       <gearDisplay controller="sceneControl" pages="3"/>
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
-    <component id="n38" name="zoomSwitchButton" src="tzxv1r" xy="400,720">
+    <component id="n38" name="zoomSwitchButton" src="tzxv1r" xy="400,696">
       <gearDisplay controller="sceneControl" pages="3"/>
       <relation target="" sidePair="bottom-bottom,right-right"/>
     </component>
-    <component id="n43" name="shareButton" src="tzxv1w" xy="406,10">
-      <gearDisplay controller="sceneControl" pages="7"/>
-      <relation target="" sidePair="top-top,right-right"/>
-    </component>
-    <component id="n52" name="backToListButton" src="aiqr22" xy="32,730">
-      <gearDisplay controller="sceneControl" pages="6"/>
-    </component>
-    <component id="n51" name="playAgainButton" src="aiqr21" xy="260,730">
-      <gearDisplay controller="sceneControl" pages="6"/>
-    </component>
-    <image id="n53" name="shareSuccessToast" src="aiqr23" xy="64,248" pivot="0.5,0.5" size="350,195">
-      <gearDisplay controller="sceneControl" pages="6"/>
-    </image>
     <component id="n32" name="photoFrame" src="tzxv1n" xy="30,57" pivot="0.5,0.5" size="420,686" visible="false" touchable="false">
       <gearDisplay controller="sceneControl" pages="3"/>
       <relation target="" sidePair="width-width,height-height"/>
     </component>
-    <list id="n33" name="photoList" xy="5,92" size="470,698" layout="flow_hz" selectionMode="multipleSingleClick" overflow="scroll" scrollBarFlags="128" margin="0,0,0,0" defaultItem="ui://iznig4xztzxv1v">
-      <gearDisplay controller="sceneControl" pages="7"/>
-    </list>
-    <component id="n25" name="returnButton" src="tzxv1h" xy="121,660" size="82,82" aspect="true" visible="false">
+    <component id="n25" name="cancelButton" src="tzxv1h" xy="121,660" size="82,82" aspect="true" visible="false">
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
     <component id="n55" name="nextSceneButton" src="aiqr24" xy="249,657" size="102,84" visible="false">
       <relation target="" sidePair="right-right,bottom-bottom"/>
+    </component>
+    <component id="n56" name="returnButton" src="tzxv1h" xy="6,7" size="82,82" aspect="true">
+      <gearDisplay controller="sceneControl" pages="3"/>
+      <relation target="" sidePair="left-left,top-top"/>
     </component>
   </displayList>
   <transition name="t0">
@@ -110,7 +93,16 @@
     <item time="0" type="XY" target="n8" tween="true" startValue="356,104" endValue="480,104" duration="5"/>
     <item time="5" type="XY" target="n8" tween="true" startValue="480,104" endValue="356,104" duration="6"/>
   </transition>
-  <transition name="t3"/>
+  <transition name="t3">
+    <item time="0" type="Rotation" target="n32" tween="true" startValue="0" endValue="-64" duration="12"/>
+    <item time="0" type="Scale" target="n32" tween="true" startValue="1,1" endValue="0.08,0.08" duration="12"/>
+    <item time="2" type="XY" target="n32" tween="true" startValue="-,-" endValue="-157,395" duration="10"/>
+    <item time="12" type="Scale" target="n32" tween="true" startValue="0.08,0.08" endValue="0.08,0.08" duration="4"/>
+    <item time="12" type="XY" target="n32" tween="true" startValue="-157,395" endValue="-157,388" duration="4"/>
+    <item time="16" type="Scale" target="n32" tween="true" startValue="0.08,0.08" endValue="0.08,0.08" duration="3"/>
+    <item time="16" type="XY" target="n32" tween="true" startValue="-157,388" endValue="-157,395" duration="3"/>
+    <item time="19" type="Rotation" target="n32" value="-64"/>
+  </transition>
   <transition name="t4">
     <item time="0" type="Alpha" target="n53" value="1"/>
     <item time="0" type="Size" target="n53" tween="true" startValue="350,195" endValue="392,224" duration="3"/>

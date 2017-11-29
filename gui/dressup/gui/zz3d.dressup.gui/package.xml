@@ -32,13 +32,11 @@
     <image id="p2td15" name="shoes" folder="" qualityOption="source" file="p2td15.png" size="70,78"/>
     <image id="p2td16" name="dress" folder="" qualityOption="source" file="p2td16.png" size="70,80"/>
     <image id="p2td17" name="gift" folder="" qualityOption="source" file="p2td17.png" size="70,82"/>
-    <image id="jl4j19" name="yes" folder="" qualityOption="source" file="jl4j19.png" size="205,108"/>
+    <image id="jl4j19" name="yes" folder="" qualityOption="source" file="jl4j19.png" size="128,128"/>
     <component id="jl4j1a" name="Component1" folder="" file="jl4j1a.xml"/>
     <image id="jl4j1b" name="arrow" folder="" qualityOption="source" file="jl4j1b.png" size="40,90"/>
     <component id="jl4j1c" name="ArrowButton" folder="" file="jl4j1c.xml"/>
     <component id="jl4j1d" name="ArrowButtonLeft" folder="" file="jl4j1d.xml"/>
-    <component id="grny1e" name="BackgroundList" folder="" file="grny1e.xml" exported="true"/>
-    <component id="grny1f" name="BackgroundItem" folder="" file="grny1f.xml" exported="true"/>
     <image id="tzxv1g" name="returnIcon" folder="" qualityOption="source" file="tzxv1g.png" size="144,144"/>
     <component id="tzxv1h" name="returnButton" folder="" file="tzxv1h.xml"/>
     <image id="tzxv1i" name="doneIcon" folder="" qualityOption="source" file="tzxv1i.png" size="144,144"/>
@@ -48,7 +46,7 @@
     <component id="tzxv1m" name="cameraButton" folder="" file="tzxv1m.xml"/>
     <component id="tzxv1n" name="PhotoFrame" folder="" file="tzxv1n.xml" exported="true"/>
     <image id="tzxv1o" name="plusIcon" folder="" qualityOption="source" file="tzxv1o.png" size="128,128"/>
-    <image id="tzxv1p" name="minusIcon" folder="" qualityOption="source" file="tzxv1p.png" size="64,64"/>
+    <image id="tzxv1p" name="minusIcon" folder="" qualityOption="source" file="tzxv1p.png" size="128,128"/>
     <component id="tzxv1q" name="zoomSwtichButton" folder="" file="tzxv1q.xml"/>
     <component id="tzxv1r" name="ZoomSwitchButton" folder="" file="tzxv1r.xml"/>
     <component id="tzxv1s" name="photoButton" folder="" file="tzxv1s.xml"/>
@@ -64,6 +62,7 @@
     <component id="aiqr22" name="backToListButton" folder="" file="aiqr22.xml"/>
     <image id="aiqr23" name="shareSuccess" folder="" qualityOption="source" file="aiqr23.png" size="350,195"/>
     <component id="aiqr24" name="NextSceneButton" folder="" file="aiqr24.xml"/>
+    <component id="i5z126" name="returnToMapButton" folder="" file="i5z126.xml"/>
   </resources>
   <publish name="zz3d.dressup.gui">
     <atlas name="默认" index="0"/>

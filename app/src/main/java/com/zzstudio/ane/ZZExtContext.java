@@ -109,7 +109,7 @@ public class ZZExtContext extends ExtContextBase {
         }
     }
 
-   
+
     private void saveImage(String imageName, byte[] bytes) throws Exception {
         String filePath = "zzstudio/" + imageName;
         File file = new File(Environment.getExternalStorageDirectory(),
