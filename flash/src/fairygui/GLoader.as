@@ -285,6 +285,7 @@ package fairygui
 		{
 			this.url = null;
 			
+			_activeObject = _image;
 			_image.texture = value;
 			if (value != null) {
 				_contentSourceWidth = value.width;
@@ -314,6 +315,9 @@ package fairygui
 			_contentItem = UIPackage.getItemByURL(itemURL);
 			if(_contentItem!=null)
 			{
+				if(_autoSize)
+					this.setSize(_contentItem.width, _contentItem.height);
+				
 				if(_contentItem.type==PackageItemType.Image)
 				{
 					if(_contentItem.loaded)
@@ -424,10 +428,12 @@ package fairygui
 			if(cc is Bitmap)
 			{
 				var bmd:BitmapData = Bitmap(cc).bitmapData;
-				var texture:Texture = Texture.fromBitmapData(bmd, false);
-				bmd.dispose();
-				texture.root.onRestore = loadContent;
-				onExternalLoadSuccess(texture);				
+				var texture:Texture = Texture.fromBitmapData(bmd, false, false, 1, "bgra", false, function():void
+				{
+					bmd.dispose();
+					texture.root.onRestore = loadContent;
+					onExternalLoadSuccess(texture);
+				});				
 			}
 			else
 				onExternalLoadFailed();
@@ -453,8 +459,7 @@ package fairygui
 			
 			if (_errorSign != null)
 			{
-				_errorSign.width = this.width;
-				_errorSign.height = this.height;
+				_errorSign.setSize(this.width, this.height);
 				_container.addChild(_errorSign.displayObject);
 			}
 		}
@@ -509,53 +514,54 @@ package fairygui
 				this.setSize(_contentWidth, _contentHeight);
 				
 				_updatingLayout = false;
+				
+				if(_width==_contentWidth && _height==_contentHeight) //可能由于大小限制
+					return;
+			}
+
+			var sx:Number = 1, sy:Number = 1;
+			if(_fill!=LoaderFillType.None)
+			{
+				sx = _width/_contentSourceWidth;
+				sy = _height/_contentSourceHeight;
+				
+				if(sx!=1 || sy!=1)
+				{
+					if (_fill == LoaderFillType.ScaleMatchHeight)
+						sx = sy;
+					else if (_fill == LoaderFillType.ScaleMatchWidth)
+						sy = sx;
+					else if (_fill == LoaderFillType.Scale)
+					{
+						if (sx > sy)
+							sx = sy;
+						else
+							sy = sx;
+					}
+					_contentWidth = _contentSourceWidth * sx;
+					_contentHeight = _contentSourceHeight * sy;
+				}
+			}
+			
+			if(_activeObject is ImageExt)
+			{
+				ImageExt(_activeObject).textureScaleX = sx;
+				ImageExt(_activeObject).textureScaleY = sy;
 			}
 			else
 			{
-				var sx:Number = 1, sy:Number = 1;
-				if(_fill!=LoaderFillType.None)
-				{
-					sx = this.width/_contentSourceWidth;
-					sy = this.height/_contentSourceHeight;
-					
-					if(sx!=1 || sy!=1)
-					{
-						if (_fill == LoaderFillType.ScaleMatchHeight)
-							sx = sy;
-						else if (_fill == LoaderFillType.ScaleMatchWidth)
-							sy = sx;
-						else if (_fill == LoaderFillType.Scale)
-						{
-							if (sx > sy)
-								sx = sy;
-							else
-								sy = sx;
-						}
-						_contentWidth = _contentSourceWidth * sx;
-						_contentHeight = _contentSourceHeight * sy;
-					}
-				}
-				
-				if(_activeObject is ImageExt)
-				{
-					ImageExt(_activeObject).textureScaleX = sx;
-					ImageExt(_activeObject).textureScaleY = sy;
-				}
-				else
-				{
-					_activeObject.scaleX =  sx;
-					_activeObject.scaleY =  sy;
-				}
-				
-				if(_align==AlignType.Center)
-					_activeObject.x = int((this.width-_contentWidth)/2);
-				else if(_align==AlignType.Right)
-					_activeObject.x = this.width-_contentWidth;
-				if(_verticalAlign==VertAlignType.Middle)
-					_activeObject.y = int((this.height-_contentHeight)/2);
-				else if(_verticalAlign==VertAlignType.Bottom)
-					_activeObject.y = this.height-_contentHeight;
+				_activeObject.scaleX =  sx;
+				_activeObject.scaleY =  sy;
 			}
+			
+			if(_align==AlignType.Center)
+				_activeObject.x = int((this.width-_contentWidth)/2);
+			else if(_align==AlignType.Right)
+				_activeObject.x = this.width-_contentWidth;
+			if(_verticalAlign==VertAlignType.Middle)
+				_activeObject.y = int((this.height-_contentHeight)/2);
+			else if(_verticalAlign==VertAlignType.Bottom)
+				_activeObject.y = this.height-_contentHeight;
 		}
 		
 		private function clearContent():void 
@@ -587,7 +593,7 @@ package fairygui
 		
 		override protected function handleSizeChanged():void
 		{
-			if(!_updatingLayout)
+			if(!_updatingLayout && _activeObject!=null)
 				updateLayout();
 			
 			_container.hitArea.setTo(0,0,this.width,this.height);

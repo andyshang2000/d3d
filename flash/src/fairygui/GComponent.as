@@ -18,10 +18,13 @@ package fairygui
 	public class GComponent extends GObject
 	{
 		private var _sortingChildCount:int;
-
+		private var _applyingController:Controller;
+		
 		protected var _margin:Margin;
 		protected var _trackBounds:Boolean;
 		protected var _boundsChanged:Boolean;
+		protected var _childrenRenderOrder:int;
+		protected var _apexIndex:int;
 		
 		internal var _buildingDisplayList:Boolean;
 		internal var _children:Vector.<GObject>;
@@ -31,10 +34,7 @@ package fairygui
 		internal var _container:Sprite;
 		internal var _scrollPane:ScrollPane;
 		internal var _alignOffset:Point;
-		
-		private var _childrenRenderOrder:int;
-		private var _apexIndex:int;
-		
+
 		private var _clipMask:Quad;
 		
 		public function GComponent():void
@@ -174,6 +174,7 @@ package fairygui
 					_sortingChildCount--;
 				
 				_children.splice(index, 1);
+				child.group = null;
 				if(child.inContainer)
 				{
 					_container.removeChild(child.displayObject);
@@ -230,7 +231,7 @@ package fairygui
 			for (var i:int=0; i<cnt; ++i)
 			{
 				var child:GObject = _children[i];
-				if (child.finalVisible && child.name==name) 
+				if (child.internalVisible && child.internalVisible2 && child.name==name) 
 					return child;
 			}
 			
@@ -250,7 +251,7 @@ package fairygui
 			return null;
 		}
 		
-		internal function getChildById(id:String):GObject
+		public function getChildById(id:String):GObject
 		{
 			var cnt:int = _children.length;
 			for (var i:int=0; i<cnt; ++i)
@@ -466,7 +467,7 @@ package fairygui
 			if(!child.displayObject)
 				return;
 			
-			if(child.finalVisible)
+			if(child.internalVisible)
 			{
 				if(!child.displayObject.parent)
 				{
@@ -533,7 +534,7 @@ package fairygui
 					for (i = 0; i < cnt; i++)
 					{
 						child = _children[i];
-						if (child.displayObject != null && child.finalVisible)
+						if (child.displayObject != null && child.internalVisible)
 							_container.addChild(child.displayObject);
 					}
 				}
@@ -543,7 +544,7 @@ package fairygui
 					for (i = cnt - 1; i >= 0; i--)
 					{
 						child = _children[i];
-						if (child.displayObject != null && child.finalVisible)
+						if (child.displayObject != null && child.internalVisible)
 							_container.addChild(child.displayObject);
 					}
 				}
@@ -554,13 +555,13 @@ package fairygui
 					for (i = 0; i < _apexIndex; i++)
 					{
 						child = _children[i];
-						if (child.displayObject != null && child.finalVisible)
+						if (child.displayObject != null && child.internalVisible)
 							_container.addChild(child.displayObject);
 					}
 					for (i = cnt - 1; i >= _apexIndex; i--)
 					{
 						child = _children[i];
-						if (child.displayObject != null && child.finalVisible)
+						if (child.displayObject != null && child.internalVisible)
 							_container.addChild(child.displayObject);
 					}
 				}
@@ -570,10 +571,13 @@ package fairygui
 		
 		internal function applyController(c:Controller):void
 		{
+			_applyingController = c;
 			for each(var child:GObject in _children)
 			{
 				child.handleControllerChanged(c);
 			}
+			_applyingController = null;
+			c.runActions();
 		}
 		
 		internal function applyAllControllers():void
@@ -606,7 +610,13 @@ package fairygui
 				}
 			}
 			if(myIndex<maxIndex)
+			{
+				//如果正在applyingController，此时修改显示列表是危险的，但真正排除危险只能用显示列表的副本去做，这样性能可能损耗较大，
+				//这里取个巧，让可能漏过的child补一下handleControllerChanged，反正重复执行是无害的。
+				if(_applyingController!=null)
+					_children[maxIndex].handleControllerChanged(_applyingController);
 				this.swapChildrenAt(myIndex, maxIndex);
+			}
 		}
 		
 		public function getTransitionAt(index:int):Transition
@@ -832,6 +842,14 @@ package fairygui
 			}
 		}
 		
+		override public function handleControllerChanged(c:Controller):void
+		{
+			super.handleControllerChanged(c);
+			
+			if (_scrollPane != null)
+				_scrollPane.handleControllerChanged(c);
+		}
+		
 		public function setBoundsChangedFlag():void
 		{
 			if(!_scrollPane && !_trackBounds)
@@ -847,11 +865,21 @@ package fairygui
 		private function __updateBounds():void
 		{
 			if(_boundsChanged)
+			{
+				for each(var child:GObject in _children)
+				{
+					child.ensureSizeCorrect();
+				}
 				updateBounds();
+			}
 		}
 		
 		public function ensureBoundsCorrect():void
 		{
+			for each(var child:GObject in _children)
+			{
+				child.ensureSizeCorrect();
+			}
 			if(_boundsChanged)
 				updateBounds();
 		}
@@ -864,11 +892,6 @@ package fairygui
 				ax = int.MAX_VALUE, ay = int.MAX_VALUE;
 				var ar:int = int.MIN_VALUE, ab:int = int.MIN_VALUE;
 				var tmp:int;
-	
-				for each(child in _children)
-				{
-					child.ensureSizeCorrect();
-				}
 				
 				for each(var child:GObject in _children)
 				{
@@ -1058,12 +1081,22 @@ package fairygui
 			
 			str = xml.@size;
 			arr = str.split(",");
-			_sourceWidth = int(arr[0]);
-			_sourceHeight = int(arr[1]);
-			_initWidth = _sourceWidth;
-			_initHeight = _sourceHeight;
+			sourceWidth = int(arr[0]);
+			sourceHeight = int(arr[1]);
+			initWidth = sourceWidth;
+			initHeight = sourceHeight;
 			
-			setSize(_sourceWidth, _sourceHeight);
+			setSize(sourceWidth, sourceHeight);
+			
+			str = xml.@restrictSize;
+			if(str)
+			{
+				arr = str.split(",");
+				minWidth = parseInt(arr[0]);
+				maxWidth = parseInt(arr[1]);
+				minHeight = parseInt(arr[2]);
+				maxHeight= parseInt(arr[3]);
+			}
 			
 			str = xml.@pivot;
 			if(str)
@@ -1223,7 +1256,16 @@ package fairygui
 		{
 			super.setup_afterAdd(xml);
 			
-			var str:String = xml.@controller;
+			var str:String;
+			
+			if(scrollPane)
+			{
+				str = xml.@pageController;
+				if(str)
+					scrollPane.pageController = parent.getController(str);
+			}
+			
+			str = xml.@controller;
 			if(str)
 			{
 				var arr:Array = str.split(",");

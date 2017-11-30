@@ -8,7 +8,6 @@ package fairygui.text
 	import flash.text.TextLineMetrics;
 	
 	import fairygui.PackageItem;
-	import fairygui.UIConfig;
 	import fairygui.UIPackage;
 	import fairygui.display.TextCanvas;
 	import fairygui.event.TextEvent;
@@ -34,8 +33,6 @@ package fairygui.text
 		private var _linkButtonCache:Vector.<LinkButton>;
 		private var _nodeCache:Vector.<HtmlNode>;
 		private var _needRebuild:Boolean;
-		
-		private static const PLACEHOLDER_FONT:String = "SimSun,"+UIConfig.defaultFont;
 		
 		public static var objectFactory:IRichTextObjectFactory = new RichTextObjectFactory();
 
@@ -385,11 +382,10 @@ package fairygui.text
 						e.realHeight = imageHeight;
 					else
 						e.realHeight = e.height;
-					e.realWidth += 4;
-					e.textformat.font = PLACEHOLDER_FONT;
+					e.textformat.font = _textField.embedFonts?_defaultTextFormat.font:CharSize.PLACEHOLDER_FONT;
 					e.textformat.size = e.realHeight + 2;
 					e.textformat.underline = false;
-					e.textformat.letterSpacing = e.realWidth-CharSize.getWidth(e.realHeight + 2, PLACEHOLDER_FONT);
+					e.textformat.letterSpacing = e.realWidth+4-CharSize.getHolderWidth(e.textformat.font, e.realHeight + 2);
 					_textField.setTextFormat(e.textformat, startPos+e.start, startPos+e.end+1);
 				}
 				else

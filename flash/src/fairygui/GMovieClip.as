@@ -6,6 +6,8 @@ package fairygui
 	import fairygui.display.UIMovieClip;
 	import fairygui.utils.ToolSet;
 	
+	import starling.textures.TextureSmoothing;
+	
 	public class GMovieClip extends GObject implements IAnimationGear, IColorGear
 	{			
 		private var _movieClip:MovieClip;
@@ -70,12 +72,12 @@ package fairygui
 
 		override public function constructFromResource():void
 		{
-			_sourceWidth = packageItem.width;
-			_sourceHeight = packageItem.height;
-			_initWidth = _sourceWidth;
-			_initHeight = _sourceHeight;
+			sourceWidth = packageItem.width;
+			sourceHeight = packageItem.height;
+			initWidth = sourceWidth;
+			initHeight = sourceHeight;
 
-			setSize(_sourceWidth, _sourceHeight);
+			setSize(sourceWidth, sourceHeight);
 			
 			if(packageItem.loaded)
 				__movieClipLoaded(packageItem);
@@ -90,6 +92,7 @@ package fairygui
 			_movieClip.repeatDelay = packageItem.repeatDelay;
 			_movieClip.frames = packageItem.frames;
 			_movieClip.boundsRect = new Rectangle(0, 0, sourceWidth, sourceHeight);
+			_movieClip.textureSmoothing = packageItem.smoothing?TextureSmoothing.BILINEAR:TextureSmoothing.NONE;
 		}
 
 		override public function setup_beforeAdd(xml:XML):void

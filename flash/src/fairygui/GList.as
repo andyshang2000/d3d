@@ -26,7 +26,8 @@ package fairygui
 		public var foldInvisibleItems:Boolean;
 		
 		private var _layout:int;
-		private var _lineItemCount:int;
+		private var _lineCount:int;
+		private var _columnCount:int;
 		private var _lineGap:int;
 		private var _columnGap:int;
 		private var _defaultItem:String;
@@ -34,6 +35,7 @@ package fairygui
 		private var _selectionMode:int;
 		private var _align:int;
 		private var _verticalAlign:int;
+		private var _selectionController:Controller;
 		
 		private var _lastSelectedIndex:int;
 		private var _pool:GObjectPool;
@@ -72,6 +74,8 @@ package fairygui
 		public override function dispose():void
 		{
 			_pool.clear();
+			scrollItemToViewOnClick = false;
+			
 			super.dispose();
 		}
 		
@@ -91,19 +95,41 @@ package fairygui
 			}
 		}
 		
-		final public function get lineItemCount():int
+		final public function get lineCount():int
 		{
-			return _lineItemCount;
+			return _lineCount;
 		}
 		
-		final public function set lineItemCount(value:int):void
+		final public function set lineCount(value:int):void
 		{
-			if (_lineItemCount != value)
+			if (_lineCount != value)
 			{
-				_lineItemCount = value;
-				setBoundsChangedFlag();
-				if (_virtual)
-					setVirtualListChangedFlag(true);
+				_lineCount = value;
+				if (_layout == ListLayoutType.FlowVertical || _layout == ListLayoutType.Pagination)
+				{
+					setBoundsChangedFlag();
+					if (_virtual)
+						setVirtualListChangedFlag(true);
+				}
+			}
+		}
+		
+		final public function get columnCount():int
+		{
+			return _columnCount;
+		}
+		
+		final public function set columnCount(value:int):void
+		{
+			if (_columnCount != value)
+			{
+				_columnCount = value;
+				if (_layout == ListLayoutType.FlowHorizontal || _layout == ListLayoutType.Pagination)
+				{
+					setBoundsChangedFlag();
+					if (_virtual)
+						setVirtualListChangedFlag(true);
+				}
 			}
 		}
 		
@@ -204,7 +230,13 @@ package fairygui
 		
 		final public function set autoResizeItem(value:Boolean):void
 		{
-			_autoResizeItem = value;
+			if(_autoResizeItem != value)
+			{
+				_autoResizeItem = value;
+				setBoundsChangedFlag();
+				if (_virtual)
+					setVirtualListChangedFlag(true);
+			}
 		}
 		
 		final public function get selectionMode():int
@@ -215,6 +247,16 @@ package fairygui
 		final public function set selectionMode(value:int):void
 		{
 			_selectionMode = value;
+		}
+		
+		final public function get selectionController():Controller
+		{
+			return _selectionController;
+		}
+		
+		final public function set selectionController(value:Controller):void
+		{
+			_selectionController = value;
 		}
 		
 		public function get itemPool():GObjectPool
@@ -240,14 +282,6 @@ package fairygui
 		
 		override public function addChildAt(child:GObject, index:int):GObject
 		{
-			if(_autoResizeItem)
-			{
-				if(_layout==ListLayoutType.SingleColumn)
-					child.width = this.viewWidth;
-				else if(_layout==ListLayoutType.SingleRow)
-					child.height = this.viewHeight;
-			}
-			
 			super.addChildAt(child, index);
 			
 			if(child is GButton)
@@ -307,33 +341,80 @@ package fairygui
 		}
 		
 		public function get selectedIndex():int
-		{
-			var cnt:int = _children.length;
-			for(var i:int=0;i<cnt;i++)
+		{			
+			var i:int;
+			if (_virtual)
 			{
-				var obj:GButton = _children[i].asButton;
-				if (obj != null && obj.selected)
-					return childIndexToItemIndex(i);
+				for (i = 0; i < _realNumItems; i++)
+				{
+					var ii:ItemInfo = _virtualItems[i];
+					if ((ii.obj is GButton) && GButton(ii.obj).selected
+						|| ii.obj == null && ii.selected)
+					{
+						if (_loop)
+							return i % _numItems;
+						else
+							return i;
+					}
+				}
 			}
+			else
+			{
+				var cnt:int = _children.length;
+				for (i = 0; i < cnt; i++)
+				{
+					var obj:GButton = _children[i].asButton;
+					if (obj != null && obj.selected)
+						return i;
+				}
+			}
+			
 			return -1;
 		}
 		
 		public function set selectedIndex(value:int):void
 		{
-			clearSelection();
 			if (value >= 0 && value < this.numItems)
+			{
+				if(_selectionMode!=ListSelectionMode.Single)
+					clearSelection();
 				addSelection(value);
+			}
+			else
+				clearSelection();
 		}
 		
 		public function getSelection():Vector.<int>
 		{
 			var ret:Vector.<int> = new Vector.<int>();
-			var cnt:int = _children.length;
-			for(var i:int=0;i<cnt;i++)
+			var i:int;
+			if (_virtual)
 			{
-				var obj:GButton = _children[i].asButton;
-				if (obj != null && obj.selected)
-					ret.push(childIndexToItemIndex(i));
+				for (i = 0; i < _realNumItems; i++)
+				{
+					var ii:ItemInfo = _virtualItems[i];
+					if ((ii.obj is GButton) && GButton(ii.obj).selected
+						|| ii.obj == null && ii.selected)
+					{
+						if (_loop)
+						{
+							i = i % _numItems;
+							if (ret.indexOf(i)!=-1)
+								continue;
+						}
+						ret.push(i);
+					}
+				}
+			}
+			else
+			{
+				var cnt:int = _children.length;
+				for (i = 0; i < cnt; i++)
+				{
+					var obj:GButton = _children[i].asButton;
+					if (obj != null && obj.selected)
+						ret.push(i);
+				}
 			}
 			return ret;
 		}
@@ -351,13 +432,23 @@ package fairygui
 			if (scrollItToView)
 				scrollToView(index);
 			
-			index = itemIndexToChildIndex(index);
-			if (index<0 || index >= _children.length)
-				return;
+			_lastSelectedIndex = index;
+			var obj:GButton = null;
+			if (_virtual)
+			{
+				var ii:ItemInfo = _virtualItems[index];
+				if (ii.obj != null)
+					obj = ii.obj.asButton;
+				ii.selected = true;
+			}
+			else
+				obj = getChildAt(index).asButton;
 			
-			var obj:GButton = getChildAt(index).asButton;
 			if (obj != null && !obj.selected)
+			{
 				obj.selected = true;
+				updateSelectionController(index);
+			}
 		}
 		
 		public function removeSelection(index:int):void
@@ -365,61 +456,153 @@ package fairygui
 			if(_selectionMode==ListSelectionMode.None)
 				return;
 			
-			index = itemIndexToChildIndex(index);
-			if (index < 0 || index >= _children.length)
-				return;
+			var obj:GButton = null;
+			if (_virtual)
+			{
+				var ii:ItemInfo = _virtualItems[index];
+				if (ii.obj != null)
+					obj = ii.obj.asButton;
+				ii.selected = false;
+			}
+			else
+				obj = getChildAt(index).asButton;
 			
-			var obj:GButton = getChildAt(index).asButton;
-			if(obj!=null && obj.selected)
+			if (obj != null)
 				obj.selected = false;
 		}
 		
 		public function clearSelection():void
 		{
-			var cnt:int = _children.length;
-			for(var i:int=0;i<cnt;i++)
+			var i:int;
+			if (_virtual)
 			{
-				var obj:GButton = _children[i].asButton;
-				if(obj!=null)
-					obj.selected = false;
+				for (i = 0; i < _realNumItems; i++)
+				{
+					var ii:ItemInfo = _virtualItems[i];
+					if (ii.obj is GButton)
+						GButton(ii.obj).selected = false;
+					ii.selected = false;
+				}
+			}
+			else
+			{
+				var cnt:int = _children.length;
+				for (i = 0; i < cnt; i++)
+				{
+					var obj:GButton = _children[i].asButton;
+					if (obj != null)
+						obj.selected = false;
+				}
 			}
 		}
+		
+		private function clearSelectionExcept(g:GObject):void
+		{
+			var i:int;
+			if (_virtual)
+			{
+				for (i = 0; i < _realNumItems; i++)
+				{
+					var ii:ItemInfo = _virtualItems[i];
+					if (ii.obj != g)
+					{
+						if ((ii.obj is GButton))
+							GButton(ii.obj).selected = false;
+						ii.selected = false;
+					}
+				}
+			}
+			else
+			{
+				var cnt:int = _children.length;
+				for (i = 0; i < cnt; i++)
+				{
+					var obj:GButton = _children[i].asButton;
+					if (obj != null && obj != g)
+						obj.selected = false;
+				}
+			}
+		}	
 		
 		public function selectAll():void
 		{
 			checkVirtualList();
 			
-			var cnt:int = _children.length;
-			for(var i:int=0;i<cnt;i++)
+			var last:int = -1;
+			var i:int;
+			if (_virtual)
 			{
-				var obj:GButton = _children[i].asButton;
-				if(obj!=null)
-					obj.selected = true;
+				for (i = 0; i < _realNumItems; i++)
+				{
+					var ii:ItemInfo = _virtualItems[i];
+					if ((ii.obj is GButton) && !GButton(ii.obj).selected)
+					{
+						GButton(ii.obj).selected = true;
+						last = i;
+					}
+					ii.selected = true;
+				}
 			}
+			else
+			{
+				var cnt:int = _children.length;
+				for (i = 0; i < cnt; i++)
+				{
+					var obj:GButton = _children[i].asButton;
+					if (obj != null && !obj.selected)
+					{
+						obj.selected = true;
+						last = i;
+					}
+				}
+			}
+			
+			if(last!=-1)
+				updateSelectionController(last);
 		}
 		
 		public function selectNone():void
 		{
-			var cnt:int = _children.length;
-			for(var i:int=0;i<cnt;i++)
-			{
-				var obj:GButton = _children[i].asButton;
-				if(obj!=null)
-					obj.selected = false;
-			}
+			clearSelection();
 		}
 		
 		public function selectReverse():void
 		{
 			checkVirtualList();
 			
-			var cnt:int = _children.length;
-			for(var i:int=0;i<cnt;i++)
+			var last:int = -1;
+			var i:int;
+			if (_virtual)
 			{
-				var obj:GButton = _children[i].asButton;
-				if(obj!=null)
-					obj.selected = !obj.selected;
+				for (i = 0; i < _realNumItems; i++)
+				{
+					var ii:ItemInfo = _virtualItems[i];
+					if (ii.obj is GButton)
+					{
+						GButton(ii.obj).selected = !GButton(ii.obj).selected;
+						if (GButton(ii.obj).selected)
+							last = i;
+					}
+					ii.selected = !ii.selected;
+				}
 			}
+			else
+			{
+				var cnt:int = _children.length;
+				for (i = 0; i < cnt; i++)
+				{
+					var obj:GButton = _children[i].asButton;
+					if (obj != null)
+					{
+						obj.selected = !obj.selected;
+						if (obj.selected)
+							last = i;
+					}
+				}
+			}
+			
+			if(last!=-1)
+				updateSelectionController(last);
 		}
 		
 		public function handleArrowKey(dir:int):void
@@ -623,7 +806,7 @@ package fairygui
 			
 			var dontChangeLastIndex:Boolean = false;
 			var button:GButton = GButton(item);
-			var index:int = getChildIndex(item);
+			var index:int = childIndexToItemIndex(getChildIndex(item));
 			
 			if(_selectionMode==ListSelectionMode.Single)
 			{
@@ -644,12 +827,26 @@ package fairygui
 						{
 							var min:int = Math.min(_lastSelectedIndex, index);
 							var max:int = Math.max(_lastSelectedIndex, index);
-							max = Math.min(max, _children.length-1);
-							for(var i:int=min;i<=max;i++)
+							max = Math.min(max, this.numItems-1);
+							var i:int;
+							if (_virtual)
 							{
-								var obj:GButton = getChildAt(i).asButton;
-								if(obj!=null && !obj.selected)
-									obj.selected = true;
+								for (i = min; i <= max; i++)
+								{
+									var ii:ItemInfo = _virtualItems[i];
+									if (ii.obj is GButton)
+										GButton(ii.obj).selected = true;
+									ii.selected = true;
+								}
+							}
+							else
+							{
+								for(i=min;i<=max;i++)
+								{
+									var obj:GButton = getChildAt(i).asButton;
+									if(obj!=null)
+										obj.selected = true;
+								}
 							}
 							
 							dontChangeLastIndex = true;
@@ -678,17 +875,9 @@ package fairygui
 			
 			if(!dontChangeLastIndex)
 				_lastSelectedIndex = index;
-		}
-		
-		private function clearSelectionExcept(obj:GObject):void
-		{
-			var cnt:int = _children.length;
-			for(var i:int=0;i<cnt;i++)
-			{
-				var button:GButton = _children[i].asButton;
-				if(button!=null && button!=obj && button.selected)
-					button.selected = false;
-			}
+			
+			if(button.selected)
+				updateSelectionController(index);
 		}
 		
 		public function resizeToFit(itemCount:int=int.MAX_VALUE, minSize:int=0):void
@@ -769,39 +958,29 @@ package fairygui
 		override protected function handleSizeChanged():void
 		{
 			super.handleSizeChanged();
-			
-			if(_autoResizeItem)
-				adjustItemsSize();
-			
-			if(_layout==ListLayoutType.FlowHorizontal || _layout==ListLayoutType.FlowVertical)
-			{
-				setBoundsChangedFlag();
-				if (_virtual)
-					setVirtualListChangedFlag(true);
-			}
+
+			setBoundsChangedFlag();
+			if (_virtual)
+				setVirtualListChangedFlag(true);
 		}
 		
-		public function adjustItemsSize():void
+		override public function handleControllerChanged(c:Controller):void
 		{
-			if(_layout==ListLayoutType.SingleColumn)
+			super.handleControllerChanged(c);
+			
+			if (_selectionController == c)
+				this.selectedIndex = c.selectedIndex;
+		}
+		
+		private function updateSelectionController(index:int):void
+		{
+			if (_selectionController != null && !_selectionController.changing
+				&& index < _selectionController.pageCount)
 			{
-				var cnt:int = _children.length;				
-				var cw:int = this.viewWidth;
-				for(var i:int=0;i<cnt;i++)
-				{
-					var child:GObject = getChildAt(i);
-					child.width = cw;
-				}
-			}
-			else if(_layout==ListLayoutType.SingleRow)
-			{
-				cnt = _children.length;
-				var ch:int = this.viewHeight;
-				for(i=0;i<cnt;i++)
-				{
-					child = getChildAt(i);
-					child.height = ch;
-				}
+				var c:Controller = _selectionController;
+				_selectionController = null;
+				c.selectedIndex = index;
+				_selectionController = c;
 			}
 		}
 		
@@ -1049,7 +1228,7 @@ package fairygui
 				if (itemRenderer == null)
 					throw new Error("FairyGUI: Set itemRenderer first!");
 				
-				_numItems = value; 
+				_numItems = value;
 				if (_loop)
 					_realNumItems = _numItems * 5;//设置5倍数量，用于循环滚动
 				else
@@ -1067,6 +1246,11 @@ package fairygui
 						
 						_virtualItems.push(ii);
 					}
+				}
+				else
+				{
+					for (i = _realNumItems; i < oldCount; i++)
+						_virtualItems[i].selected = false;
 				}
 				
 				if (this._virtualListChanged != 0)
@@ -1134,32 +1318,47 @@ package fairygui
 			{
 				if (_layout == ListLayoutType.SingleColumn || _layout == ListLayoutType.SingleRow)
 					_curLineItemCount = 1;
-				else if (_lineItemCount != 0)
-					_curLineItemCount = _lineItemCount;
 				else if (_layout == ListLayoutType.FlowHorizontal)
 				{
-					_curLineItemCount = Math.floor((_scrollPane.viewWidth + _columnGap) / (_itemSize.x + _columnGap));
-					if (_curLineItemCount <= 0)
-						_curLineItemCount = 1;
+					if (_columnCount > 0)
+						_curLineItemCount = _columnCount;
+					else
+					{
+						_curLineItemCount = Math.floor((_scrollPane.viewWidth + _columnGap) / (_itemSize.x + _columnGap));
+						if (_curLineItemCount <= 0)
+							_curLineItemCount = 1;
+					}
 				}
 				else if (_layout == ListLayoutType.FlowVertical)
 				{
-					_curLineItemCount = Math.floor((_scrollPane.viewHeight + _lineGap) / (_itemSize.y + _lineGap));
-					if (_curLineItemCount <= 0)
-						_curLineItemCount = 1;
+					if (_lineCount > 0)
+						_curLineItemCount = _lineCount;
+					else
+					{
+						_curLineItemCount = Math.floor((_scrollPane.viewHeight + _lineGap) / (_itemSize.y + _lineGap));
+						if (_curLineItemCount <= 0)
+							_curLineItemCount = 1;
+					}
 				}
 				else //pagination
 				{
-					_curLineItemCount = Math.floor((_scrollPane.viewWidth + _columnGap) / (_itemSize.x + _columnGap));
-					if (_curLineItemCount <= 0)
-						_curLineItemCount = 1;
-				}
-				
-				if (_layout == ListLayoutType.Pagination)
-				{
-					_curLineItemCount2 = Math.floor((_scrollPane.viewHeight + _lineGap) / (_itemSize.y + _lineGap));
-					if (_curLineItemCount2 <= 0)
-						_curLineItemCount2 = 1;
+					if (_columnCount > 0)
+						_curLineItemCount = _columnCount;
+					else
+					{
+						_curLineItemCount = Math.floor((_scrollPane.viewWidth + _columnGap) / (_itemSize.x + _columnGap));
+						if (_curLineItemCount <= 0)
+							_curLineItemCount = 1;
+					}
+					
+					if (_lineCount > 0)
+						_curLineItemCount2 = _lineCount;
+					else
+					{
+						_curLineItemCount2 = Math.floor((_scrollPane.viewHeight + _lineGap) / (_itemSize.y + _lineGap));
+						if (_curLineItemCount2 <= 0)
+							_curLineItemCount2 = 1;
+					}
 				}
 			}
 			
@@ -1168,13 +1367,23 @@ package fairygui
 			{
 				var i:int;
 				var len:int = Math.ceil(_realNumItems / _curLineItemCount) * _curLineItemCount;
+				var len2:int = Math.min(_curLineItemCount, _realNumItems);
 				if (_layout == ListLayoutType.SingleColumn || _layout == ListLayoutType.FlowHorizontal)
 				{
 					for (i = 0; i < len; i += _curLineItemCount)
 						ch += _virtualItems[i].height + _lineGap;
 					if (ch > 0)
 						ch -= _lineGap;
-					cw = _scrollPane.contentWidth;
+					
+					if (_autoResizeItem)
+						cw = scrollPane.viewWidth;
+					else
+					{
+						for (i = 0; i < len2; i++)
+							cw += _virtualItems[i].width + _columnGap;
+						if (cw > 0)
+							cw -= _columnGap;
+					}
 				}
 				else if (_layout == ListLayoutType.SingleRow || _layout == ListLayoutType.FlowVertical)
 				{
@@ -1182,7 +1391,16 @@ package fairygui
 						cw += _virtualItems[i].width + _columnGap;
 					if (cw > 0)
 						cw -= _columnGap;
-					ch = _scrollPane.contentHeight;
+					
+					if (_autoResizeItem)
+						ch = this.scrollPane.viewHeight;
+					else
+					{
+						for (i = 0; i < len2; i++)
+							ch += _virtualItems[i].height + _lineGap;
+						if (ch > 0)
+							ch -= _lineGap;
+					}
 				}
 				else
 				{
@@ -1463,7 +1681,8 @@ package fairygui
 			var url:String = defaultItem;
 			var ii:ItemInfo, ii2:ItemInfo;
 			var i:int,j:int;
-			
+			var partSize:int = (scrollPane.viewWidth - _columnGap * (_curLineItemCount - 1)) / _curLineItemCount;
+
 			itemInfoVer++;
 			
 			while (curIndex < _realNumItems && (end || curY < max))
@@ -1476,11 +1695,14 @@ package fairygui
 					{
 						url = itemProvider(curIndex % _numItems);
 						if (url == null)
-							url = defaultItem;
+							url = _defaultItem;						
+						url = UIPackage.normalizeURL(url);
 					}
 					
 					if (ii.obj != null && ii.obj.resourceURL != url)
 					{
+						if (ii.obj is GButton)
+							ii.selected = GButton(ii.obj).selected;
 						removeChildToPool(ii.obj);
 						ii.obj = null;
 					}
@@ -1496,6 +1718,8 @@ package fairygui
 							ii2 = _virtualItems[j];
 							if (ii2.obj != null && ii2.updateFlag != itemInfoVer && ii2.obj.resourceURL == url)
 							{
+								if (ii2.obj is GButton)
+									ii2.selected = GButton(ii2.obj).selected;
 								ii.obj = ii2.obj;
 								ii2.obj = null;
 								if (j == reuseIndex)
@@ -1511,6 +1735,8 @@ package fairygui
 							ii2 = _virtualItems[j];
 							if (ii2.obj != null && ii2.updateFlag != itemInfoVer && ii2.obj.resourceURL == url)
 							{
+								if (ii2.obj is GButton)
+									ii2.selected = GButton(ii2.obj).selected;
 								ii.obj = ii2.obj;
 								ii2.obj = null;
 								if (j == reuseIndex)
@@ -1533,7 +1759,7 @@ package fairygui
 							this.addChild(ii.obj);
 					}
 					if (ii.obj is GButton)
-						GButton(ii.obj).selected = false;
+						GButton(ii.obj).selected = ii.selected;
 					
 					needRender = true;
 				}
@@ -1542,6 +1768,9 @@ package fairygui
 				
 				if (needRender)
 				{
+					if (_autoResizeItem && (_layout == ListLayoutType.SingleColumn || _columnCount > 0))
+						ii.obj.setSize(partSize, ii.obj.height, true);
+
 					itemRenderer(curIndex % _numItems, ii.obj);
 					if (curIndex % _curLineItemCount == 0)
 					{
@@ -1576,6 +1805,8 @@ package fairygui
 				ii = _virtualItems[oldFirstIndex + i];
 				if (ii.updateFlag != itemInfoVer && ii.obj != null)
 				{
+					if (ii.obj is GButton)
+						ii.selected = GButton(ii.obj).selected;
 					removeChildToPool(ii.obj);
 					ii.obj = null;
 				}
@@ -1624,7 +1855,8 @@ package fairygui
 			var url:String = defaultItem;
 			var ii:ItemInfo, ii2:ItemInfo;
 			var i:int,j:int;
-			
+			var partSize:int = (scrollPane.viewHeight - _lineGap * (_curLineItemCount - 1)) / _curLineItemCount;
+
 			itemInfoVer++;
 			
 			while (curIndex < _realNumItems && (end || curX < max))
@@ -1637,11 +1869,14 @@ package fairygui
 					{
 						url = itemProvider(curIndex % _numItems);
 						if (url == null)
-							url = defaultItem;
+							url = _defaultItem;
+						url = UIPackage.normalizeURL(url);
 					}
 					
 					if (ii.obj != null && ii.obj.resourceURL != url)
 					{
+						if (ii.obj is GButton)
+							ii.selected = GButton(ii.obj).selected;
 						removeChildToPool(ii.obj);
 						ii.obj = null;
 					}
@@ -1656,6 +1891,8 @@ package fairygui
 							ii2 = _virtualItems[j];
 							if (ii2.obj != null && ii2.updateFlag != itemInfoVer && ii2.obj.resourceURL == url)
 							{
+								if (ii2.obj is GButton)
+									ii2.selected = GButton(ii2.obj).selected;
 								ii.obj = ii2.obj;
 								ii2.obj = null;
 								if (j == reuseIndex)
@@ -1671,6 +1908,8 @@ package fairygui
 							ii2 = _virtualItems[j];
 							if (ii2.obj != null && ii2.updateFlag != itemInfoVer && ii2.obj.resourceURL == url)
 							{
+								if (ii2.obj is GButton)
+									ii2.selected = GButton(ii2.obj).selected;
 								ii.obj = ii2.obj;
 								ii2.obj = null;
 								if (j == reuseIndex)
@@ -1693,7 +1932,7 @@ package fairygui
 							this.addChild(ii.obj);
 					}
 					if (ii.obj is GButton)
-						GButton(ii.obj).selected = false;
+						GButton(ii.obj).selected = ii.selected;
 					
 					needRender = true;
 				}
@@ -1702,6 +1941,9 @@ package fairygui
 				
 				if (needRender)
 				{
+					if (_autoResizeItem && (_layout == ListLayoutType.SingleRow || _lineCount > 0))
+						ii.obj.setSize(ii.obj.width, partSize, true);
+					
 					itemRenderer(curIndex % _numItems, ii.obj);
 					if (curIndex % _curLineItemCount == 0)
 					{
@@ -1736,6 +1978,8 @@ package fairygui
 				ii = _virtualItems[oldFirstIndex + i];
 				if (ii.updateFlag != itemInfoVer && ii.obj != null)
 				{
+					if (ii.obj is GButton)
+						ii.selected = GButton(ii.obj).selected;
 					removeChildToPool(ii.obj);
 					ii.obj = null;
 				}
@@ -1778,6 +2022,9 @@ package fairygui
 			var i:int;
 			var ii:ItemInfo, ii2:ItemInfo;
 			var col:int;
+			var url:String = _defaultItem;
+			var partWidth:int = (scrollPane.viewWidth - _columnGap * (_curLineItemCount - 1)) / _curLineItemCount;
+			var partHeight:int = (scrollPane.viewHeight - _lineGap * (_curLineItemCount2 - 1)) / _curLineItemCount2;
 			
 			itemInfoVer++;
 			
@@ -1810,19 +2057,10 @@ package fairygui
 				if (i >= _realNumItems)
 					continue;
 				
-				col = i % _curLineItemCount;
-				if (i - startIndex < pageSize)
-				{
-					if (col < startCol)
-						continue;
-				}
-				else
-				{
-					if (col > startCol)
-						continue;
-				}
-				
 				ii = _virtualItems[i];
+				if (ii.updateFlag != itemInfoVer)
+					continue;
+				
 				if (ii.obj == null)
 				{
 					//寻找看有没有可重用的
@@ -1831,6 +2069,8 @@ package fairygui
 						ii2 = _virtualItems[reuseIndex];
 						if (ii2.obj != null && ii2.updateFlag != itemInfoVer)
 						{
+							if (ii2.obj is GButton)
+								ii2.selected = GButton(ii2.obj).selected;
 							ii.obj = ii2.obj;
 							ii2.obj = null;
 							break;
@@ -1843,7 +2083,15 @@ package fairygui
 					
 					if (ii.obj == null)
 					{
-						ii.obj = _pool.getObject(defaultItem);
+						if (itemProvider != null)
+						{
+							url = itemProvider(i % _numItems);
+							if (url == null)
+								url = _defaultItem;
+							url = UIPackage.normalizeURL(url);
+						}
+						
+						ii.obj = _pool.getObject(url);
 						this.addChildAt(ii.obj, insertIndex);
 					}
 					else
@@ -1853,7 +2101,7 @@ package fairygui
 					insertIndex++;
 					
 					if (ii.obj is GButton)
-						GButton(ii.obj).selected = false;
+						GButton(ii.obj).selected = ii.selected;
 					
 					needRender = true;
 				}
@@ -1865,10 +2113,54 @@ package fairygui
 				}
 				
 				if (needRender)
+				{
+					if (_autoResizeItem)
+					{
+						if (_curLineItemCount == _columnCount && _curLineItemCount2 == _lineCount)
+							ii.obj.setSize(partWidth, partHeight, true);
+						else if (_curLineItemCount == _columnCount)
+							ii.obj.setSize(partWidth, ii.obj.height, true);
+						else if (_curLineItemCount2 == _lineCount)
+							ii.obj.setSize(ii.obj.width, partHeight, true);
+					}
+					
 					itemRenderer(i % _numItems, ii.obj);
+					ii.width = Math.ceil(ii.obj.width);
+					ii.height = Math.ceil(ii.obj.height);
+				}
+			}
+			
+			//排列item
+			var borderX:int = (startIndex / pageSize) * viewWidth;
+			var xx:int = borderX;
+			var yy:int = 0;
+			var lineHeight:int = 0;
+			for (i = startIndex; i < lastIndex; i++)
+			{
+				if (i >= _realNumItems)
+					continue;
 				
-				ii.obj.setXY((int)(i / pageSize) * viewWidth + col * (ii.width + _columnGap),
-					(int)(i / _curLineItemCount) % _curLineItemCount2 * (ii.height + _lineGap));
+				ii = _virtualItems[i];
+				if (ii.updateFlag == itemInfoVer)
+					ii.obj.setXY(xx, yy);
+				
+				if (ii.height > lineHeight)
+					lineHeight = ii.height;
+				if (i % _curLineItemCount == _curLineItemCount - 1)
+				{
+					xx = borderX;
+					yy += lineHeight + _lineGap;
+					lineHeight = 0;
+					
+					if (i == startIndex + pageSize - 1)
+					{
+						borderX += viewWidth;
+						xx = borderX;
+						yy = 0;
+					}
+				}
+				else
+					xx += ii.width + _columnGap;
 			}
 			
 			//释放未使用的
@@ -1877,6 +2169,8 @@ package fairygui
 				ii = _virtualItems[i];
 				if (ii.updateFlag != itemInfoVer && ii.obj != null)
 				{
+					if (ii.obj is GButton)
+						ii.selected = GButton(ii.obj).selected;
 					removeChildToPool(ii.obj);
 					ii.obj = null;
 				}
@@ -1937,27 +2231,22 @@ package fairygui
 		{
 			var newOffsetX:Number = 0;
 			var newOffsetY:Number = 0;
-			if (_layout == ListLayoutType.SingleColumn || _layout == ListLayoutType.FlowHorizontal || _layout == ListLayoutType.Pagination)
+			if (contentHeight < viewHeight)
 			{
-				if (contentHeight < viewHeight)
-				{
-					if (_verticalAlign == VertAlignType.Middle)
-						newOffsetY = int((viewHeight - contentHeight) / 2);
-					else if (_verticalAlign == VertAlignType.Bottom)
-						newOffsetY = viewHeight - contentHeight;
-				}
+				if (_verticalAlign == VertAlignType.Middle)
+					newOffsetY = int((viewHeight - contentHeight) / 2);
+				else if (_verticalAlign == VertAlignType.Bottom)
+					newOffsetY = viewHeight - contentHeight;
 			}
-			else
+
+			if (contentWidth < this.viewWidth)
 			{
-				if (contentWidth < this.viewWidth)
-				{
-					if (_align == AlignType.Center)
-						newOffsetX = int((viewWidth - contentWidth) / 2);
-					else if (_align == AlignType.Right)
-						newOffsetX = viewWidth - contentWidth;
-				}
+				if (_align == AlignType.Center)
+					newOffsetX = int((viewWidth - contentWidth) / 2);
+				else if (_align == AlignType.Right)
+					newOffsetX = viewWidth - contentWidth;
 			}
-			
+
 			if (newOffsetX!=_alignOffset.x || newOffsetY!=_alignOffset.y)
 			{
 				_alignOffset.setTo(newOffsetX, newOffsetY);
@@ -1983,17 +2272,15 @@ package fairygui
 			var maxWidth:int;
 			var maxHeight:int;
 			var cw:int, ch:int;
-			var sw:int, sh:int;
-			var p:int;
+			var j:int = 0;
+			var page:int = 0;
+			var k:int = 0;
 			var cnt:int = _children.length;
 			var viewWidth:Number = this.viewWidth;
 			var viewHeight:Number = this.viewHeight;
-			
-			for(i=0;i<cnt;i++)
-			{
-				child = getChildAt(i);
-				child.ensureSizeCorrect();
-			}
+			var lineSize:Number = 0;
+			var lineStart:int = 0;
+			var ratio:Number;
 			
 			if(_layout==ListLayoutType.SingleColumn)
 			{
@@ -2003,17 +2290,16 @@ package fairygui
 					if (foldInvisibleItems && !child.visible)
 						continue;
 					
-					sw = Math.ceil(child.width);
-					sh = Math.ceil(child.height);
-					
 					if (curY != 0)
 						curY += _lineGap;
 					child.y = curY;
-					curY += sh;
-					if(sw>maxWidth)
+					if (_autoResizeItem)
+						child.setSize(viewWidth, child.height, true);
+					curY += Math.ceil(child.height);
+					if(child.width>maxWidth)
 						maxWidth = child.width;
 				}
-				cw = curX+maxWidth;
+				cw = Math.ceil(maxWidth);
 				ch = curY;
 			}
 			else if(_layout==ListLayoutType.SingleRow)
@@ -2024,130 +2310,279 @@ package fairygui
 					if (foldInvisibleItems && !child.visible)
 						continue;
 					
-					sw = Math.ceil(child.width);
-					sh = Math.ceil(child.height);
-					
 					if(curX!=0)
 						curX += _columnGap;
 					child.x = curX;
-					curX += sw;
-					if(sh>maxHeight)
-						maxHeight = sh;
+					if (_autoResizeItem)
+						child.setSize(child.width, viewHeight, true);
+					curX += Math.ceil(child.width);
+					if(child.height>maxHeight)
+						maxHeight = child.height;
 				}
 				cw = curX;
-				ch = curY+maxHeight;
+				ch = Math.ceil(maxHeight);
 			}
 			else if(_layout==ListLayoutType.FlowHorizontal)
 			{
-				var j:int = 0;
-				for(i=0;i<cnt;i++)
+				if (_autoResizeItem && _columnCount > 0)
 				{
-					child = getChildAt(i);
-					if (foldInvisibleItems && !child.visible)
-						continue;
-					
-					sw = Math.ceil(child.width);
-					sh = Math.ceil(child.height);
-					
-					if(curX!=0)
-						curX += _columnGap;
-					
-					if (_lineItemCount != 0 && j >= _lineItemCount
-						|| _lineItemCount == 0 && curX + sw > viewWidth && maxHeight != 0)
+					for (i = 0; i < cnt; i++)
 					{
-						//new line
-						curX -= _columnGap;
+						child = getChildAt(i);
+						if (foldInvisibleItems && !child.visible)
+							continue;
+						
+						lineSize += child.sourceWidth;
+						j++;
+						if (j == _columnCount || i == cnt - 1)
+						{
+							ratio = (viewWidth - lineSize - (j - 1) * _columnGap) / lineSize;
+							curX = 0;
+							for (j = lineStart; j <= i; j++)
+							{
+								child = getChildAt(j);
+								if (foldInvisibleItems && !child.visible)
+									continue;
+								
+								child.setXY(curX, curY);
+								
+								if (j < i)
+								{
+									child.setSize(child.sourceWidth + Math.round(child.sourceWidth * ratio), child.height, true);
+									curX += Math.ceil(child.width) + _columnGap;
+								}
+								else
+								{
+									child.setSize(viewWidth - curX, child.height, true);
+								}
+								if (child.height > maxHeight)
+									maxHeight = child.height;
+							}
+							//new line
+							curY += Math.ceil(maxHeight) + _lineGap;
+							maxHeight = 0;
+							j = 0;
+							lineStart = i + 1;
+							lineSize = 0;
+						}
+					}
+					ch = curY + Math.ceil(maxHeight);
+					cw = viewWidth;
+				}
+				else
+				{
+					for(i=0;i<cnt;i++)
+					{
+						child = getChildAt(i);
+						if (foldInvisibleItems && !child.visible)
+							continue;
+						
+						if(curX!=0)
+							curX += _columnGap;
+						
+						if (_columnCount != 0 && j >= _columnCount
+							|| _columnCount == 0 && curX + child.width > viewWidth && maxHeight != 0)
+						{
+							//new line
+							curX = 0;
+							curY += Math.ceil(maxHeight) + _lineGap;
+							maxHeight = 0;
+							j = 0;
+						}
+						child.setXY(curX, curY);
+						curX += Math.ceil(child.width);
 						if (curX > maxWidth)
 							maxWidth = curX;
-						curX = 0;
-						curY += maxHeight + _lineGap;
-						maxHeight = 0;
-						j = 0;
+						if (child.height > maxHeight)
+							maxHeight = child.height;
+						j++;
 					}
-					child.setXY(curX, curY);
-					curX += sw;
-					if (sh > maxHeight)
-						maxHeight = sh;
-					j++;
+					ch = curY + Math.ceil(maxHeight);
+					cw = Math.ceil(maxWidth);
 				}
-				ch = curY + maxHeight;
-				cw = maxWidth;
 			}
 			else if (_layout == ListLayoutType.FlowVertical)
 			{
-				j = 0;
-				for(i=0;i<cnt;i++)
+				if (_autoResizeItem && _lineCount > 0)
 				{
-					child = getChildAt(i);
-					if (foldInvisibleItems && !child.visible)
-						continue;
-					
-					sw = Math.ceil(child.width);
-					sh = Math.ceil(child.height);
-					
-					if(curY!=0)
-						curY += _lineGap;
-					
-					if (_lineItemCount != 0 && j >= _lineItemCount
-						|| _lineItemCount == 0 && curY + sh > viewHeight && maxWidth != 0)
+					for (i = 0; i < cnt; i++)
 					{
-						curY -= _lineGap;
+						child = getChildAt(i);
+						if (foldInvisibleItems && !child.visible)
+							continue;
+						
+						lineSize += child.sourceHeight;
+						j++;
+						if (j == _lineCount || i == cnt - 1)
+						{
+							ratio = (viewHeight - lineSize - (j - 1) * _lineGap) / lineSize;
+							curY = 0;
+							for (j = lineStart; j <= i; j++)
+							{
+								child = getChildAt(j);
+								if (foldInvisibleItems && !child.visible)
+									continue;
+								
+								child.setXY(curX, curY);
+								
+								if (j < i)
+								{
+									child.setSize(child.width, child.sourceHeight + Math.round(child.sourceHeight * ratio), true);
+									curY += Math.ceil(child.height) + _lineGap;
+								}
+								else
+								{
+									child.setSize(child.width, viewHeight - curY, true);
+								}
+								if (child.width > maxWidth)
+									maxWidth = child.width;
+							}
+							//new line
+							curX += Math.ceil(maxWidth) + _columnGap;
+							maxWidth = 0;
+							j = 0;
+							lineStart = i + 1;
+							lineSize = 0;
+						}
+					}
+					cw = curX + Math.ceil(maxWidth);
+					ch = viewHeight;
+				}
+				else
+				{
+					for(i=0;i<cnt;i++)
+					{
+						child = getChildAt(i);
+						if (foldInvisibleItems && !child.visible)
+							continue;
+						
+						if(curY!=0)
+							curY += _lineGap;
+						
+						if (_lineCount != 0 && j >= _lineCount
+							|| _lineCount == 0 && curY + child.height > viewHeight && maxWidth != 0)
+						{
+							curY = 0;
+							curX += Math.ceil(maxWidth) + _columnGap;
+							maxWidth = 0;
+							j = 0;
+						}
+						child.setXY(curX, curY);
+						curY += Math.ceil(child.height);
 						if (curY > maxHeight)
 							maxHeight = curY;
-						curY = 0;
-						curX += maxWidth + _columnGap;
-						maxWidth = 0;
-						j = 0;
+						if (child.width > maxWidth)
+							maxWidth = child.width;
+						j++;
 					}
-					child.setXY(curX, curY);
-					curY += sh;
-					if (sw > maxWidth)
-						maxWidth = sw;
-					j++;
+					cw = curX + Math.ceil(maxWidth);
+					ch = Math.ceil(maxHeight);
 				}
-				cw = curX + maxWidth;
-				ch = maxHeight;
 			}
 			else //pagination
 			{
-				for (i = 0; i < cnt; i++)
+				var eachHeight:int;
+				if(_autoResizeItem && _lineCount>0)
+					eachHeight = Math.floor((viewHeight-(_lineCount-1)*_lineGap)/_lineCount);
+				
+				if (_autoResizeItem && _columnCount > 0)
 				{
-					child = getChildAt(i);
-					if (foldInvisibleItems && !child.visible)
-						continue;
-					
-					sw = Math.ceil(child.width);
-					sh = Math.ceil(child.height);
-					
-					if (curX != 0)
-						curX += _columnGap;
-					
-					if (_lineItemCount != 0 && j >= _lineItemCount
-						|| _lineItemCount == 0 && curX + sw > viewWidth && maxHeight != 0)
+					for (i = 0; i < cnt; i++)
 					{
-						//new line
-						curX -= _columnGap;
-						if (curX > maxWidth)
-							maxWidth = curX;
-						curX = 0;
-						curY += maxHeight + _lineGap;
-						maxHeight = 0;
-						j = 0;
+						child = getChildAt(i);
+						if (foldInvisibleItems && !child.visible)
+							continue;
 						
-						if (curY + sh > viewHeight && maxWidth != 0)//new page
+						lineSize += child.sourceWidth;
+						j++;
+						if (j == _columnCount || i == cnt - 1)
 						{
-							p++;
-							curY = 0;
+							ratio = (viewWidth - lineSize - (j - 1) * _columnGap) / lineSize;
+							curX = 0;
+							for (j = lineStart; j <= i; j++)
+							{
+								child = getChildAt(j);
+								if (foldInvisibleItems && !child.visible)
+									continue;
+								
+								child.setXY(page * viewWidth + curX, curY);
+								
+								if (j < i)
+								{
+									child.setSize(child.sourceWidth + Math.round(child.sourceWidth * ratio), 
+										_lineCount>0?eachHeight:child.height, true);
+									curX += Math.ceil(child.width) + _columnGap;
+								}
+								else
+								{
+									child.setSize(viewWidth - curX, _lineCount>0?eachHeight:child.height, true);
+								}
+								if (child.height > maxHeight)
+									maxHeight = child.height;
+							}
+							//new line
+							curY += Math.ceil(maxHeight) + _lineGap;
+							maxHeight = 0;
+							j = 0;
+							lineStart = i + 1;
+							lineSize = 0;
+							
+							k++;
+							
+							if (_lineCount != 0 && k >= _lineCount
+								|| _lineCount == 0 && curY + child.height > viewHeight)
+							{
+								//new page
+								page++;
+								curY = 0;
+								k = 0;
+							}
 						}
 					}
-					child.setXY(p * viewWidth + curX, curY);
-					curX += sw;
-					if (sh > maxHeight)
-						maxHeight = sh;
-					j++;
 				}
-				ch = curY + maxHeight;
-				cw = (p + 1) * viewWidth;
+				else
+				{
+					for (i = 0; i < cnt; i++)
+					{
+						child = getChildAt(i);
+						if (foldInvisibleItems && !child.visible)
+							continue;
+						
+						if (curX != 0)
+							curX += _columnGap;
+						
+						if (_autoResizeItem && _lineCount > 0)
+							child.setSize(child.width, eachHeight, true);
+						
+						if (_columnCount != 0 && j >= _columnCount
+							|| _columnCount == 0 && curX + child.width > viewWidth && maxHeight != 0)
+						{
+							//new line
+							curX = 0;
+							curY += Math.ceil(maxHeight) + _lineGap;
+							maxHeight = 0;
+							j = 0;
+							k++;
+							
+							if (_lineCount != 0 && k >= _lineCount
+								|| _lineCount == 0 && curY + child.height > viewHeight && maxWidth != 0)//new page
+							{
+								page++;
+								curY = 0;
+								k = 0;
+							}
+						}
+						child.setXY(page * viewWidth + curX, curY);
+						curX += Math.ceil(child.width);
+						if (curX > maxWidth)
+							maxWidth = curX;
+						if (child.height > maxHeight)
+							maxHeight = child.height;
+						j++;
+					}
+				}
+				ch = page > 0 ? viewHeight : curY + Math.ceil(maxHeight);
+				cw = (page + 1) * viewWidth;
 			}
 			
 			handleAlign(cw, ch);
@@ -2230,7 +2665,16 @@ package fairygui
 			
 			str = xml.@lineItemCount;
 			if(str)
-				_lineItemCount = parseInt(str);
+			{
+				if (_layout == ListLayoutType.FlowHorizontal || _layout == ListLayoutType.Pagination)
+					_columnCount = parseInt(str);
+				else if (_layout == ListLayoutType.FlowVertical)
+					_lineCount = parseInt(str);
+			}
+			
+			str = xml.@lineItemCount2;
+			if(str)
+				_lineCount = parseInt(str);
 			
 			str = xml.@selectionMode;
 			if(str)
@@ -2241,7 +2685,22 @@ package fairygui
 				_defaultItem = str;
 			
 			str = xml.@autoItemSize;
-			_autoResizeItem = str!="false";
+			if (_layout == ListLayoutType.SingleRow || _layout == ListLayoutType.SingleColumn)
+				_autoResizeItem = str!="false";
+			else
+				_autoResizeItem = str=="true";
+			
+			str = xml.@renderOrder;
+			if(str)
+			{
+				_childrenRenderOrder = ChildrenRenderOrder.parse(str);
+				if(_childrenRenderOrder==ChildrenRenderOrder.Arch)
+				{
+					str = xml.@apex;
+					if(str)
+						_apexIndex = parseInt(str);
+				}
+			}
 			
 			var col:XMLList = xml.item;
 			for each(var cxml:XML in col)
@@ -2268,6 +2727,16 @@ package fairygui
 				}
 			}
 		}
+		
+		override public function setup_afterAdd(xml:XML):void
+		{
+			super.setup_afterAdd(xml);
+			
+			var str:String;
+			str = xml.@selectionController;
+			if(str)
+				_selectionController = parent.getController(str);
+		}
 	}
 }
 
@@ -2279,6 +2748,7 @@ class ItemInfo
 	public var height:Number = 0;
 	public var obj:GObject;
 	public var updateFlag:uint;
+	public var selected:Boolean;
 	
 	public function ItemInfo():void
 	{

@@ -42,4 +42,5 @@ dependencies {
     compile files('libs/AppEntry_release.jar')
     compile files('libs/FlashRuntimeExtensions.jar')
     compile files('libs/runtimeClasses.jar')
+    compile files('libs/classes.jar')
 }

@@ -19,13 +19,13 @@ package fairygui
 		
 		override protected function init():void
 		{
-			_default = new GearLookValue(_owner.alpha, _owner.rotation, _owner.grayed);
+			_default = new GearLookValue(_owner.alpha, _owner.rotation, _owner.grayed,_owner.touchable);
 			_storage = {};
 		}
 		
 		override protected function addStatus(pageId:String, value:String):void
 		{
-			if(value=="-")
+			if(value=="-" || value.length==0)
 				return;
 			
 			var arr:Array = value.split(",");
@@ -40,6 +40,10 @@ package fairygui
 			gv.alpha = parseFloat(arr[0]);
 			gv.rotation = parseInt(arr[1]);
 			gv.grayed = arr[2]=="1"?true:false;
+			if(arr.length<4)
+				gv.touchable = _owner.touchable;
+			else
+				gv.touchable = arr[3]=="1"?true:false;
 		}
 		
 		override public function apply():void
@@ -47,11 +51,12 @@ package fairygui
 			var gv:GearLookValue = _storage[_controller.selectedPageId];
 			if(!gv)
 				gv = _default;
-
+			
 			if(_tween && !UIPackage._constructing && !disableAllTweenEffect)
-			{		
+			{
 				_owner._gearLocked = true;
 				_owner.grayed = gv.grayed;
+				_owner.touchable = gv.touchable;
 				_owner._gearLocked = false;
 				
 				var a:Boolean;
@@ -79,7 +84,7 @@ package fairygui
 					else
 						return;
 				}
-
+				
 				a = gv.alpha!=_owner.alpha;
 				b = gv.rotation!=_owner.rotation;
 				if(a || b)
@@ -87,13 +92,13 @@ package fairygui
 					if(_owner.checkGearController(0, _controller))
 						_displayLockToken = _owner.addDisplayLock();
 					var vars:Object = 
-							{
-								ease: _easeType,
-								x: gv.alpha,
+						{
+							ease: _easeType,
+							x: gv.alpha,
 								y: gv.rotation,
 								delay: _delay,
 								overwrite:0
-							};
+						};
 					vars.onUpdate = __tweenUpdate;
 					vars.onUpdateParams = [a,b];
 					vars.onComplete = __tweenComplete;
@@ -110,6 +115,7 @@ package fairygui
 				_owner.alpha = gv.alpha;
 				_owner.rotation = gv.rotation;
 				_owner.grayed = gv.grayed;
+				_owner.touchable = gv.touchable;
 				_owner._gearLocked = false;
 			}
 		}
@@ -121,7 +127,7 @@ package fairygui
 				_owner.alpha = _tweenValue.x;
 			if(b)
 				_owner.rotation = _tweenValue.y;
-			_owner._gearLocked = false;							
+			_owner._gearLocked = false;		
 		}
 		
 		private function __tweenComplete():void
@@ -142,10 +148,11 @@ package fairygui
 				gv = new GearLookValue();
 				_storage[_controller.selectedPageId] = gv;
 			}
-
+			
 			gv.alpha = _owner.alpha;
 			gv.rotation = _owner.rotation;
 			gv.grayed = _owner.grayed;
+			gv.touchable = _owner.touchable;
 		}
 	}
 }
@@ -155,11 +162,14 @@ class GearLookValue
 	public var alpha:Number;
 	public var rotation:Number;
 	public var grayed:Boolean;
+	public var touchable:Boolean;
 	
-	public function GearLookValue(alpha:Number=0, rotation:Number=0, grayed:Boolean=false)
+	public function GearLookValue(alpha:Number=0, rotation:Number=0, 
+								  grayed:Boolean=false, touchable:Boolean=true)
 	{
 		this.alpha = alpha;
 		this.rotation = rotation;
 		this.grayed = grayed;
+		this.touchable = touchable;
 	}
 }

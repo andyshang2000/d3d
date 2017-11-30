@@ -29,6 +29,7 @@ package fairygui
 		private var _owner:GComponent;
 		private var _container:Sprite;
 		private var _maskContainer:Sprite;
+		private var _alignContainer:Sprite;
 		
 		private var _viewWidth:Number;
 		private var _viewHeight:Number;
@@ -74,6 +75,8 @@ package fairygui
 		private var _isHoldAreaDone:Boolean;
 		private var _aniFlag:int;
 		private var _scrollBarVisible:Boolean;
+		
+		private var _pageController:Controller;
 		
 		private var _hzScrollBar:GScrollBar;
 		private var _vtScrollBar:GScrollBar;
@@ -332,8 +335,7 @@ package fairygui
 			if(value!=_xPos)
 			{
 				_xPos = value;
-				_xPerc = _xOverlap==0?0:_xPos/_xOverlap;
-				
+				_xPerc = _xOverlap==0?0:_xPos/_xOverlap;				
 				posChanged(ani);
 			}
 		}
@@ -357,7 +359,6 @@ package fairygui
 			{
 				_yPos = value;
 				_yPerc = _yOverlap==0?0:_yPos/_yOverlap;
-				
 				posChanged(ani);
 			}
 		}
@@ -374,7 +375,14 @@ package fairygui
 		
 		public function get currentPageX():int
 		{
-			return _pageMode ? Math.floor(this.posX / _pageSizeH):0;
+			if (!_pageMode)
+				return 0;
+			
+			var page:int = Math.floor(_xPos / _pageSizeH);
+			if (_xPos - page * _pageSizeH > _pageSizeH * 0.5)
+				page++;
+			
+			return page;
 		}
 		
 		public function set currentPageX(value:int):void
@@ -385,13 +393,30 @@ package fairygui
 		
 		public function get currentPageY():int
 		{
-			return _pageMode ? Math.floor(this.posY / _pageSizeV):0;
+			if (!_pageMode)
+				return 0;
+			
+			var page:int = Math.floor(_yPos / _pageSizeV);
+			if (_yPos - page * _pageSizeV > _pageSizeV * 0.5)
+				page++;
+			
+			return page;
 		}
 		
 		public function set currentPageY(value:int):void
 		{
 			if (_pageMode && _yOverlap>0)
 				this.setPosY(value * _pageSizeV, false);
+		}
+		
+		public function get pageController():Controller
+		{
+			return _pageController;
+		}
+		
+		public function set pageController(value:Controller):void
+		{
+			_pageController = value;
 		}
 		
 		public function get scrollingPosX():Number
@@ -596,6 +621,36 @@ package fairygui
 			posChanged(false);
 		}
 		
+		internal function handleControllerChanged(c:Controller):void
+		{
+			if (_pageController == c)
+			{
+				if (_scrollType == ScrollType.Horizontal)
+					this.currentPageX = c.selectedIndex;
+				else
+					this.currentPageY = c.selectedIndex;
+			}
+		}
+		
+		private function updatePageController():void
+		{
+			if (_pageController != null && !_pageController.changing)
+			{
+				var index:int;
+				if (_scrollType == ScrollType.Horizontal)
+					index = this.currentPageX;
+				else
+					index = this.currentPageY;
+				if (index < _pageController.pageCount)
+				{
+					var c:Controller = _pageController;
+					_pageController = null; //防止HandleControllerChanged的调用
+					c.selectedIndex = index;
+					_pageController = c;
+				}
+			}
+		}
+		
 		internal function adjustMaskContainer():void
 		{
 			var mx:Number, my:Number;
@@ -604,11 +659,26 @@ package fairygui
 			else
 				mx = Math.floor(_owner.margin.left);
 			my = Math.floor(_owner.margin.top);
-			mx += _owner._alignOffset.x;
-			my += _owner._alignOffset.y;
 			
 			_maskContainer.x = mx;
 			_maskContainer.y = my;
+			
+			if(_owner._alignOffset.x!=0 || _owner._alignOffset.y!=0)
+			{
+				if(_alignContainer==null)
+				{
+					_alignContainer = new Sprite();
+					_maskContainer.addChild(_alignContainer);
+					_alignContainer.addChild(_container);
+				}
+				
+				_alignContainer.x = _owner._alignOffset.x;
+				_alignContainer.y = _owner._alignOffset.y;
+			}
+			else if(_alignContainer)
+			{
+				_alignContainer.x = _alignContainer.y = 0;
+			}
 		}
 		
 		private function setSize(aWidth:Number, aHeight:Number):void 
@@ -835,6 +905,9 @@ package fairygui
 				_vtScrollBar.scrollPerc = _yPerc;
 			if (_hzScrollBar != null)
 				_hzScrollBar.scrollPerc = _xPerc;
+			
+			if(_pageMode)
+				updatePageController();
 		}
 		
 		private function validateHolderPos():void
@@ -991,7 +1064,7 @@ package fairygui
 						_tweener.kill();
 					
 					_tweening = 1;					
-					_tweener = TweenLite.to(_container, UIConfig.scrollAniTweenTime, { x:toX, y:toY,
+					_tweener = TweenLite.to(_container, 0.5, { x:toX, y:toY,
 						onUpdate:__tweenUpdate, onComplete:__tweenComplete, 
 						ease:_easeTypeFunc } );
 				}
@@ -1023,6 +1096,9 @@ package fairygui
 				if(_hzScrollBar)
 					_hzScrollBar.scrollPerc = _xPerc;
 			}
+			
+			if(_pageMode)
+				updatePageController();
 		}
 		
 		private function syncPos():void
@@ -1038,6 +1114,9 @@ package fairygui
 				_yPos = ToolSet.clamp(-_container.y, 0, _yOverlap);
 				_yPerc = _yPos / _yOverlap;
 			}
+			
+			if(_pageMode)
+				updatePageController();
 		}
 		
 		private function syncScrollBar(end:Boolean=false):void
@@ -1080,8 +1159,11 @@ package fairygui
 			if(_tweener!=null)
 			{
 				killTween();
-				_owner.cancelChildrenClickEvent();
+				_owner.cancelClick();
+				isDragged = true;
 			}
+			else
+				isDragged = false;
 			
 			sHelperPoint.x = evt.stageX;
 			sHelperPoint.y = evt.stageY;
@@ -1097,7 +1179,7 @@ package fairygui
 			_holdAreaPoint.x = sHelperPoint.x;
 			_holdAreaPoint.y = sHelperPoint.y;
 			_isHoldAreaDone = false;
-			isDragged = false;
+			
 			
 			_owner.addEventListener(GTouchEvent.DRAG, __mouseMove);
 		}
@@ -1253,7 +1335,7 @@ package fairygui
 			if(!isDragged)
 			{
 				isDragged = true;
-				_owner.cancelChildrenClickEvent();
+				_owner.cancelClick();
 			}
 			
 			syncPos();

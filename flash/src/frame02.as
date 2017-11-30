@@ -14,6 +14,8 @@ package
 	import diary.ui.view.GameUI;
 	import diary.ui.view.ScreenManager;
 	
+	import starling.textures.Texture;
+	
 	import zzsdk.utils.FileUtil;
 
 	[SWF(frameRate = "60")]
@@ -22,7 +24,7 @@ package
 		public function frame02()
 		{
 			var screenMgr:ScreenManager = new ScreenManager(stage);
-			
+			Texture.asyncBitmapUploadEnabled = true;
 			screenMgr.addService(ScreenShot.inst);
 			screenMgr.addService(ShareService.inst);
 			

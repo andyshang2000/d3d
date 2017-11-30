@@ -160,16 +160,18 @@ package diary.ui
 		private function useLoaderContent(image:Image, obj:*, loader:Loader):void
 		{
 			var bmd:BitmapData = Bitmap(loader.content).bitmapData;
-			var texture:Texture = Texture.fromBitmapData(bmd, false);
-			bmd.dispose();
-			image.texture = texture;
-			cache[obj].loader = loader;
-			cache[obj].texture = texture;
-			texture.root.onRestore = function():void
+			var texture:Texture = Texture.fromBitmapData(bmd, false, false,1,"bgra", false, function():void
 			{
-				cache[obj].texture = null;
-				setTexture(image, obj);
-			};
+				bmd.dispose();
+				image.texture = texture;
+				cache[obj].loader = loader;
+				cache[obj].texture = texture;
+				texture.root.onRestore = function():void
+				{
+					cache[obj].texture = null;
+					setTexture(image, obj);
+				};
+			});
 		}
 
 		private function correct(i:int):Object

@@ -33,6 +33,7 @@ package fairygui
 		private var _downEffect:int;
 		private var _downEffectValue:Number;
 		private var _useHandCursor:Boolean;
+		private var _downScaled:Boolean;
 		
 		private var _over:Boolean;
 		
@@ -344,9 +345,21 @@ package fairygui
 			else if(_downEffect==2)				
 			{
 				if(val==DOWN || val==SELECTED_OVER || val==SELECTED_DISABLED)
-					setScale(_downEffectValue, _downEffectValue);
+				{
+					if(!_downScaled)
+					{
+						setScale(this.scaleX*_downEffectValue, this.scaleY*_downEffectValue);
+						_downScaled = true;
+					}
+				}
 				else
-					setScale(1, 1);
+				{
+					if(_downScaled)
+					{
+						setScale(this.scaleX/_downEffectValue, this.scaleY/_downEffectValue);
+						_downScaled = false;
+					}
+				}
 			}
 		}
 		
@@ -409,7 +422,9 @@ package fairygui
 			if(str)
 				_mode = ButtonMode.parse(str);
 			
-			_sound = xml.@sound;
+			str = xml.@sound;
+			if(str)
+				_sound = str;
 			str = xml.@volume;
 			if(str)
 				_soundVolumeScale = parseInt(str)/100;
@@ -420,6 +435,8 @@ package fairygui
 				_downEffect = str=="dark"?1:(str=="scale"?2:0);
 				str = xml.@downEffectValue;
 				_downEffectValue = parseFloat(str);
+				if(_downEffect==2)
+					this.setPivot(0.5, 0.5);
 			}
 			
 			_buttonController = getController("button");
@@ -449,9 +466,6 @@ package fairygui
 		{
 			super.setup_afterAdd(xml);
 			
-			if(_downEffect==2)
-				this.setPivot(0.5, 0.5);
-			
 			xml = xml.Button[0];
 			if(xml)
 			{
@@ -476,7 +490,7 @@ package fairygui
 				if(str)
 					this.titleFontSize = parseInt(str);
 				
-				if(xml.@sound!=undefined)
+				if(xml.@sound.length()!=0)
 					_sound = xml.@sound;
 				str = xml.@volume;
 				if(str)
@@ -582,21 +596,27 @@ package fairygui
 				}
 			}
 			
-			if(!_changeStateOnClick)
-				return;
-			
+
 			if(_mode==ButtonMode.Check)
 			{
-				this.selected = !_selected;
-				dispatchEvent(new StateChangeEvent(StateChangeEvent.CHANGED));
+				if(_changeStateOnClick)
+				{
+					this.selected = !_selected;
+					dispatchEvent(new StateChangeEvent(StateChangeEvent.CHANGED));
+				}
 			}
 			else if(_mode==ButtonMode.Radio)
 			{
-				if(!_selected)
+				if(_changeStateOnClick && !_selected)
 				{
 					this.selected = true;
 					dispatchEvent(new StateChangeEvent(StateChangeEvent.CHANGED));
 				}
+			}
+			else
+			{
+				if(_relatedController)
+					_relatedController.selectedPageId = _pageOption.id;
 			}
 		}
 		

@@ -60,7 +60,7 @@ package diary.controller
 		public function startButtonClick():void
 		{
 			transferTo("map");
-			UIConfig.scrollAniTweenTime = 1.2;
+//			UIConfig.scrollAniTweenTime = 1.2;
 			var world:GComponent = getChild("worldmap").asCom;
 			var width:int = GRoot.inst.width;
 			var height:int = GRoot.inst.height;
@@ -216,7 +216,7 @@ package diary.controller
 			getChild("rightBar").asCom.getChild("list").asList.addEventListener(ItemEvent.CLICK, function(event:ItemEvent):void
 			{
 				var list:GList = getChild("rightBar").asCom.getChild("list").asList
-				var i:int = list.getChildIndex(event.itemObject);
+				var i:int = list.childIndexToItemIndex(list.getChildIndex(event.itemObject));
 				var cat:String = getChild("leftBar").asCom.getController("c1").selectedPage;
 				var id:String = json["game"][cat][i]["id"];
 				view.updatePart(id);

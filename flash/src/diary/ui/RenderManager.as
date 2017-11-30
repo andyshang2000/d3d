@@ -9,12 +9,14 @@ package diary.ui
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import flare.basic.Scene3D;
 	import flare.materials.filters.LightFilter;
-
+	import flare.system.Device3D;
+	
 	import starling.core.Starling;
-
+	import starling.utils.RenderUtil;
+	
 	import zzsdk.display.Screen;
 
 	[Event(name = "layerCreated", type = "flash.events.Event")]
@@ -32,6 +34,7 @@ package diary.ui
 
 		public function RenderManager(stage:Stage)
 		{
+//			Device3D.profile = "standard";
 			super(this.stage = stage);
 			Screen.designW = 480;
 			Screen.designH = 800;

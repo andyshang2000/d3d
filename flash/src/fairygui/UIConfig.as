@@ -63,7 +63,5 @@ package fairygui
 		public static var bringWindowToFrontOnClick:Boolean = true;
 		
 		public static var frameTimeForAsyncUIConstruction:int = 2;
-		
-		public static var scrollAniTweenTime:Number = 0.5;
 	}
 }

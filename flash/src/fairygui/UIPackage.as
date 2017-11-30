@@ -157,6 +157,24 @@ package fairygui
 			return null;
 		}
 		
+		public static function normalizeURL(url:String):String
+		{
+			if(url==null)
+				return null;
+			
+			var pos1:int = url.indexOf("//");
+			if (pos1 == -1)
+				return null;
+			
+			var pos2:int = url.indexOf("/", pos1 + 2);
+			if (pos2 == -1)
+				return url;
+			
+			var pkgName:String = url.substr(pos1 + 2, pos2 - pos1 - 2);
+			var srcName:String = url.substr(pos2 + 1);
+			return getItemURL(pkgName, srcName);
+		}
+		
 		public static function getBitmapFontByURL(url:String):BitmapFont
 		{
 			return _bitmapFonts[url];
@@ -313,6 +331,11 @@ package fairygui
 						pi.smoothing = str!="false";
 						break;
 					}
+						
+					case PackageItemType.MovieClip:
+						str = cxml.@smoothing;
+						pi.smoothing = str!="false";
+						break;
 						
 					case PackageItemType.Component:
 						UIObjectFactory.resolvePackageItemExtension(pi);
@@ -614,6 +637,9 @@ package fairygui
 						value = strings[elementId];
 						if(value!=undefined)
 							dxml.@title = value;
+						value = strings[elementId+"-prompt"];
+						if(value!=undefined)
+							dxml.@prompt = value;
 						continue;
 					}
 					
@@ -822,19 +848,20 @@ package fairygui
 			else
 			{
 				if(bmd.transparent)
-					pi.texture = Texture.fromBitmapData(bmd, false);
+					pi.texture = Texture.fromBitmapData(bmd, false, false, 1, Context3DTextureFormat.BGRA, false, completeLoading);
 				else
-				{
-					var format:String = "BGR_PACKED" in Context3DTextureFormat ? "bgrPacked565" : "bgra";
-					pi.texture = Texture.fromBitmapData(bmd, false, false, 1, format);
-				}
+					pi.texture = Texture.fromBitmapData(bmd, false, false, 1, Context3DTextureFormat.BGR_PACKED, false, completeLoading);
 				pi.texture.root.onRestore = function():void
 				{
 					loadAtlas(pi);
 				};
 			}
-			bmd.dispose();
-			pi.completeLoading();
+			
+			function completeLoading():void
+			{
+				bmd.dispose();
+				pi.completeLoading();
+			}
 		}
 		
 		internal function notifyImageAtlasReady(pi:PackageItem, atlasItem:PackageItem):void
@@ -851,9 +878,12 @@ package fairygui
 				for(var i:int=0;i<cnt;i++)
 				{
 					var frame:Frame = pi.frames[i];
-					sprite = _sprites[pi.id + "_" + i];
-					if(sprite!=null)
-						frame.texture = Texture.fromTexture(atlasItem.texture, sprite.rect);
+					if(frame.sprite!=null)
+					{
+						sprite = _sprites[frame.sprite];
+						if(sprite!=null)
+							frame.texture = Texture.fromTexture(atlasItem.texture, sprite.rect);
+					}
 				}
 				pi.completeLoading();
 			}
@@ -912,6 +942,8 @@ package fairygui
 						atlasItem = _itemsById[sprite.atlas];
 					if (atlasItem != null && atlasItem.loaded)
 						frame.texture = Texture.fromTexture(atlasItem.texture, sprite.rect);
+					else
+						frame.sprite = str;
 				}
 			}
 			
