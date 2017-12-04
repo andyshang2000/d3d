@@ -5,6 +5,7 @@ package diary.controller
 	import com.greensock.easing.Back;
 
 	import flash.display.BitmapData;
+	import flash.display.JPEGXREncoderOptions;
 	import flash.utils.setTimeout;
 
 	import diary.avatar.Avatar;
@@ -21,6 +22,8 @@ package diary.controller
 	import fairygui.event.GTouchEvent;
 	import fairygui.event.ItemEvent;
 	import fairygui.event.StateChangeEvent;
+
+	import payment.ane.PaymentANE;
 
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -128,7 +131,7 @@ package diary.controller
 		public function cancelButtonClick():void
 		{
 			getChild("photoFrame").visible = false;
-			getChild("photoButton").visible = true;
+//			getChild("photoButton").visible = true;
 			getChild("cancelButton").asButton.visible = false;
 			getChild("nextSceneButton").asButton.visible = false;
 			restore("photoFrame")
@@ -142,13 +145,12 @@ package diary.controller
 			restore("photoFrame")
 			try
 			{
-				//					PaymentANE.call("saveImage", snapAtlas.encode(snapAtlas.rect, new JPEGXREncoderOptions(75)));
-				getTransition("t3").play(function():void
+				TweenLite.to(getChild("photoFrame"), 0.5, {rotation: -64, scaleX: 0.08, scaleY: 0.08, x: -157, y: 395, onComplete: function():void
 				{
-					getChild("photoButton").visible = true;
+//					getChild("photoButton").visible = true;
 					getChild("photoFrame").visible = false;
 					restore("photoFrame")
-				});
+				}});
 			}
 			catch (err:Error)
 			{

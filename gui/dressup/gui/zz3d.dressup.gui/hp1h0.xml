@@ -56,7 +56,7 @@
     <component id="n23" name="showLeftButton" src="jl4j1d" xy="5,350">
       <gearDisplay controller="sceneControl" pages="3"/>
     </component>
-    <component id="n40" name="photoButton" src="tzxv1s" xy="20,690" visible="false">
+    <component id="n40" name="photoButton" src="tzxv1s" xy="20,690">
       <gearDisplay controller="sceneControl" pages="3"/>
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
@@ -64,7 +64,7 @@
       <gearDisplay controller="sceneControl" pages="3"/>
       <relation target="" sidePair="bottom-bottom,right-right"/>
     </component>
-    <component id="n32" name="photoFrame" src="tzxv1n" xy="30,57" pivot="0.5,0.5" size="420,686" visible="false" touchable="false">
+    <component id="n32" name="photoFrame" src="tzxv1n" xy="30,57" pivot="0.5,0.5" size="420,686">
       <gearDisplay controller="sceneControl" pages="3"/>
       <relation target="" sidePair="width-width,height-height"/>
     </component>
