@@ -1,7 +1,6 @@
 ﻿package diary.res
 {
 	import flash.filesystem.File;
-	import flash.sampler.DeleteObjectSample;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	

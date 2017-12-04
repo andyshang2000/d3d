@@ -1,6 +1,5 @@
 package diary.game
 {
-	import nblib.util.TabTxtPaser;
 
 	public class Item
 	{

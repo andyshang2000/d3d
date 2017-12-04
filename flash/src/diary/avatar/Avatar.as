@@ -3,6 +3,7 @@ package diary.avatar
 {
 	import flash.events.Event;
 	import flash.utils.clearTimeout;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import diary.res.ResManager;
@@ -122,12 +123,14 @@ package diary.avatar
 				return;
 			//
 			numInQueue++;
+			var t:Number = getTimer();
 			loadF3D(name, function(zf3d:ZF3D):void
 			{
 				numInQueue--;
 //				zf3d.content.hide();
 				takeOff(type);
 				addChild(zf3d.content);
+				trace(getTimer() - t);
 				for (var i:int = 0; i < type.length; i++)
 				{
 					partDic[type.charAt(i)] = zf3d;
