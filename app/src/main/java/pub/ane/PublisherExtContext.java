@@ -5,16 +5,42 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.adobe.fre.FREByteArray;
+import com.adobe.fre.FREObject;
+
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.security.InvalidParameterException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.zip.ZipInputStream;
 
 public class PublisherExtContext extends ExtContextBase {
 
 	private int saveCount = 0;
+
+	public FREObject readFromZip(String path) {
+		FREByteArray ba = null;
+		try {
+			InputStream in = getActivity().getAssets().open("game.bin");
+			ZipInputStream zin = new ZipInputStream(new BufferedInputStream(in));
+			byte[] bytes = new byte[in.available()];
+			in.read(bytes);
+			ba = FREByteArray.newByteArray();
+			ba.setProperty("length", FREObject.newObject(bytes.length));
+			ba.acquire();
+			ByteBuffer bb = ba.getBytes();
+			bb.put(bytes);
+			ba.release();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ba;
+	}
 
 	@ANE
 	public void saveImage(byte[] bytes) {
