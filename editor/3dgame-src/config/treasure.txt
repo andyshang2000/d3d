@@ -1,0 +1,22 @@
+code	picks	noDrop	item1	prob1	item2	prob2	item3	prob3	item4	prob4	item5	prob5	item6	prob6	item7	prob7	item8	prob8
+Energy	1		hp1	8	hp2	3	mp1	3	mp2	2								
+Materal	1		gcv	1	gcy	1	gcb	1	gcg	1	gcr	1	gcw	1	skc	1		
+Misc 0	1		key	3	tsc	3	isc	3										
+Jewelry A	1		rin	8	amu	4	jew	2						2				
+Apperal 1	1		sngl3	7	comp3	4												
+Act 1 Equip B	1		sngl3	3	comp3	3	sngl6	7	comp6	7								
+Act 1 Equip C	1		sngl3	1	comp3	1	sngl6	3	comp6	3	sngl9	7	comp9	7				
+Act 1 Uitem A	1	0	Act 1 Equip A	58	Act 1 Good	4												
+Act 1 Citem A	1	0	gld1280	60	Act 1 Equip A	37	Act 1 Good	3										
+Act 1 Cpot A	-2	0	Hpotion 1	1														
+Act 1 Cpot B	-2	0	Hpotion 1	1														
+Act 1 Cpot C	-2	0	Hpotion 1	1														
+Act 1 H2H A	1	180	gld	21	Act 1 Equip A	16	Act 1 Junk	21	Act 1 Good	2								
+Act 1 Cast A	1	180	gld	18	Act 1 Equip A	15	Act 1 Junk	18	Act 1 Good	2	Act 1 Magic A	7						
+Act 1 Miss A	1	180	gld	18	Act 1 Equip A	13	Act 1 Junk	18	Act 1 Good	2	Act 1 Bow A	6	Ammo	3				
+Act 1 Unique A	-3	0	Act 1 Uitem A	1	Act 1 Cpot A	2												
+Act 1 Champ A	-2	0	Act 1 Citem A	1	Act 1 Cpot A	2												
+T1	-2	0	Apperal 1	1	gld1280	1												
+T1	-2	0	Apperal 1	1	gld1280	1												
+T2	-2	0	Apperal 1	1	gld1280	1												
+T3	-2	0	Apperal 1	1	gld1280	1												

@@ -1,0 +1,3 @@
+name	model	mcode	type	type2	subType	cost	dropLevel	prop1	prop2	prop3	prop4	prop5	tag
+½ð±Ò			4	gld	0	0	1						
+ÄÜÁ¿			4	nrg	1	0	1						
