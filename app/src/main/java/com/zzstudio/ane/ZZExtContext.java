@@ -69,11 +69,6 @@ public class ZZExtContext extends ExtContextBase {
         }
     }
 
-    @ANE
-    public int hasNwtWork() {
-        return 1;
-    }
-
     private static String md5String(String str) throws NoSuchAlgorithmException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         md5.update(str.getBytes());
@@ -92,11 +87,6 @@ public class ZZExtContext extends ExtContextBase {
     }
 
     private void restore(byte[] bytes) {
-    }
-
-    @ANE
-    public String hCondition(String str) {
-        return "0";
     }
 
     @ANE

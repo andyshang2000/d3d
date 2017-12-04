@@ -30,3 +30,5 @@
 /app/src/main/assets/META-INF/AIR/extensions/pub.ane.Publisher/catalog.xml
 /app/src/main/assets/META-INF/AIR/extensions/pub.ane.Publisher/library.swf
 /flash/bin-debug
+/flash/anes/*.ane
+/flash/*.apk
