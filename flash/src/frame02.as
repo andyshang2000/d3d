@@ -18,7 +18,7 @@ package
 	
 	import zzsdk.utils.FileUtil;
 
-	[SWF(frameRate = "60")]
+	[SWF(frameRate = "45")]
 	public class frame02 extends Sprite
 	{
 		public function frame02()
@@ -34,19 +34,35 @@ package
 				screenMgr.changeScreen(State.MENU);
 			});
 			
-			FileUtil.dir = File.applicationStorageDirectory;
+			var dir:* = File.applicationStorageDirectory;
+			FileUtil.dir = dir;
 			if (!FileUtil.dir.resolvePath("gameconfig").exists)
 			{
 				firstRun();
 			}
+			else
+			{
+				start();
+			}
+		}
+		
+		private function start():void
+		{
+			trace(":)");
 		}
 		
 		private function firstRun():void
 		{
 			var zip:FZip = new FZip;
+			var count:int = zip.getFileCount();
 			zip.addEventListener(FZipEvent.FILE_LOADED, function(event:FZipEvent):void
 			{
 				FileUtil.save(event.file.content, event.file.filename);
+				count--
+				if(count == 0)
+				{
+					start();
+				}
 			});
 			zip.loadBytes(FileUtil.readFile(File.applicationDirectory.resolvePath("xxxx.zip")));
 			//config

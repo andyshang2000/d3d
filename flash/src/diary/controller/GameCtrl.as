@@ -204,6 +204,7 @@ package diary.controller
 				var list:GList = getChild("rightBar").asCom.getChild("list").asList;
 				var shopList:GList = getChild("shopList").asList;
 				list.setVirtual();
+				shopList.setVirtual();
 				shopList.itemRenderer = function(i:int, renderer:GComponent):void
 				{
 					var item:* = json["game"][cat][i]["id"];
