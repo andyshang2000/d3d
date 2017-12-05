@@ -1,0 +1,14 @@
+{
+	"codeGeneration":{
+		"classNamePrefix":"",
+		"codePath":"",
+		"codeType":"",
+		"getMemberByName":false,
+		"ignoreNoname":true,
+		"memberNamePrefix":"",
+		"packageName":""
+	},
+	"fileExtension":"",
+	"packageCount":2,
+	"path":"E:\\zz2017\\dress3d\\game\\bin-debug"
+}

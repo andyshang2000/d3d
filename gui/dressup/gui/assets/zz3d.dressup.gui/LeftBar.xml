@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="95,600">
+  <controller name="c1" pages="0,h,1,j,2,p,3,x,4,s,5,g" selected="0"/>
+  <displayList>
+    <image id="n0" name="n0" src="mbkck" xy="0,2" size="95,600" flip="hz"/>
+    <component id="n2" name="n2" src="mbkcr" xy="16,33" size="74,79">
+      <relation target="n0" sidePair="left-left,top-top"/>
+      <Button checked="true" controller="c1" page="0"/>
+    </component>
+    <component id="n3" name="n3" src="mbkcr" xy="16,123" size="74,79">
+      <relation target="n0" sidePair="left-left,top-top"/>
+      <Button controller="c1" page="1"/>
+    </component>
+    <component id="n4" name="n4" src="mbkcr" xy="16,213" size="74,79">
+      <relation target="n0" sidePair="left-left,top-top"/>
+      <Button controller="c1" page="2"/>
+    </component>
+    <component id="n5" name="n5" src="mbkcr" xy="16,303" size="74,79">
+      <relation target="n0" sidePair="left-left,top-top"/>
+      <Button controller="c1" page="3"/>
+    </component>
+    <component id="n6" name="n6" src="mbkcr" xy="16,393" size="74,79">
+      <relation target="n0" sidePair="left-left,top-top"/>
+      <Button controller="c1" page="4"/>
+    </component>
+    <component id="n8" name="n8" src="mbkcr" xy="16,483" size="74,79">
+      <relation target="n0" sidePair="left-left,top-top"/>
+      <Button controller="c1" page="5"/>
+    </component>
+    <image id="n9" name="n9" src="p2td12" xy="30,37" pivot="0.5,0.5" size="48,50" aspect="true">
+      <gearSize controller="c1" pages="0" values="48,50,1,1" default="42,43,1,1"/>
+    </image>
+    <image id="n10" name="n10" src="p2td13" xy="32,223" pivot="0.5,0.5" size="43,39" aspect="true">
+      <gearSize controller="c1" pages="2" values="48,44,1,1" default="43,39,1,1"/>
+    </image>
+    <image id="n11" name="n11" src="p2td14" xy="31,133" pivot="0.5,0.5" size="42,43" aspect="true">
+      <gearSize controller="c1" pages="0,1" values="42,43,1,1|48,49,1,1" default="42,43,1,1"/>
+    </image>
+    <image id="n12" name="n12" src="p2td15" xy="33,402" pivot="0.5,0.5" size="42,46" aspect="true">
+      <gearSize controller="c1" pages="4" values="48,53,1,1" default="42,46,1,1"/>
+    </image>
+    <image id="n13" name="n13" src="p2td16" xy="32,311" pivot="0.5,0.5" size="42,48" aspect="true">
+      <gearSize controller="c1" pages="3" values="48,54,1,1" default="42,48,1,1"/>
+    </image>
+    <image id="n14" name="n14" src="p2td17" xy="33,492" pivot="0.5,0.5" size="42,49" aspect="true">
+      <gearSize controller="c1" pages="5" values="48,56,1,1" default="42,49,1,1"/>
+    </image>
+  </displayList>
+</component>

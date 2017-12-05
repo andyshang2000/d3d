@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="64,64" extention="Button">
+  <displayList>
+    <image id="n60_x39n" name="hanger" src="x39n2d" xy="0,0" pivot="0.5,0.5" size="64,64" rotation="-36"/>
+  </displayList>
+  <Button/>
+</component>

@@ -120,6 +120,8 @@ package diary.controller
 		{
 			var obj:GObject = gView.getChild(name);
 			var c:Object = savedRectList[name];
+			if(c == null)
+				return;
 			obj.setXY(c.x, c.y);
 			obj.setSize(c.width, c.height);
 			obj.setScale(1, 1);

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="100,100">
+  <displayList>
+    <image id="n12" name="image" src="p2td11" xy="7,7"/>
+    <image id="n13_x39n" name="lock" src="x39n2c" xy="50,50" size="48,48"/>
+  </displayList>
+</component>

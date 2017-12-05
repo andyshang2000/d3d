@@ -32,3 +32,4 @@
 /flash/bin-debug
 /flash/anes/*.ane
 /flash/*.apk
+/editor/bin-debug

@@ -5,7 +5,6 @@ package diary.controller
 	import com.greensock.easing.Back;
 
 	import flash.display.BitmapData;
-	import flash.display.JPEGXREncoderOptions;
 	import flash.utils.setTimeout;
 
 	import diary.avatar.Avatar;
@@ -18,12 +17,9 @@ package diary.controller
 	import fairygui.GImage;
 	import fairygui.GList;
 	import fairygui.GRoot;
-	import fairygui.UIConfig;
 	import fairygui.event.GTouchEvent;
 	import fairygui.event.ItemEvent;
 	import fairygui.event.StateChangeEvent;
-
-	import payment.ane.PaymentANE;
 
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -91,17 +87,10 @@ package diary.controller
 		}
 
 		[Handler(clickGTouch)]
-		public function backButtonClick():void
-		{
-			transferTo("map");
-		}
-
-		[Handler(clickGTouch)]
 		public function yesButtonClick():void
 		{
-			getTransition("t1").play(function():void
+			transferTo("show", function():void
 			{
-				transferTo("show");
 				view.removeBackground();
 			});
 		}
@@ -121,10 +110,19 @@ package diary.controller
 		[Handler(clickGTouch)]
 		public function returnButtonClick():void
 		{
-			transferTo("game", function():void
+			if ("show" == getController("sceneControl").selectedPage || //
+				"mall" == getController("sceneControl").selectedPage)
 			{
-				view.addBackground();
-			});
+				transferTo("game", function():void
+				{
+					getTransition("t5").play();
+					view.addBackground();
+				});
+			}
+			else if ("game" == getController("sceneControl").selectedPage)
+			{
+				transferTo("map");
+			}
 		}
 
 		[Handler(clickGTouch)]
@@ -170,12 +168,14 @@ package diary.controller
 				getChild("photoFrame").asCom.getChild("image").asImage.texture = t; //
 				getChild("photoFrame").visible = true;
 
-				TweenLite.to(getChild("photoFrame"), 0.5, {x: 0, y: 0, width: GRoot.inst.width, height: GRoot.inst.height, ease: Back.easeOut, onComplete: function():void
-				{
-					getChild("cancelButton").asButton.visible = true;
-					getChild("nextSceneButton").asButton.visible = true;
-					getChild("photoButton").asCom.getChild("image").asImage.texture = t;
-				}});
+				TweenLite.to(getChild("photoFrame"), 0.5, {x: 0, y: 0, //
+						width: GRoot.inst.width, //
+						height: GRoot.inst.height, ease: Back.easeOut, onComplete: function():void
+						{
+							getChild("cancelButton").asButton.visible = true;
+							getChild("nextSceneButton").asButton.visible = true;
+							getChild("photoButton").asCom.getChild("image").asImage.texture = t;
+						}});
 			});
 		}
 
@@ -194,26 +194,41 @@ package diary.controller
 			setupWorldmap();
 			updateWorldMap();
 
+			getChild("hanger").asButton.addClickListener(function():void
+			{
+				getTransition("t5").play();
+			});
 			getChild("leftBar").asCom.getController("c1").addEventListener(StateChangeEvent.CHANGED, function():void
 			{
 				var cat:String = getChild("leftBar").asCom.getController("c1").selectedPage;
 				var list:GList = getChild("rightBar").asCom.getChild("list").asList;
+				var shopList:GList = getChild("shopList").asList;
 				list.setVirtual();
-				list.itemRenderer = function(i:int, renderer:GComponent):void
+				shopList.itemRenderer = function(i:int, renderer:GComponent):void
 				{
 					var item:* = json["game"][cat][i]["id"];
 					var image:GImage = renderer.getChild("image").asImage;
 					image.texture = iconAtlas.getTexture(item);
+				};
+				list.itemRenderer = function(i:int, renderer:GComponent):void
+				{
+					var item:* = json["game"][cat][i]["id"];
+					var image:GImage = renderer.getChild("image").asImage;
+					var lock:GImage = renderer.getChild("lock").asImage;
+					image.texture = iconAtlas.getTexture(item);
+					lock.visible = i > 4;
 				}
 				if (json["game"][cat] != null)
 				{
 					list.numItems = json["game"][cat].length;
+					shopList.numItems = json["game"][cat].length;
 				}
 				else
 				{
 					list.numItems = 0;
+					shopList.numItems = 0;
 				}
-				getTransition("t2").play();
+				getTransition("t4").play();
 			});
 			getChild("rightBar").asCom.getChild("list").asList.addEventListener(ItemEvent.CLICK, function(event:ItemEvent):void
 			{
@@ -221,7 +236,18 @@ package diary.controller
 				var i:int = list.childIndexToItemIndex(list.getChildIndex(event.itemObject));
 				var cat:String = getChild("leftBar").asCom.getController("c1").selectedPage;
 				var id:String = json["game"][cat][i]["id"];
-				view.updatePart(id);
+
+				if (i < 4)
+				{
+					view.updatePart(id);
+				}
+				else
+				{
+					transferTo("mall", function():void
+					{
+						view.addBackground("mallBG");
+					});
+				}
 			});
 
 			//prepare ad

@@ -120,10 +120,10 @@ package diary.ui.view
 			}
 		}
 
-		public function addBackground():void
+		public function addBackground(name:String = "bedroom2"):void
 		{
 			TweenLite.to(back, 0.5, {x: 0.1});
-			backImage.texture = Texture.fromTexture(UIPackage.createObject("zz3d.dressup.gui", "bedroom2").asImage.texture);
+			backImage.texture = Texture.fromTexture(UIPackage.createObject("zz3d.dressup.gui", name).asImage.texture);
 			backImage.visible = true;
 			backList.visible = false;
 
@@ -219,8 +219,8 @@ package diary.ui.view
 		{
 			FileUtil.dir = File.applicationDirectory;
 			UIPackage.addPackage( //
-				FileUtil.open("zz3d.dressup.gui.zip"), //
-				FileUtil.open("zz3d.dressup.gui@res.zip"));
+				FileUtil.open("zz3d.dressup.gui"), //
+				FileUtil.open("zz3d.dressup@res.gui"));
 			UIPackage.waitToLoadCompleted(onAssetsLoaded);
 			FileUtil.dir = File.applicationStorageDirectory;
 		}

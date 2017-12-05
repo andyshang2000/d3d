@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="iznig4xz" jpegQuality="80" compressPNG="true">
+  <resources>
+    <component id="hp1h0" name="Root.xml" path="/" exported="true"/>
+    <image id="hp1h1" name="bedroom.png" path="/assets/"/>
+    <image id="hp1h2" name="bedroom2.png" path="/assets/"/>
+    <image id="mbkc3" name="map5.png" path="/assets/" atlas="2"/>
+    <image id="mbkc4" name="map4.png" path="/assets/" atlas="2"/>
+    <image id="mbkc5" name="map3.png" path="/assets/" atlas="2"/>
+    <image id="mbkc6" name="map2.png" path="/assets/" atlas="2"/>
+    <image id="mbkc7" name="map1.png" path="/assets/" atlas="2"/>
+    <image id="mbkc8" name="map6.png" path="/assets/" atlas="2"/>
+    <component id="mbkc9" name="Worldmap.xml" path="/"/>
+    <image id="mbkca" name="base_selectA.png" path="/assets/"/>
+    <image id="mbkcb" name="base_selectB.png" path="/assets/"/>
+    <component id="mbkcc" name="Button1.xml" path="/"/>
+    <image id="mbkce" name="index.png" path="/assets/"/>
+    <component id="mbkcj" name="RightBar.xml" path="/"/>
+    <image id="mbkck" name="leftBar.png" path="/assets/" scale="9grid" scale9grid="15,20,15,34"/>
+    <component id="mbkcl" name="LeftBar.xml" path="/"/>
+    <image id="mbkcn" name="go.png" path="/"/>
+    <component id="mbkco" name="Button2.xml" path="/"/>
+    <image id="mbkcp" name="catButton.png" path="/"/>
+    <image id="mbkcq" name="catButtonPressed.png" path="/"/>
+    <component id="mbkcr" name="CatButton.xml" path="/"/>
+    <component id="mbkcs" name="ItemRenderer.xml" path="/"/>
+    <image id="p2td11" name="b2309_h_dod.png" path="/"/>
+    <image id="p2td12" name="hair.png" path="/"/>
+    <image id="p2td13" name="pants.png" path="/"/>
+    <image id="p2td14" name="jack.png" path="/"/>
+    <image id="p2td15" name="shoes.png" path="/"/>
+    <image id="p2td16" name="dress.png" path="/"/>
+    <image id="p2td17" name="gift.png" path="/"/>
+    <image id="jl4j19" name="yes.png" path="/"/>
+    <component id="jl4j1a" name="Component1.xml" path="/"/>
+    <image id="jl4j1b" name="arrow.png" path="/"/>
+    <component id="jl4j1c" name="ArrowButton.xml" path="/"/>
+    <component id="jl4j1d" name="ArrowButtonLeft.xml" path="/"/>
+    <image id="tzxv1g" name="returnIcon.png" path="/"/>
+    <component id="tzxv1h" name="returnButton.xml" path="/"/>
+    <image id="tzxv1i" name="doneIcon.png" path="/"/>
+    <image id="tzxv1j" name="shareIcon.png" path="/"/>
+    <component id="tzxv1k" name="doneButton.xml" path="/"/>
+    <image id="tzxv1l" name="cameraIcon.png" path="/"/>
+    <component id="tzxv1m" name="cameraButton.xml" path="/"/>
+    <component id="tzxv1n" name="PhotoFrame.xml" path="/" exported="true"/>
+    <image id="tzxv1o" name="plusIcon.png" path="/"/>
+    <image id="tzxv1p" name="minusIcon.png" path="/"/>
+    <component id="tzxv1q" name="zoomSwtichButton.xml" path="/"/>
+    <component id="tzxv1r" name="ZoomSwitchButton.xml" path="/"/>
+    <component id="tzxv1s" name="photoButton.xml" path="/"/>
+    <image id="tzxv1t" name="photoPlaceHolder.png" path="/"/>
+    <image id="tzxv1u" name="empty.png" path="/assets/"/>
+    <component id="tzxv1v" name="PhotoFrameItem.xml" path="/" exported="true"/>
+    <component id="tzxv1w" name="shareButton.xml" path="/"/>
+    <component id="tzxv1x" name="PhotoFrameItemInner.xml" path="/"/>
+    <image id="aiqr1y" name="yesIconForFrame.png" path="/"/>
+    <image id="aiqr1z" name="shareBackToListIcon.png" path="/"/>
+    <image id="aiqr20" name="playAgainIcon.png" path="/"/>
+    <component id="aiqr21" name="playAgainButton.xml" path="/"/>
+    <component id="aiqr22" name="backToListButton.xml" path="/"/>
+    <image id="aiqr23" name="shareSuccess.png" path="/"/>
+    <component id="aiqr24" name="NextSceneButton.xml" path="/"/>
+    <component id="i5z126" name="returnToMapButton.xml" path="/"/>
+    <component id="i5z127" name="ShopItemRenderer.xml" path="/"/>
+    <image id="x39n28" name="shopItemBackground.png" path="/" scale=""/>
+    <image id="x39n29" name="shopping.png" path="/"/>
+    <image id="x39n2a" name="shopButton_pressed.png" path="/"/>
+    <component id="x39n2b" name="shopButton.xml" path="/"/>
+    <image id="x39n2c" name="lock.png" path="/"/>
+    <image id="x39n2d" name="hanger.png" path="/"/>
+    <component id="x39n2e" name="hangerButton.xml" path="/"/>
+    <image id="x39n2f" name="mallBG.png" path="/assets/" exported="true"/>
+    <image id="x39n2g" name="icon.png" path="/assets/"/>
+    <image id="x39n2h" name="playAD.png" path="/assets/"/>
+    <component id="x39n2i" name="shoppingButton.xml" path="/"/>
+  </resources>
+  <publish name="zz3d.dressup.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug">
+    <atlas name="默认" index="0"/>
+    <atlas name="UI" index="1"/>
+    <atlas name="地图" index="2"/>
+    <atlas name="封面" index="3"/>
+  </publish>
+</packageDescription>

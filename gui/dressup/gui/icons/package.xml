@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<packageDescription id="7kaui0vs" jpegQuality="80" compressPNG="true">
-  <resources>
-    <folder id="p2td0" name="assets" folder=""/>
-    <component id="aiqr1" name="ListStory" folder="" file="aiqr1.xml"/>
-    <component id="aiqr2" name="ListButton" folder="" file="aiqr2.xml"/>
-  </resources>
-</packageDescription>
