@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="480,800">
+  <controller name="sceneControl" pages="4,transpage,0,start,1,map,2,game,3,show,7,confirm,6,share,5,never,8,mall" selected="0">
+    <action type="play_transition" fromPage="" toPage="2" transition="t4" stopOnExit="true"/>
+    <action type="play_transition" fromPage="" toPage="8" transition="t0" stopOnExit="true"/>
+  </controller>
+  <displayList>
+    <graph id="n15" name="graphic" xy="0,0" size="480,800" type="rect">
+      <gearDisplay controller="sceneControl" pages="4,0,1,2,3,7,8"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </graph>
+  </displayList>
+</component>

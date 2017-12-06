@@ -74,6 +74,9 @@
     <image id="x39n2g" name="icon.png" path="/assets/"/>
     <image id="x39n2h" name="playAD.png" path="/assets/"/>
     <component id="x39n2i" name="shoppingButton.xml" path="/"/>
+    <image id="x39n2j" name="toMall2.png" path="/"/>
+    <component id="x39n2k" name="MallButton.xml" path="/"/>
+    <component id="x39n2l" name="TransferMask.xml" path="/"/>
   </resources>
   <publish name="zz3d.dressup.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug">
     <atlas name="默认" index="0"/>

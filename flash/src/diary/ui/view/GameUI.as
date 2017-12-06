@@ -41,6 +41,7 @@ package diary.ui.view
 		private var backList:Carousel;
 		private var avatar:Avatar;
 		private var avatarlist:Object = {};
+		private var backScale:Number = 1.0;
 
 		public function getFront():Sprite
 		{
@@ -65,6 +66,7 @@ package diary.ui.view
 				back.addChild(backImage);
 				back.addChild(backList);
 			}
+			back.visible = false;
 			return back;
 		}
 
@@ -98,9 +100,9 @@ package diary.ui.view
 			return result;
 		}
 
-		public static function fit(obj:*):void
+		public static function fit(obj:*, scale:Number = 1.0):void
 		{
-			var result:Rectangle = getFitRect(obj);
+			var result:Rectangle = getFitRect(obj, scale);
 			if (obj is GLoader)
 			{
 				GLoader(obj).setXY(result.x, result.y);
@@ -126,11 +128,11 @@ package diary.ui.view
 			backImage.texture = Texture.fromTexture(UIPackage.createObject("zz3d.dressup.gui", name).asImage.texture);
 			backImage.visible = true;
 			backList.visible = false;
-
+			back.visible = true;
 			setTimeout(function():void
 			{
-				fit(backList);
-				fit(backImage);
+				fit(backList, backScale);
+				fit(backImage, backScale);
 			}, 1);
 		}
 
@@ -188,20 +190,26 @@ package diary.ui.view
 		{
 			if (zoomIn)
 			{
+				backScale = 1.5;
 				TweenLite.killTweensOf(scene);
 				TweenLite.killTweensOf(backList);
 				TweenLite.to(scene.camera, 0.25, {fieldOfView: 11, //
 						x: -3, //
 						y: 230});
-				var fitRectZoomIn:Rectangle = getFitRect(backList, 1.5);
+				var fitRectZoomIn:Rectangle = getFitRect(backList, backScale);
 				var fitRectZoomOut:Rectangle = getFitRect(backList, 1);
 				TweenLite.to(backList, 0.25, {x: fitRectZoomIn.x, //
+						y: fitRectZoomIn.y, //
+						scaleX: fitRectZoomIn.width / 480, //
+						scaleY: fitRectZoomIn.height / 800});
+				TweenLite.to(backImage, 0.25, {x: fitRectZoomIn.x, //
 						y: fitRectZoomIn.y, //
 						scaleX: fitRectZoomIn.width / 480, //
 						scaleY: fitRectZoomIn.height / 800});
 			}
 			else
 			{
+				backScale = 1;
 				TweenLite.killTweensOf(scene);
 				TweenLite.killTweensOf(backList);
 				TweenLite.to(scene.camera, 0.25, {fieldOfView: 28, //
@@ -209,6 +217,10 @@ package diary.ui.view
 						y: 195});
 				var fitRect:Rectangle = getFitRect(backList);
 				TweenLite.to(backList, 0.25, {x: fitRect.x, //
+						y: fitRect.y, //
+						scaleX: fitRect.width / 480, //
+						scaleY: fitRect.height / 800});
+				TweenLite.to(backImage, 0.25, {x: fitRect.x, //
 						y: fitRect.y, //
 						scaleX: fitRect.width / 480, //
 						scaleY: fitRect.height / 800});

@@ -98,7 +98,8 @@ public class PublisherExtContext extends ExtContextBase {
 	}
 
 	@ANE
-	public void init() {
+	public int init() {
+		return 1;
 	}
 
 	@ANE

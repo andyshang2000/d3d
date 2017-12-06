@@ -3,6 +3,7 @@ package diary.controller
 	import com.greensock.TweenLite;
 	import com.greensock.TweenNano;
 	import com.greensock.easing.Back;
+	import com.greensock.easing.Quad;
 
 	import flash.display.BitmapData;
 	import flash.utils.setTimeout;
@@ -56,6 +57,15 @@ package diary.controller
 		}
 
 		[Handler(clickGTouch)]
+		public function mallButtonClick():void
+		{
+			transferTo("mall", function():void
+			{
+				view.addBackground("mallBG");
+			});
+		}
+
+		[Handler(clickGTouch)]
 		public function startButtonClick():void
 		{
 			transferTo("map");
@@ -83,7 +93,6 @@ package diary.controller
 				child.y = Math.round(offset);
 				offset += child.height;
 			}
-			world.scrollPane.scrollBottom(true);
 		}
 
 		[Handler(clickGTouch)]
@@ -128,26 +137,18 @@ package diary.controller
 		[Handler(clickGTouch)]
 		public function cancelButtonClick():void
 		{
-			getChild("photoFrame").visible = false;
-//			getChild("photoButton").visible = true;
-			getChild("cancelButton").asButton.visible = false;
-			getChild("nextSceneButton").asButton.visible = false;
-			restore("photoFrame")
+			transferTo("show", null, 0);
 		}
 
 		[Handler(clickGTouch)]
 		public function nextSceneButtonClick():void
 		{
-			getChild("cancelButton").asButton.visible = false;
-			getChild("nextSceneButton").asButton.visible = false;
-			restore("photoFrame")
 			try
 			{
 				TweenLite.to(getChild("photoFrame"), 0.5, {rotation: -64, scaleX: 0.08, scaleY: 0.08, x: -157, y: 395, onComplete: function():void
 				{
-//					getChild("photoButton").visible = true;
 					getChild("photoFrame").visible = false;
-					restore("photoFrame")
+					transferTo("show", null);
 				}});
 			}
 			catch (err:Error)
@@ -159,23 +160,31 @@ package diary.controller
 		[Handler(clickGTouch)]
 		public function cameraButtonClick():void
 		{
-			saveRect("photoFrame");
 			GRoot.inst.visible = false;
 			ScreenShot.draw(snapAtlas, null, ["back", "avatar"], function():void
 			{
 				GRoot.inst.visible = true;
+
 				var t:Texture = Texture.fromBitmapData(snapAtlas);
 				getChild("photoFrame").asCom.getChild("image").asImage.texture = t; //
-				getChild("photoFrame").visible = true;
+				getChild("photoFrame").setXY(0, 0);
+				getChild("photoFrame").setScale(1, 1);
+				getChild("photoFrame").setSize(GRoot.inst.width, GRoot.inst.height);
+				getChild("photoFrame").rotation = 0;
 
-				TweenLite.to(getChild("photoFrame"), 0.5, {x: 0, y: 0, //
-						width: GRoot.inst.width, //
-						height: GRoot.inst.height, ease: Back.easeOut, onComplete: function():void
-						{
-							getChild("cancelButton").asButton.visible = true;
-							getChild("nextSceneButton").asButton.visible = true;
-							getChild("photoButton").asCom.getChild("image").asImage.texture = t;
-						}});
+				transferTo("confirm", function():void
+				{
+					getChild("photoFrame").visible = true;
+					getChild("photoFrame").setXY(0, 0);
+					getChild("photoFrame").setScale(1, 1);
+					getChild("photoFrame").setSize(GRoot.inst.width, GRoot.inst.height);
+					getChild("photoFrame").rotation = 0;
+
+					getChild("cancelButton").asButton.visible = true;
+					getChild("nextSceneButton").asButton.visible = true;
+					getChild("cancelButton").asButton.enabled = true;
+					getChild("nextSceneButton").asButton.enabled = true;
+				}, 0.1, 0.1);
 			});
 		}
 
@@ -306,11 +315,23 @@ package diary.controller
 			}
 		}
 
-		private function transferTo(target:String, onCompleteHandler:Function = null):void
+		private function transferTo(target:String, onCompleteHandler:Function = null, dur1:Number = 0.25, dur2:Number = 0.25):void
 		{
-			getChild("transferMask").asGraph.visible = true;
-			getChild("transferMask").asGraph.alpha = 0;
-			TweenNano.to(getChild("transferMask").asGraph, 0.25, {alpha: 1, onComplete: function():void
+			getChild("transferMask").asCom.visible = true;
+			getChild("transferMask").asCom.getChild("graphic").alpha = 0;
+			if (dur1 < 0.01)
+			{
+				getController("sceneControl").selectedPage = target;
+				if (onCompleteHandler != null)
+				{
+					onCompleteHandler();
+				}
+				return;
+			}
+			if (dur2 < 0.01)
+				dur2 = dur1;
+
+			TweenNano.to(getChild("transferMask").asCom.getChild("graphic"), dur1, {alpha: 1, onComplete: function():void
 			{
 				getController("sceneControl").selectedPage = target;
 				if (onCompleteHandler != null)
@@ -318,10 +339,25 @@ package diary.controller
 					onCompleteHandler();
 				}
 			}})
-			TweenNano.to(getChild("transferMask").asGraph, 0.25, {alpha: 0, delay: 0.3, onComplete: function():void
+			TweenNano.to(getChild("transferMask").asCom.getChild("graphic"), dur2, {alpha: 0, delay: dur1, onComplete: function():void
 			{
-				getChild("transferMask").asGraph.visible = false;
+				getChild("transferMask").asCom.visible = false;
 			}});
+		}
+
+		private function flashMask(onCompleteHandler:Function = null):void
+		{
+			getChild("transferMask").asCom.visible = true;
+			getChild("transferMask").asCom.getChild("graphic").alpha = 0;
+			TweenNano.to(getChild("transferMask").asCom.getChild("graphic"), 0.15, {alpha: 1, ease: Quad.easeOut, onComplete: function():void
+			{
+				getChild("transferMask").asCom.visible = false;
+				if (onCompleteHandler != null)
+				{
+					onCompleteHandler();
+				}
+			}});
+			TweenNano.to(getChild("transferMask").asCom.getChild("graphic"), 0.1, {alpha: 0, ease: Quad.easeIn, delay: 0.15});
 		}
 	}
 }
