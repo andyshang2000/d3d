@@ -60,8 +60,10 @@ package game
 		 */
 		public var fallablePawns:Vector.<Pawn>;
 		
+		//地图数据
+		public var boardData:*;
 		
-		public function Board(w:int=8, h:int=8) 
+		public function Board(w:int=5, h:int=6) 
 		{
 			if (verbose)	trace(this + "Board(" + arguments);
 			
