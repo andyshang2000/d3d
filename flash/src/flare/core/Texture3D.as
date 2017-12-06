@@ -386,7 +386,7 @@
 					if (this._isATF)
 					{
 						this.texture = this.scene.context.createTexture(this._width, this._height, this.stringFormat, this.optimizeForRenderToTexture);
-						Texture(this.texture).uploadCompressedTextureFromByteArray(this._bytes, 0);
+						Texture(this.texture).uploadCompressedTextureFromByteArray(this._bytes, 0, true);
 					}
 					else
 					{
