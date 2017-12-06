@@ -22,6 +22,8 @@ package diary.controller
 	import fairygui.event.ItemEvent;
 	import fairygui.event.StateChangeEvent;
 
+	import payment.ane.PaymentANE;
+
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
@@ -263,6 +265,13 @@ package diary.controller
 			transferTo("transpage");
 			setTimeout(function():void
 			{
+				try
+				{
+					PaymentANE.call("ready");
+				}
+				catch (err:Error)
+				{
+				}
 				transferTo("start");
 			}, 2000);
 		}
