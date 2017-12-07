@@ -1,100 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component size="480,800" overflow="scroll" scrollBarFlags="128">
+<component size="480,800" overflow="hidden">
   <displayList>
-    <image id="n40" name="n40" src="mbkc7" xy="0,4000"/>
-    <image id="n41" name="n41" src="mbkc6" xy="0,3200"/>
-    <image id="n42" name="n42" src="mbkc5" xy="0,2400"/>
-    <image id="n43" name="n43" src="mbkc4" xy="0,1600"/>
-    <image id="n44" name="n44" src="mbkc3" xy="0,800"/>
-    <image id="n45" name="n45" src="mbkc8" xy="0,0"/>
-    <component id="n6" name="button" src="mbkcc" xy="382,4664" pivot="0.5,0.5" group="n38">
-      <Button page="1"/>
-    </component>
-    <component id="n8" name="button" src="mbkcc" xy="74,4486" pivot="0.5,0.5" group="n38">
-      <Button page="3"/>
-    </component>
-    <component id="n10" name="button" src="mbkcc" xy="297,4268" pivot="0.5,0.5" group="n38">
-      <Button page="5"/>
-    </component>
-    <component id="n11" name="button" src="mbkcc" xy="133,4067" pivot="0.5,0.5" group="n38">
+    <image id="n40" name="n40" src="mbkc7" xy="0,0"/>
+    <component id="n31" name="button" src="mbkcc" xy="398,641" pivot="0.5,0.5" group="n38">
       <Button page="6"/>
     </component>
-    <component id="n12" name="button" src="mbkcc" xy="53,3867" pivot="0.5,0.5" group="n38">
+    <component id="n32" name="button" src="mbkcc" xy="174,699" pivot="0.5,0.5" group="n38">
       <Button page="6"/>
     </component>
-    <component id="n13" name="button" src="mbkcc" xy="373,3707" pivot="0.5,0.5" group="n38">
+    <component id="n33" name="button" src="mbkcc" xy="241,492" pivot="0.5,0.5" group="n38">
       <Button page="6"/>
     </component>
-    <component id="n14" name="button" src="mbkcc" xy="13,3567" pivot="0.5,0.5" group="n38">
+    <component id="n34" name="button" src="mbkcc" xy="0,408" pivot="0.5,0.5" group="n38">
       <Button page="6"/>
     </component>
-    <component id="n15" name="button" src="mbkcc" xy="203,3407" pivot="0.5,0.5" group="n38">
+    <component id="n35" name="button" src="mbkcc" xy="140,281" pivot="0.5,0.5" group="n38">
       <Button page="6"/>
     </component>
-    <component id="n16" name="button" src="mbkcc" xy="362,3235" pivot="0.5,0.5" group="n38">
+    <component id="n36" name="button" src="mbkcc" xy="381,140" pivot="0.5,0.5" group="n38">
       <Button page="6"/>
     </component>
-    <component id="n17" name="button" src="mbkcc" xy="42,3145" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n18" name="button" src="mbkcc" xy="232,2965" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n19" name="button" src="mbkcc" xy="312,2774" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n20" name="button" src="mbkcc" xy="12,2614" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n21" name="button" src="mbkcc" xy="332,2504" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n22" name="button" src="mbkcc" xy="222,2204" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n23" name="button" src="mbkcc" xy="32,2014" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n24" name="button" src="mbkcc" xy="362,1944" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n25" name="button" src="mbkcc" xy="292,1754" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n26" name="button" src="mbkcc" xy="2,1644" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n27" name="button" src="mbkcc" xy="322,1504" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n28" name="button" src="mbkcc" xy="382,1344" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n29" name="button" src="mbkcc" xy="202,1168" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n30" name="button" src="mbkcc" xy="22,1044" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n31" name="button" src="mbkcc" xy="282,954" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n32" name="button" src="mbkcc" xy="242,744" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n33" name="button" src="mbkcc" xy="22,594" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n34" name="button" src="mbkcc" xy="292,454" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n35" name="button" src="mbkcc" xy="152,304" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n36" name="button" src="mbkcc" xy="123,118" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <group id="n38" name="buttonGroup" xy="2,118" size="465,4631" advanced="true" collapsed="true">
+    <group id="n38" name="buttonGroup" xy="0,140" size="483,644" advanced="true" collapsed="true">
       <relation target="" sidePair="left-left,right-right"/>
       <relation target="" sidePair="top-top,bottom-bottom"/>
     </group>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="56,56" extention="Button">
+  <displayList>
+    <image id="n65_x39n" name="mallButton" src="x39n2j" xy="0,0" size="56,56"/>
+  </displayList>
+  <Button/>
+</component>
