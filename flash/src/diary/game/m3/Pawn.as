@@ -23,11 +23,11 @@ package diary.game.m3
 		
 		private var _type:int;
 		private var _index:int;
-		private var _special:int = -1;
+		private var _special:int = 0;
 		
 		public var debugTf:TextField;
 		
-		public static const SIZE:int = 40;
+		public static const SIZE:int = 62;
 		
 		public static const COLORS:Array = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff];
 		
@@ -51,14 +51,14 @@ package diary.game.m3
 		{
 			if (verbose)	trace(this + "Pawn(" + arguments);
 		}
-		
+
 		/**
 		 * Replaces the constructor. Useful for pooling.
 		 */
 		public function reset():void
 		{
 			if(verbose)	trace(this + "reset(" + arguments);
-			this.type = Random.getInteger(0, 4);
+			this.type = Random.getInteger(0, 3);
 			
 			this.alpha = 1.0;
 			this.scaleX = this.scaleY = 1.0;
@@ -71,14 +71,13 @@ package diary.game.m3
 		
 		public function refresh():void
 		{
-			img.texture = Embeds.gemTextures[this.type];
+			img.texture = Embeds.gemTextures[Math.min(this.type + special * 6, Embeds.gemTextures.length - 1)];
 		}
 		
 		private function drawGem():void
 		{
-			img = new Image(Embeds.gemTextures[this.type]);
+			img = new Image(Embeds.gemTextures[Math.min(this.type + special * 6, Embeds.gemTextures.length - 1)]);
 			this.addChild(img);
-			
 		}
 		
 		private function drawQuad():void
@@ -135,6 +134,7 @@ package diary.game.m3
 			
 			if (this.parent)
 			{
+				_special = 0;
 				this.parent.removeChild(this);
 			}
 		}
@@ -152,6 +152,17 @@ package diary.game.m3
 				Pawn._selected.alpha = 1.0;
 				Pawn._selected = null;
 			}
+		}
+		
+		
+		public function get special():int
+		{
+			return _special;
+		}
+		
+		public function set special(value:int):void
+		{
+			_special = value;
 		}
 		
 		public function toString():String

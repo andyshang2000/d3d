@@ -63,7 +63,7 @@ package diary.game.m3
 		//地图数据
 		public var boardData:*;
 		
-		public function Board(w:int=5, h:int=6) 
+		public function Board(w:int=9, h:int=9) 
 		{
 			if (verbose)	trace(this + "Board(" + arguments);
 			
@@ -105,7 +105,8 @@ package diary.game.m3
 			
 			PawnPool.savePawn(pawn);
 			this.pawns[pawn.index] = null;
-			this.holes.push(pawn.index);
+			if(this.holes.indexOf(pawn.index) == -1)
+				this.holes.push(pawn.index);
 			if (verbose)	trace(this + "holes: " + this.holes);
 		}
 		

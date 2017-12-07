@@ -39,9 +39,9 @@ package diary.game.m3.states
 			
 			for (var j:int = 0; j < this.board.matchedPawns.length; j++) 
 			{
-				if (this.board.matchedPawns[i].length > 3)
+				if (this.board.matchedPawns[j].length > 3)
 				{
-					matchedPawns.push(this.board.matchedPawns[i][0]);
+//					matchedPawns.push(this.board.matchedPawns[j][0]);
 				}
 			}
 			
@@ -56,7 +56,7 @@ package diary.game.m3.states
 					}
 					else
 					{
-						this.board.destroyablePawns[i].type = 5;
+//						this.board.destroyablePawns[i].special = 1;
 						this.board.destroyablePawns[i].refresh();
 						this.board.destroyablePawns[i] = null;
 						nbCompleted++;

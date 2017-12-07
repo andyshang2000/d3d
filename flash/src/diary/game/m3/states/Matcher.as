@@ -39,6 +39,52 @@ package diary.game.m3.states
 			//	we check if there are matches
 			//	for each matchable pawn
 			var areMatchesFound:Boolean;	//	we will dispatch only if any of the matchable pawns is part of a match
+			
+			if(this.board.matchablePawns.length == 2)
+			{
+				var a:Pawn = this.board.matchablePawns[0];
+				var b:Pawn = this.board.matchablePawns[1];
+				if(a.special > 0 && b.special > 0)
+				{
+					if(a.special <= 2 && b.special <= 2)
+					{
+						cross(b);
+					}
+					else if((a.special <= 2 && b.special == 3) ||//
+						(a.special == 3 && b.special <= 2))//
+					{
+						bigCross(b);
+					}
+					else if(a.special == 3 && b.special == 3)
+					{
+						bigSquare(b);
+					}
+					else if(a.special == 4 || b.special == 4)
+					{
+						if(a.special == 4)
+						{
+							mass(b);
+						}
+						else
+						{
+							mass(a);
+						}
+					}
+				}
+				else if(a.special == 4 || b.special == 4)
+				{
+					if(a.special == 4)
+					{
+						mass(b);
+					}
+					else
+					{
+						mass(a);
+					}
+				}
+				areMatchesFound = true;
+			}
+			
 			for (var i:int = 0; i < this.board.matchablePawns.length;i++ )
 			{
 				var pawn:Pawn = this.board.matchablePawns[i];
@@ -85,6 +131,159 @@ package diary.game.m3.states
 			}
 		}
 		
+		
+		private function hLine(a:Pawn):void
+		{
+			if(a == null)
+				return
+			var p:Pawn;
+			this.board.destroyablePawns.push(a);
+			p = a;
+			while(p != null)
+			{	
+				p = this.board.getLeftPawn(p);
+				markDestroy(p);
+			}
+			p = a;
+			while(p != null)
+			{	
+				p = this.board.getRightPawn(p);
+				markDestroy(p);
+			}
+		}
+		
+		private function vLine(a:Pawn):void
+		{
+			if(a == null)
+				return
+			var p:Pawn;
+			p = a;
+			markDestroy(p)
+			while(p != null)
+			{	
+				p = this.board.getBottomPawn(p);
+				markDestroy(p);
+			}
+			p = a;
+			while(p != null)
+			{	
+				p = this.board.getTopPawn(p);
+				markDestroy(p);
+			}
+		}
+		
+		private function markDestroy(p:Pawn):Boolean
+		{
+			if(p != null)
+			{
+				if (this.board.destroyablePawns.indexOf(p) == -1)
+				{
+					this.board.destroyablePawns.push(p);
+					if(p.special == 1)
+					{
+						hLine(p);
+					}
+					else if(p.special == 2)
+					{
+						vLine(p);
+					}
+					else if(p.special == 3)
+					{
+						cross(p);
+					}
+					else if(p.special == 4)
+					{
+						mass(p);
+					}
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		private function mass(m:Pawn):void
+		{
+			return;
+			if(m.special == 0)
+			{
+				for each (var p:Pawn in this.board.pawns) 
+				{
+					if(p.type == m.type)
+					{
+						markDestroy(p);
+					}
+				}
+			}
+			else
+			{
+				for each (var p:Pawn in this.board.pawns) 
+				{
+					if(p.type == m.type)
+					{
+						p.special = m.special;
+						markDestroy(p);
+					}
+				}
+			}
+		}
+		
+		private function cross(a:Pawn):void
+		{
+			hLine(a);
+			vLine(a);
+		}
+		
+		private function bigCross(a:Pawn):void
+		{
+			hLine(a);
+			hLine(this.board.getBottomPawn(a));
+			hLine(this.board.getTopPawn(a));
+			vLine(a);
+			vLine(this.board.getLeftPawn(a));
+			vLine(this.board.getRightPawn(a));
+		}
+		
+		private function square(a:Pawn):void
+		{
+			var p:Pawn;
+			markDestroy(p = a);
+			if(markDestroy(p = this.board.getBottomPawn(a)))
+			{				
+				markDestroy(this.board.getLeftPawn(p));
+				markDestroy(this.board.getRightPawn(p));
+				markDestroy(this.board.getBottomPawn(p));
+			}
+			
+			if(markDestroy(p = this.board.getTopPawn(a)))
+			{
+				markDestroy(this.board.getLeftPawn(p));
+				markDestroy(this.board.getRightPawn(p));
+				markDestroy(this.board.getTopPawn(p));
+			}
+			
+			if(markDestroy(p = this.board.getLeftPawn(a)))
+			{
+				markDestroy(this.board.getLeftPawn(p));
+				markDestroy(this.board.getTopPawn(p));
+				markDestroy(this.board.getBottomPawn(p));
+			}
+			
+			if(markDestroy(p = this.board.getRightPawn(a)))
+			{
+				markDestroy(this.board.getRightPawn(p));
+				markDestroy(this.board.getTopPawn(p));
+				markDestroy(this.board.getBottomPawn(p));
+			}
+		}
+		
+		private function bigSquare(a:Pawn):void
+		{
+			square(this.board.getRightPawn(a));
+			square(this.board.getTopPawn(a));
+			square(this.board.getBottomPawn(a));
+			square(this.board.getLeftPawn(a));
+		}
+		
 		private function electMatchesForDestruction(match:Vector.<Pawn>):void
 		{
 			if (verbose)	trace(this + "electMatchesForDestruction(" + arguments);
@@ -95,7 +294,7 @@ package diary.game.m3.states
 				var pawn:Pawn = match[j];
 				if (this.board.destroyablePawns.indexOf(pawn) < 0)
 				{
-					this.board.destroyablePawns.push(match[j]);
+					markDestroy(match[j]);
 				}
 			}
 			
@@ -118,14 +317,31 @@ package diary.game.m3.states
 			if (vMatch.length >= 3)	matches = matches.concat(vMatch);
 			
 			var ever:Object = null;
-			return matches.filter(function(item:Object, ...args):Boolean
+			matches = matches.filter(function(item:Pawn, ...args):Boolean
 			{
+				if(item.special > 0)
+				{
+				}
 				if(item == ever)
 					return false;
 				ever = item;
 				return true;
 			});
-			
+			if(matches.length >= 5)
+			{
+				if(hMatch.length == 5 || vMatch.length == 5)
+					matches[0].special = 4;
+				else
+					matches[0].special = 3;
+			}
+			else if(matches.length == 4)
+			{
+				if(vMatch.length > 3)
+					matches[0].special = 1;
+				else
+					matches[0].special = 2;
+			}
+			return matches;
 		}
 
 		/**

@@ -44,7 +44,7 @@ package diary.ui.view
 		{
 			setGView("zz3d.dressup.gui", "Match3");
 			var view:Match3View = new Match3View();
-			GRoot.inst.nativeStage.addChild(view);
+			GRoot.inst.addChild(view);
 			
 			view.enter();
 		}

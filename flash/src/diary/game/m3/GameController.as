@@ -29,13 +29,6 @@ package diary.game.m3
 		//	score management
 		private var _score:uint;
 		public const SCORE_UPDATED:Signal = new Signal();
-
-		//	time management
-		public static const GAME_DURATION_MIN:Number = 1.0;
-		private var timer:Timer;
-		private var _timeLeft_sec:int;
-		public const TIME_LEFT_UPDATED:Signal = new Signal();
-		public const TIME_S_UP:Signal = new Signal();
 		
 		//	the board containing the pawns
 		private var _board:Board;
@@ -55,9 +48,7 @@ package diary.game.m3
 		{
 			if (verbose)	trace(this + "GameController(" + arguments);
 			
-			this.timer = new Timer(1000, 5 * 60);
-			
-			this._board = new Board();
+			this._board = new Board(9,9);
 			
 			this.fallerAndFiller = new FallerAndFiller(this._board);
 			this.inputListener = new InputListener(this._board);
@@ -76,7 +67,6 @@ package diary.game.m3
 			
 			
 			this.fallerAndFiller.FILLED.add(this.gotoMatcher);
-			this.inputListener.SWAP_REQUESTED.addOnce(this.reallyStartPlaying);
 			this.inputListener.SWAP_REQUESTED.add(this.gotoSwapper);
 			
 			this.swapper.SWAPPED.add(this.gotoMatcher);
@@ -94,23 +84,10 @@ package diary.game.m3
 			
 			this.destroyer.ALL_ARE_DESTROYED.add(this.gotoFillerAndFaller);
 			
-			this._timeLeft_sec = GAME_DURATION_MIN * 60;
-			this.timer.addEventListener(TimerEvent.TIMER, this.updateTimeLeft);
-			
 			this._score = 0;
-			this.updateScore("start");
-			this.updateTimeLeft();
-			
+			this.updateScore("start");			
 			this.board.fillWithHoles();
 			this.gotoFillerAndFaller();
-		}
-		
-		//	At the beginning, there are matches, destructions, fallings and fillings:
-		//	we wait for this first wave of actions to start timer and score.
-		public function reallyStartPlaying():void
-		{
-			this.timer.start();
-			this.matcher.MATCHES_FOUND.add(this.updateScore);
 		}
 		
 		/**
@@ -119,9 +96,6 @@ package diary.game.m3
 		public function stop():void
 		{
 			if (verbose)	trace(this + "stop(" + arguments);
-			
-			this.timer.stop();
-			this.timer.removeEventListener(TimerEvent.TIMER, this.updateTimeLeft);
 			
 			this.setState(null);
 			
@@ -161,24 +135,6 @@ package diary.game.m3
 			
 			this._score += matchScore;
 			this.SCORE_UPDATED.dispatch(this.score);
-		}
-		
-		private function updateTimeLeft(e:TimerEvent=null):void 
-		{
-			if (verbose)	trace(this + "updateTimer(" + arguments);
-			
-			this._timeLeft_sec --;
-			
-			
-			if(this._timeLeft_sec < 0)
-			{
-//				this.TIME_S_UP.dispatch();
-				//this.stop();
-			}
-			else
-			{
-				this.TIME_LEFT_UPDATED.dispatch(this.timeLeft_sec);
-			}
 		}
 		
 		/**
@@ -267,13 +223,6 @@ package diary.game.m3
 		public function get score():uint 
 		{
 			return _score;
-		}
-		
-		public function get timeLeft_sec():int 
-		{
-			return _timeLeft_sec;
-		}
-		
+		}		
 	}
-
 }

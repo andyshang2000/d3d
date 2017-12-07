@@ -12,7 +12,7 @@ package diary.game.m3
 		private static var pawns:Vector.<Pawn>;
 		private static var _instance:PawnPool;
 		
-		function PawnPool(length:uint=80) 
+		function PawnPool(length:uint=180) 
 		{
 			PawnPool.pawns = new <Pawn>[];
 			for (var i:int = 0; i < length; i++) 
