@@ -1,6 +1,6 @@
-package game.states 
+package diary.game.m3.states 
 {
-	import game.Board;
+	import diary.game.m3.Board;
 	import utils.abstract;
 	/**
 	 * An abstract state, from which other states inherit.

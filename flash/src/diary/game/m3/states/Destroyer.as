@@ -1,7 +1,7 @@
-package game.states 
+package diary.game.m3.states 
 {
-	import game.Board;
-	import game.Pawn;
+	import diary.game.m3.Board;
+	import diary.game.m3.Pawn;
 	
 	import org.osflash.signals.Signal;
 	

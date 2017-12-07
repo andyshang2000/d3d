@@ -56,7 +56,7 @@ package diary.avatar
 
 		public function AnimatedAvatar()
 		{
-			face = new Flare3DLoader("assets/g0001_f_dod.zf3d");
+			face = new Flare3DLoader("assets/g0001_f_dod.f3d");
 			face.load()
 			addChild(face);
 		}

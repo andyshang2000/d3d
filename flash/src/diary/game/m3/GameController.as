@@ -1,15 +1,15 @@
-package game 
+package diary.game.m3 
 {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	import game.states.AbstractState;
-	import game.states.Combine;
-	import game.states.Destroyer;
-	import game.states.FallerAndFiller;
-	import game.states.InputListener;
-	import game.states.Matcher;
-	import game.states.Swapper;
+	import diary.game.m3.states.AbstractState;
+	import diary.game.m3.states.Combine;
+	import diary.game.m3.states.Destroyer;
+	import diary.game.m3.states.FallerAndFiller;
+	import diary.game.m3.states.InputListener;
+	import diary.game.m3.states.Matcher;
+	import diary.game.m3.states.Swapper;
 	
 	import org.osflash.signals.Signal;
 	

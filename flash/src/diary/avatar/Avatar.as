@@ -154,42 +154,17 @@ package diary.avatar
 			});
 		}
 
-		private function updatePoseByPart(part:String):Boolean
+		protected function updatePoseByPart(part:String):Boolean
 		{
-			if (part == "j")
-			{
-				return updatePose(acts[1]);
-			}
-			else if (part == "h")
-			{
-				if (Math.random() > 0.5)
-				{
-					return updatePose(acts[3]);
-				}
-				else
-				{
-					return updatePose(acts[10]);
-				}
-
-			}
-			else if (part == "p")
-			{
-				return updatePose(acts[0]);
-			}
-			else if (part == "s")
-			{
-				if (Math.random() > 0.5)
-				{
-					return updatePose(acts[9]);
-				}
-				else
-				{
-					return updatePose(acts[10]);
-				}
-			}
-			return updatePose(acts[1]);
+			return updatePose(getPoseByPart(part));
 		}
-
+		
+		protected function getPoseByPart(part:String):String
+		{
+			// TODO Auto Generated method stub
+			return null;
+		}
+		
 		protected function animationCompleteHandler(event:Event):void
 		{
 			(event.target as Mesh3D).removeEventListener(Pivot3D.ANIMATION_COMPLETE_EVENT, animationCompleteHandler);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="480,800" overflow="hidden">
-  <controller name="sceneControl" pages="4,transpage,0,start,1,map,2,game,3,show,7,confirm,6,share,5,never,8,mall" selected="4">
+  <controller name="sceneControl" pages="2,game,3,show,7,confirm,6,share,5,never,8,mall" selected="0">
     <action type="play_transition" fromPage="" toPage="2" transition="t4" stopOnExit="true"/>
     <action type="play_transition" fromPage="" toPage="8" transition="t0" stopOnExit="true"/>
   </controller>
@@ -16,9 +16,6 @@
     <image id="n0" name="background" src="hp1h2" xy="0,0">
       <gearDisplay controller="sceneControl" pages="2"/>
     </image>
-    <component id="n1" name="worldmap" src="mbkc9" xy="0,0">
-      <gearDisplay controller="sceneControl" pages="1"/>
-    </component>
     <component id="n8" name="rightBar" src="mbkcj" xy="462,84" controller="sceneControl,0">
       <gearDisplay controller="sceneControl" pages="2"/>
       <relation target="" sidePair="right-right,bottom-bottom"/>
@@ -26,15 +23,6 @@
     <component id="n10" name="leftBar" src="mbkcl" xy="385,123">
       <gearDisplay controller="sceneControl" pages="2"/>
       <relation target="" sidePair="right-right,bottom-bottom"/>
-    </component>
-    <loader id="n14" name="tpage" xy="0,0" size="480,800" touchable="false" url="ui://iznig4xzhp1h1" align="center" vAlign="middle" fill="scale" autoSize="true">
-      <gearDisplay controller="sceneControl" pages="4,0"/>
-      <relation target="" sidePair="width-width,height-height"/>
-    </loader>
-    <component id="n13" name="startButton" src="mbkco" xy="137,503">
-      <gearDisplay controller="sceneControl" pages="0"/>
-      <relation target="" sidePair="width-width,center-center"/>
-      <Button controller="sceneControl" page="0"/>
     </component>
     <component id="n16" name="yesButton" src="jl4j1a" xy="197,687">
       <gearDisplay controller="sceneControl" pages="2"/>
@@ -125,7 +113,7 @@
     <item time="6" type="XY" target="n10" tween="true" startValue="383.58,123" endValue="468,123" duration="10"/>
   </transition>
   <transition name="t5">
-    <item time="0" type="XY" target="n10" tween="true" startValue="468,123" endValue="385,123" duration="12"/>
     <item time="0" type="XY" target="n8" tween="true" startValue="356,84" endValue="462,84" duration="6"/>
+    <item time="0" type="XY" target="n10" tween="true" startValue="468,123" endValue="385,123" duration="12"/>
   </transition>
 </component>

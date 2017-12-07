@@ -1,4 +1,4 @@
-package game 
+package diary.game.m3 
 {
 	import starling.core.Starling;
 	/**

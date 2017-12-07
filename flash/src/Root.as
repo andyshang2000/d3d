@@ -2,7 +2,7 @@ package
 {
 	import flash.display.Stage;
 	import gui.ProgressBar;
-	import game.GameScreen;
+	import diary.game.m3.Match3View;
 	import gui.IScreen;
 	import gui.GameOverScreen;
 	import starling.core.Starling;
@@ -24,7 +24,7 @@ package
 
 		private var currentScreen:IScreen;
 		
-		private var gameScreen:GameScreen;
+		private var gameScreen:Match3View;
 		private var gameOverScreen:GameOverScreen;
 		
 		public function Root() 
@@ -36,7 +36,7 @@ package
 			this.addChild(this.fpsCounter);
 			this.addEventListener(EnterFrameEvent.ENTER_FRAME, this.onEnterFrame);
 						
-			this.gameScreen = new GameScreen();
+			this.gameScreen = new Match3View();
 			this.gameScreen.GAME_OVER.add(this.gotoGameOverScreen);
 			
 			this.gameOverScreen = new GameOverScreen();

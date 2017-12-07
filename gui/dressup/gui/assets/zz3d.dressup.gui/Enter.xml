@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="480,800" overflow="hidden">
+  <controller name="sceneControl" pages="4,transpage,0,start" selected="1">
+    <action type="play_transition" fromPage="" toPage="2" transition="t4" stopOnExit="true"/>
+    <action type="play_transition" fromPage="" toPage="8" transition="t0" stopOnExit="true"/>
+  </controller>
+  <displayList>
+    <loader id="n14" name="tpage" xy="0,0" size="480,800" touchable="false" url="ui://iznig4xzhp1h1" align="center" vAlign="middle" fill="scale" autoSize="true">
+      <gearDisplay controller="sceneControl" pages="4,0"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </loader>
+    <component id="n13" name="startButton" src="mbkco" xy="137,503">
+      <gearDisplay controller="sceneControl" pages="0"/>
+      <relation target="" sidePair="width-width,center-center"/>
+      <Button controller="sceneControl" page="0"/>
+    </component>
+    <component id="n15" name="transferMask" src="x39n2l" xy="0,0" hideByEditor="true" touchable="false">
+      <gearDisplay controller="sceneControl" pages="4,0,1,2,3,7,8"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+  </displayList>
+  <transition name="t0"/>
+  <transition name="t1"/>
+  <transition name="t2"/>
+  <transition name="t3"/>
+  <transition name="t4"/>
+  <transition name="t5"/>
+  <transition name="t6"/>
+</component>

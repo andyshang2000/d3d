@@ -1,15 +1,15 @@
 package 
 {
-	import game.Board;
-	import game.Pawn;
-	import game.PawnPool;
-	import game.GameController;
-	import game.GameScreen;
-	import game.states.FallerAndFiller;
-	import game.states.InputListener;
-	import game.states.Matcher;
-	import game.states.Destroyer;
-	import game.states.Swapper;
+	import diary.game.m3.Board;
+	import diary.game.m3.Pawn;
+	import diary.game.m3.PawnPool;
+	import diary.game.m3.GameController;
+	import diary.game.m3.Match3View;
+	import diary.game.m3.states.FallerAndFiller;
+	import diary.game.m3.states.InputListener;
+	import diary.game.m3.states.Matcher;
+	import diary.game.m3.states.Destroyer;
+	import diary.game.m3.states.Swapper;
 	import utils.getSimpleToString;
 	import utils.FPSCounter;
 	import gui.GameOverScreen;

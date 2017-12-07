@@ -1,9 +1,9 @@
-package game.states 
+package diary.game.m3.states 
 {
 	import flash.geom.Point;
-	import game.Board;
-	import game.Pawn;
-	import game.PawnPool;
+	import diary.game.m3.Board;
+	import diary.game.m3.Pawn;
+	import diary.game.m3.PawnPool;
 	import org.osflash.signals.Signal;
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
