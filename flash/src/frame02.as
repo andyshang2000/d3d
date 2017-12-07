@@ -15,7 +15,7 @@ package
 	import diary.ui.view.GameUI;
 	import diary.ui.view.ScreenManager;
 	import diary.ui.view.State;
-	
+	import payment.ane.PaymentANE;
 	import starling.textures.Texture;
 	
 	import zzsdk.utils.FileUtil;
@@ -25,6 +25,13 @@ package
 	{
 		public function frame02()
 		{
+			try
+			{
+				PaymentANE.call("init");
+			}
+			catch (err:Error)
+			{
+			}
 			var screenMgr:ScreenManager = new ScreenManager(stage);
 			Texture.asyncBitmapUploadEnabled = true;
 			screenMgr.addService(ScreenShot.inst);
