@@ -7,12 +7,14 @@ package
 	import deng.fzip.FZip;
 	import deng.fzip.FZipEvent;
 	
-	import diary.controller.GameCtrl;
-	import diary.controller.State;
 	import diary.services.ScreenShot;
 	import diary.services.ShareService;
+	import diary.ui.view.EnterScreen;
+	import diary.ui.view.EnterUI;
+	import diary.ui.view.GameScreen;
 	import diary.ui.view.GameUI;
 	import diary.ui.view.ScreenManager;
+	import diary.ui.view.State;
 	
 	import starling.textures.Texture;
 	
@@ -27,11 +29,9 @@ package
 			Texture.asyncBitmapUploadEnabled = true;
 			screenMgr.addService(ScreenShot.inst);
 			screenMgr.addService(ShareService.inst);
-			
-			screenMgr.addScreen(State.MENU, GameUI, GameCtrl);
 			screenMgr.addEventListener(Event.COMPLETE, function():void
 			{
-				screenMgr.changeScreen(State.MENU);
+				screenMgr.changeScreen(EnterScreen);
 			});
 			
 			var dir:* = File.applicationStorageDirectory;
