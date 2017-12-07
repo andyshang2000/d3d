@@ -23,7 +23,7 @@ package diary.avatar
 		{
 			if (Input3D.mouseDown)
 			{
-				pivot.rotateY(-Input3D.mouseXSpeed);
+				pivot.rotateY(-Input3D.mouseXSpeed / 2);
 			}
 		}
 

@@ -4,6 +4,7 @@ package diary.ui
 	import flash.display.BitmapData;
 	import flash.display.Stage;
 	import flash.display3D.Context3DClearMask;
+	import flash.display3D.Context3DProfile;
 	import flash.display3D.Context3DRenderMode;
 	import flash.events.Event;
 	import flash.geom.Matrix;
@@ -34,7 +35,7 @@ package diary.ui
 
 		public function RenderManager(stage:Stage)
 		{
-//			Device3D.profile = "standard";
+			Device3D.profile = Context3DProfile.ENHANCED;
 			super(this.stage = stage);
 			Screen.designW = 480;
 			Screen.designH = 800;

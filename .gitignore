@@ -33,3 +33,4 @@
 /flash/anes/*.ane
 /flash/*.apk
 /editor/bin-debug
+/resources

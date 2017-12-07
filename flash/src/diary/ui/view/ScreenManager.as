@@ -1,29 +1,18 @@
 package diary.ui.view
 {
-	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
 	
 	import diary.ui.RenderManager;
-	
-	import starling.utils.AssetManager;
 
 	[Event(name = "complete", type = "flash.events.Event")]
 	public class ScreenManager extends Sprite
 	{
-		private var currentScreen:IScreenCtrl;
+		private var currentScreen:IScreen;
 		public var renderManager:RenderManager;
 
-		private var screenMap:Object = {};
-
-		public var assetManager:AssetManager;
-		private var scaleFactor:Number;
-		//splash related
-		private var splashMap:Object = {};
-		private var currentSplash:DisplayObject;
-
-		public function ScreenManager(stage:Stage, scaleFactor:Number = 2.0)
+		public function ScreenManager(stage:Stage)
 		{
 			this.renderManager = new RenderManager(stage);
 
@@ -46,34 +35,23 @@ package diary.ui.view
 			dispatchEvent(new Event("complete"));
 		}
 
-		public function changeScreen(name:String):void
+		public function changeScreen(clazz:Class):void
 		{
 			var self:* = this;
-			var view:IScreen = new (screenMap[name].view);
-			var s:IScreenCtrl = new (screenMap[name].ctrl)(view);
-			s.onInit(function():void
+			var s:IScreen = new clazz;
+			s.onInit(this, function():void
 			{
 				if (currentScreen)
 				{
 					currentScreen.dispose();
 				}
-				view.update2DLayer("back", renderManager.getLayerRoot("back"));
-				view.update2DLayer("front", renderManager.getLayerRoot("front"));
+				s.update2DLayer("back", renderManager.getLayerRoot("back"));
+				s.update2DLayer("front", renderManager.getLayerRoot("front"));
 
-				view.update3DLayer(renderManager);
+				s.update3DLayer(renderManager);
 
 				currentScreen = s;
 			})
-		}
-
-		public function addScreen(name:String, view:Class, ctrl:Class):void
-		{
-			screenMap[name] = {view: view, ctrl: ctrl};
-		}
-
-		public function requestChange(request:String):void
-		{
-			currentScreen.handleStateChange(request);
 		}
 	}
 }

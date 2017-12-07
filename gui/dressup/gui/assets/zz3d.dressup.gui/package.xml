@@ -63,7 +63,7 @@
     <component id="aiqr24" name="NextSceneButton.xml" path="/"/>
     <component id="i5z126" name="returnToMapButton.xml" path="/"/>
     <component id="i5z127" name="ShopItemRenderer.xml" path="/"/>
-    <image id="x39n28" name="shopItemBackground.png" path="/" scale=""/>
+    <image id="x39n28" name="shopItemBackground.png" path="/"/>
     <image id="x39n29" name="shopping.png" path="/"/>
     <image id="x39n2a" name="shopButton_pressed.png" path="/"/>
     <component id="x39n2b" name="shopButton.xml" path="/"/>
@@ -78,7 +78,7 @@
     <component id="x39n2k" name="MallButton.xml" path="/"/>
     <component id="x39n2l" name="TransferMask.xml" path="/"/>
   </resources>
-  <publish name="zz3d.dressup.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug">
+  <publish name="zz3d.dressup.gui" path="F:\zz2018\d3d\flash\bin-debug">
     <atlas name="默认" index="0"/>
     <atlas name="UI" index="1"/>
     <atlas name="地图" index="2"/>

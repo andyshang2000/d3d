@@ -66,11 +66,7 @@ package fairygui
 		public static function addPackage(desc:ByteArray, res:ByteArray):UIPackage
 		{
 			var pkg:UIPackage = new UIPackage();
-			var reader:ZipUIPackageReader = new ZipUIPackageReader(desc, res);
-			pkg.create(reader);
-			_packageInstById[pkg.id] = pkg;
-			_packageInstByName[pkg.name] = pkg;
-			return pkg;
+			return addPackage2(new ZipUIPackageReader(desc, res));
 		}
 		
 		public static function addPackage2(reader:IUIPackageReader):UIPackage
