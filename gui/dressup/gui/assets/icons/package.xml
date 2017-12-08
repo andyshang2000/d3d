@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<packageDescription id="7kaui0vs" jpegQuality="80" compressPNG="true">
-  <resources>
-    <component id="aiqr1" name="ListStory.xml" path="/"/>
-    <component id="aiqr2" name="ListButton.xml" path="/"/>
-  </resources>
-</packageDescription>

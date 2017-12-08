@@ -273,7 +273,8 @@ package diary.avatar
 			Pivot3DUtils.removeAnimations(this);
 			Pivot3DUtils.appendAnimation(this, currentAnimation);
 			var mesh3d:Mesh3D = getChildByName("f") as Mesh3D;
-			addLabel(new Label3D(currentPose, 0, mesh3d.frames.length - 1, 1));
+			var num:* = mesh3d.frames.length;
+			addLabel(new Label3D(currentPose, 0, num - 1, 1));
 			mesh3d.addEventListener(Pivot3D.ANIMATION_COMPLETE_EVENT, animationCompleteHandler);
 			if (currentPose == ACT_NORMAL)
 			{

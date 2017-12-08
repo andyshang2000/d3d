@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="5t4h99ba" jpegQuality="80" compressPNG="true">
+  <resources>
+    <image id="mld80" name="infoBg.png" path="/"/>
+    <image id="mld81" name="infoTop.png" path="/" scale="9grid" scale9grid="144,21,158,21"/>
+    <component id="mld82" name="Match3.xml" path="/" exported="true"/>
+    <component id="mld83" name="ProgressBar.xml" path="/"/>
+    <image id="mld84" name="progressBar.png" path="/" scale="9grid" scale9grid="18,6,120,9"/>
+    <image id="mld85" name="progressBg.png" path="/"/>
+    <font id="mld86" name="Font_Title.fnt" path="/" exported="true"/>
+    <component id="mld87" name="returnButton.xml" path="/"/>
+    <image id="mld88" name="returnIcon.png" path="/assets/"/>
+    <image id="mld89" name="bg04.png" path="/" exported="true"/>
+  </resources>
+  <publish name="zz3d.m3.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug"/>
+</packageDescription>
