@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="Main.as" projectUUID="1a1fbf73-f2b6-4d57-a612-c797afe08584" version="11">
+<actionScriptProperties analytics="false" mainApplicationPath="SugarCrush.as" projectUUID="1a1fbf73-f2b6-4d57-a612-c797afe08584" version="11">
   <compiler additionalCompilerArguments="-locale en_US -keep-as3-metadata+=G,Handler -swf-version 39" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
