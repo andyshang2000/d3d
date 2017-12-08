@@ -9,17 +9,17 @@ package diary.ui.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.events.GameEvents;
 	import com.popchan.sugar.modules.game.view.GamePanel;
-	
+
 	import flash.display.BitmapData;
 	import flash.utils.setTimeout;
-	
+
 	import diary.avatar.Avatar;
-	
+
 	import fairygui.GComponent;
 	import fairygui.GImage;
 	import fairygui.GRoot;
 	import fairygui.UIPackage;
-	
+
 	import starling.core.Starling;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
@@ -76,22 +76,21 @@ package diary.ui.view
 			MsgDispatcher.add(GameEvents.TIME_CHANGE, this.onTimeChange);
 
 			view.init();
-
+			view.newGame(Config.levelConfig.getLevel(Model.levelModel.selectedLevel));
 			setInfo(Config.levelConfig.getLevel(Model.levelModel.selectedLevel));
 
 			addAvatar("girl");
 			addBackground();
 		}
-		
-		
+
 		public function addBackground(name:String = "bedroom2"):void
 		{
 			var image:GImage = UIPackage.createObject("zz3d.m3.gui", "bg04").asImage;
 			backImage.visible = true;
-			
+
 			setTimeout(function():void
 			{
-				if(image.texture == null)
+				if (image.texture == null)
 				{
 					setTimeout(arguments.callee, 1);
 					return;

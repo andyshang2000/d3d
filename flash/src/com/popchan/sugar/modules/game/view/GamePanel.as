@@ -138,7 +138,6 @@ package com.popchan.sugar.modules.game.view
 			this.ironWires = this.getBlankMapArray();
 			this.monsters = this.getBlankMapArray();
 			this.tileBoarders = [];
-			this.newGame();
 		}
 
 		private function getBlankMapArray():Array
@@ -155,19 +154,17 @@ package com.popchan.sugar.modules.game.view
 					_local_1[_local_2][_local_3] = null;
 					_local_3++;
 				}
-				;
 				_local_2++;
 			}
-			;
 			return (_local_1);
 		}
 
-		private function newGame():void
+		public function newGame(level:LevelCO):void
 		{
+			Model.gameModel.score = 0;
 			this.addEventListener(TouchEvent.TOUCH, this.onTouch);
 			this.addEventListener(EnterFrameEvent.ENTER_FRAME, this.update);
-			this.currentLevel = Config.levelConfig.getLevel(Model.levelModel.selectedLevel);
-			Model.gameModel.score = 0;
+			this.currentLevel = level;
 			this.state = STATE_INIT;
 			this.gameState = STATE_GAME_WAIT;
 		}
@@ -181,10 +178,7 @@ package com.popchan.sugar.modules.game.view
 			this.createCandys();
 			this.createBombs();
 			this.container.x = 650;
-			Tweener.addTween(this.container, {"time": 0.6, "x": 0, "delay": 0.1, "transition": "easeBackOut", "onComplete": function():void
-			{
-				trace(container.x, container.y);
-			}});
+			Tweener.addTween(this.container, {"time": 0.6, "x": 0, "delay": 0.1, "transition": "easeBackOut"});
 		}
 
 		private function createBombs():void
@@ -203,13 +197,10 @@ package com.popchan.sugar.modules.game.view
 					{
 						this.createBomb(_local_2, _local_3);
 					}
-					;
 					_local_3++;
 				}
-				;
 				_local_2++;
 			}
-			;
 		}
 
 		private function createBarrier():void
@@ -293,13 +284,10 @@ package com.popchan.sugar.modules.game.view
 						_local_4 = _local_7;
 						break _loop_1;
 					}
-					;
 					_local_6++;
 				}
-				;
 				_local_7++;
 			}
-			;
 			_local_7 = (GameConst.COL_COUNT - 1);
 			_loop_2: while (_local_7 >= 0)
 			{
@@ -765,7 +753,6 @@ package com.popchan.sugar.modules.game.view
 			{
 				return (false);
 			}
-			;
 			return (true);
 		}
 
@@ -866,9 +853,7 @@ package com.popchan.sugar.modules.game.view
 						{
 							this.checkShuffle();
 						}
-						;
 					}
-					;
 					return;
 				case STATE_GAME_WAIT:
 					return;
@@ -889,15 +874,11 @@ package com.popchan.sugar.modules.game.view
 								{
 									this.isMoving = true;
 								}
-								;
 							}
-							;
 							_local_3++;
 						}
-						;
 						_local_2++;
 					}
-					;
 					this.tipCount = 0;
 					if (!this.isMoving)
 					{
@@ -935,19 +916,13 @@ package com.popchan.sugar.modules.game.view
 										this.gameState = STATE_GAME_END;
 										this.handleFailed();
 									}
-									;
 								}
-								;
 								this.checkShuffle();
 							}
-							;
 						}
-						;
 					}
-					;
 					return;
 			}
-			;
 		}
 
 		private function checkShuffle():void
@@ -979,7 +954,6 @@ package com.popchan.sugar.modules.game.view
 				Core.timerManager.remove(this, this.onTimer);
 				this.gameState = STATE_GAME_CHECK_DROP_COMPLETE;
 			}
-			;
 		}
 
 		private function onTouch(_arg_1:TouchEvent):void
@@ -992,18 +966,15 @@ package com.popchan.sugar.modules.game.view
 			{
 				return;
 			}
-			;
 			if (this.gameState != STATE_GAME_WAIT)
 			{
 				return;
 			}
-			;
 			var _local_2:Touch = _arg_1.getTouch(Starling.current.stage);
 			if (!_local_2)
 			{
 				return;
 			}
-			;
 			if (_local_2.phase == TouchPhase.BEGAN)
 			{
 				_local_3 = _local_2.getLocation(Starling.current.stage);
@@ -1013,7 +984,6 @@ package com.popchan.sugar.modules.game.view
 				{
 					Debug.log(("选择的candy位置:row=" + this.selectedCard.row), ("col=" + this.selectedCard.col), this.selectedCard.x, this.selectedCard.y);
 				}
-				;
 			}
 			else
 			{
@@ -1047,26 +1017,18 @@ package com.popchan.sugar.modules.game.view
 									{
 										this.makeSwap(this.selectedCard, this.candys[(_local_4 + 1)][_local_5]);
 									}
-									;
 								}
-								;
 							}
-							;
 						}
-						;
 					}
-					;
 				}
 				else
 				{
 					if (_local_2.phase == TouchPhase.ENDED)
 					{
 					}
-					;
 				}
-				;
 			}
-			;
 		}
 
 		private function hasIronWire(_arg_1:int, _arg_2:int, _arg_3:int):Boolean
@@ -1077,9 +1039,7 @@ package com.popchan.sugar.modules.game.view
 				{
 					return (true);
 				}
-				;
 			}
-			;
 			return (false);
 		}
 
@@ -1095,7 +1055,6 @@ package com.popchan.sugar.modules.game.view
 			{
 				Core.timerManager.add(this, this.onTimer, 1000);
 			}
-			;
 			posA = this.getCandyPosition(candyA.row, candyA.col);
 			posB = this.getCandyPosition(candyB.row, candyB.col);
 			candyA.runMoveAction({"time": 0.2, "x": posA.x, "y": posA.y, "transition": "linear"});
@@ -1119,7 +1078,6 @@ package com.popchan.sugar.modules.game.view
 						gameState = STATE_GAME_WAIT;
 					}});
 				}
-				;
 			}});
 		}
 
@@ -1152,15 +1110,11 @@ package com.popchan.sugar.modules.game.view
 						{
 							return (_local_4);
 						}
-						;
 					}
-					;
 					_local_3++;
 				}
-				;
 				_local_2++;
 			}
-			;
 			return (null);
 		}
 
@@ -1248,7 +1202,6 @@ package com.popchan.sugar.modules.game.view
 				{
 					Model.gameModel.step--;
 				}
-				;
 				this.checkNeedDropFruit();
 				this.aimCard = (this.selectedCard = null);
 			}
@@ -1947,7 +1900,7 @@ package com.popchan.sugar.modules.game.view
 				candyA = this.selectedCard;
 				candyB = this.aimCard;
 			}
-			;
+
 			if (candyA.status == CandySpecialStatus.COLORFUL)
 			{
 				if (candyB.status == CandySpecialStatus.COLORFUL)
@@ -1957,68 +1910,51 @@ package com.popchan.sugar.modules.game.view
 					this.removeCandys(matches);
 					this.waitDrop();
 				}
-				else
+				else if (candyB.status == CandySpecialStatus.BOMB)
 				{
-					if (candyB.status == CandySpecialStatus.BOMB)
+					matches = this.getCandysByColorType(candyB.color);
+					this.createLaserEffect(candyA.x, candyA.y, matches, CandySpecialStatus.BOMB, function():void
 					{
-						matches = this.getCandysByColorType(candyB.color);
-						this.createLaserEffect(candyA.x, candyA.y, matches, CandySpecialStatus.BOMB, function():void
-						{
-							tempScore = 300;
-							changeCandysStatus(matches, CandySpecialStatus.BOMB);
-							matches.push(candyA);
-							removeCandys(matches);
-							waitDrop();
-						});
-					}
-					else
-					{
-						if (candyB.status == CandySpecialStatus.VERT)
-						{
-							matches = this.getCandysByColorType(candyB.color);
-							this.createLaserEffect(candyA.x, candyA.y, matches, CandySpecialStatus.VERT, function():void
-							{
-								tempScore = 300;
-								matches.push(candyA);
-								removeCandys(matches);
-								waitDrop();
-							}, true);
-						}
-						else
-						{
-							if (candyB.status == CandySpecialStatus.HORIZ)
-							{
-								matches = this.getCandysByColorType(candyB.color);
-								this.createLaserEffect(candyA.x, candyA.y, matches, CandySpecialStatus.HORIZ, function():void
-								{
-									tempScore = 300;
-									matches.push(candyA);
-									removeCandys(matches);
-									waitDrop();
-								}, true);
-							}
-							else
-							{
-								if (candyB.status == CandySpecialStatus.NOTHING)
-								{
-									matches = this.getCandysByColorType(candyB.color);
-									this.createRayEffect(candyA.x, candyA.y, matches, function():void
-									{
-										tempScore = 300;
-										matches.push(candyA);
-										removeCandys(matches);
-										waitDrop();
-									});
-								}
-								;
-							}
-							;
-						}
-						;
-					}
-					;
+						tempScore = 300;
+						changeCandysStatus(matches, CandySpecialStatus.BOMB);
+						matches.push(candyA);
+						removeCandys(matches);
+						waitDrop();
+					});
 				}
-				;
+				else if (candyB.status == CandySpecialStatus.VERT)
+				{
+					matches = this.getCandysByColorType(candyB.color);
+					this.createLaserEffect(candyA.x, candyA.y, matches, CandySpecialStatus.VERT, function():void
+					{
+						tempScore = 300;
+						matches.push(candyA);
+						removeCandys(matches);
+						waitDrop();
+					}, true);
+				}
+				else if (candyB.status == CandySpecialStatus.HORIZ)
+				{
+					matches = this.getCandysByColorType(candyB.color);
+					this.createLaserEffect(candyA.x, candyA.y, matches, CandySpecialStatus.HORIZ, function():void
+					{
+						tempScore = 300;
+						matches.push(candyA);
+						removeCandys(matches);
+						waitDrop();
+					}, true);
+				}
+				else if (candyB.status == CandySpecialStatus.NOTHING)
+				{
+					matches = this.getCandysByColorType(candyB.color);
+					this.createRayEffect(candyA.x, candyA.y, matches, function():void
+					{
+						tempScore = 300;
+						matches.push(candyA);
+						removeCandys(matches);
+						waitDrop();
+					});
+				}
 			}
 			else
 			{
@@ -2031,115 +1967,79 @@ package com.popchan.sugar.modules.game.view
 						this.removeCandys(matches);
 						this.waitDrop();
 					}
-					else
+					else if (candyB.status == CandySpecialStatus.VERT)
 					{
-						if (candyB.status == CandySpecialStatus.VERT)
+						if (candyA.col < candyB.col)
 						{
-							if (candyA.col < candyB.col)
+							cols = [(candyA.col - 1), candyA.col, candyB.col, (candyB.col + 1)];
+						}
+						else
+						{
+							if (candyA.col > candyB.col)
 							{
-								cols = [(candyA.col - 1), candyA.col, candyB.col, (candyB.col + 1)];
+								cols = [(candyA.col + 1), candyA.col, candyB.col, (candyB.col - 1)];
 							}
 							else
 							{
-								if (candyA.col > candyB.col)
+								if (candyA.col == candyB.col)
 								{
-									cols = [(candyA.col + 1), candyA.col, candyB.col, (candyB.col - 1)];
+									cols = [(candyA.col - 1), candyA.col, (candyB.col + 1)];
 								}
-								else
-								{
-									if (candyA.col == candyB.col)
-									{
-										cols = [(candyA.col - 1), candyA.col, (candyB.col + 1)];
-									}
-									;
-								}
-								;
 							}
-							;
-							matches = this.getCandysByRowsOrCols([], cols);
-							this.tempScore = 300;
-							this.removeCandys(matches);
-							this.waitDrop();
 						}
-						else
-						{
-							if (candyB.status == CandySpecialStatus.HORIZ)
-							{
-								if (candyA.row < candyB.row)
-								{
-									rows = [(candyA.row - 1), candyA.row, candyB.row, (candyB.row + 1)];
-								}
-								else
-								{
-									if (candyA.row > candyB.row)
-									{
-										rows = [(candyA.row + 1), candyA.row, candyB.row, (candyB.row - 1)];
-									}
-									else
-									{
-										if (candyA.row == candyB.row)
-										{
-											rows = [(candyA.row - 1), candyA.row, (candyB.row + 1)];
-										}
-										;
-									}
-									;
-								}
-								;
-								matches = this.getCandysByRowsOrCols(rows, []);
-								this.tempScore = 300;
-								this.removeCandys(matches);
-								this.waitDrop();
-							}
-							;
-						}
-						;
+						matches = this.getCandysByRowsOrCols([], cols);
+						this.tempScore = 300;
+						this.removeCandys(matches);
+						this.waitDrop();
 					}
-					;
+					else if (candyB.status == CandySpecialStatus.HORIZ)
+					{
+						if (candyA.row < candyB.row)
+						{
+							rows = [(candyA.row - 1), candyA.row, candyB.row, (candyB.row + 1)];
+						}
+						else if (candyA.row > candyB.row)
+						{
+							rows = [(candyA.row + 1), candyA.row, candyB.row, (candyB.row - 1)];
+						}
+						else if (candyA.row == candyB.row)
+						{
+							rows = [(candyA.row - 1), candyA.row, (candyB.row + 1)];
+						}
+
+						matches = this.getCandysByRowsOrCols(rows, []);
+						this.tempScore = 300;
+						this.removeCandys(matches);
+						this.waitDrop();
+					}
 				}
-				else
+				else if (candyA.status == CandySpecialStatus.VERT)
 				{
-					if (candyA.status == CandySpecialStatus.VERT)
+					if (candyB.status == CandySpecialStatus.VERT)
 					{
-						if (candyB.status == CandySpecialStatus.VERT)
-						{
-							this.tempScore = 300;
-							candyB.setSpecialStatus(1);
-							this.removeCandys([candyA, candyB]);
-							this.waitDrop();
-						}
-						else
-						{
-							if (candyB.status == CandySpecialStatus.HORIZ)
-							{
-								this.tempScore = 300;
-								this.removeCandys([candyA, candyB]);
-								this.waitDrop();
-							}
-							;
-						}
-						;
+						this.tempScore = 300;
+						candyB.setSpecialStatus(1);
+						this.removeCandys([candyA, candyB]);
+						this.waitDrop();
 					}
-					else
+					else if (candyB.status == CandySpecialStatus.HORIZ)
 					{
-						if (candyA.status == CandySpecialStatus.HORIZ)
-						{
-							if (candyB.status == CandySpecialStatus.HORIZ)
-							{
-								candyB.setSpecialStatus(2);
-								this.tempScore = 300;
-								this.removeCandys([candyA, candyB]);
-								this.waitDrop();
-							}
-							;
-						}
-						;
+						this.tempScore = 300;
+						this.removeCandys([candyA, candyB]);
+						this.waitDrop();
 					}
-					;
 				}
-				;
+				else if (candyA.status == CandySpecialStatus.HORIZ)
+				{
+					if (candyB.status == CandySpecialStatus.HORIZ)
+					{
+						candyB.setSpecialStatus(2);
+						this.tempScore = 300;
+						this.removeCandys([candyA, candyB]);
+						this.waitDrop();
+					}
+				}
 			}
-			;
 		}
 
 		private function createLaserEffect(x:int, y:int, list:Array, changeStatus:int, complete:Function, isRandomLine:Boolean = false):void
