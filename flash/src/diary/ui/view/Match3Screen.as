@@ -1,18 +1,16 @@
 package diary.ui.view
 {
 	import flash.display.BitmapData;
-	import flash.utils.setTimeout;
 	
 	import diary.avatar.Avatar;
+	import diary.game.m3.Match3View;
 	
 	import fairygui.GComponent;
-	import fairygui.UIPackage;
+	import fairygui.GRoot;
 	
 	import starling.textures.TextureAtlas;
 	
-	import zzsdk.utils.FileUtil;
-	
-	public class EnterScreen extends GScreen implements IScreen
+	public class Match3Screen extends GScreen implements IScreen
 	{
 		private var json:Object;
 		
@@ -31,16 +29,8 @@ package diary.ui.view
 		public var leftBar:GComponent;
 		private var firstRun:Boolean;
 		
-		public function EnterScreen()
+		public function Match3Screen()
 		{
-		}
-		
-		
-		override protected function doLoadAssets():void
-		{
-			UIPackage.addPackage( //
-				FileUtil.open("zz3d.dressup.gui"), //
-				FileUtil.open("zz3d.dressup@res.gui"));
 		}
 		
 		override public function createLayer(name:String):*
@@ -49,27 +39,14 @@ package diary.ui.view
 				return super.createLayer(name);
 			return null;
 		}
-		
-		[Handler(clickGTouch)]
-		public function startButtonClick():void
-		{
-			if(firstRun)
-				nextScreen(GameScreen);
-			else
-				nextScreen(MapScreen);
-		}
-		
+				
 		override protected function onCreate():void
 		{
-			setGView("zz3d.dressup.gui", "Enter")
+			setGView("zz3d.dressup.gui", "Match3");
+			var view:Match3View = new Match3View();
+			GRoot.inst.addChild(view);
 			
-			fit(getChild("tpage").asLoader);
-			//prepare ad
-			transferTo("transpage");
-			setTimeout(function():void
-			{
-				transferTo("start");
-			}, 2000);
+			view.enter();
 		}
 		
 		override public function dispose():void

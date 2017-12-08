@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<component size="185,50" extention="Button">
-  <displayList>
-    <image id="n50" name="n50" src="aiqr20" xy="0,0"/>
-  </displayList>
-  <Button/>
-</component>

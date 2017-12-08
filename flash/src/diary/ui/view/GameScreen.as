@@ -10,6 +10,8 @@ package diary.ui.view
 	
 	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
+	import diary.avatar.AvatarBoy;
+	import diary.avatar.AvatarGirl;
 	import diary.avatar.RotationComponent;
 	import diary.services.ScreenShot;
 	import diary.ui.Carousel;
@@ -90,44 +92,11 @@ package diary.ui.view
 				return back;
 			}
 		}
-		
-		[Handler(clickGTouch)]
-		public function startButtonClick():void
-		{
-			transferTo("map");
-			//			UIConfig.scrollAniTweenTime = 1.2;
-			var world:GComponent = getChild("worldmap").asCom;
-			var width:int = GRoot.inst.width;
-			var height:int = GRoot.inst.height;
-			world.setSize(width, height);
-			
-			var offset:int = 0;
-			var scale:Number = 1;
-			for (var i:int = 0; i < world.numChildren; i++)
-			{
-				var child:GImage = world.getChildAt(i) as GImage;
-				if (child == null)
-					break;
-			}
-			for (i -= 1; i >= 0; i--)
-			{
-				child = world.getChildAt(i) as GImage;
-				scale = width / child.width;
-				child.width = Math.round(width);
-				child.height *= scale;
-				child.height = Math.round(height);
-				child.y = Math.round(offset);
-				offset += child.height;
-			}
-		}
-		
+				
 		[Handler(clickGTouch)]
 		public function yesButtonClick():void
 		{
-			transferTo("show", function():void
-			{
-				removeBackground();
-			});
+			transferTo("show", removeBackground);
 		}
 		
 		[Handler(clickGTouch)]
@@ -156,7 +125,7 @@ package diary.ui.view
 			}
 			else if ("game" == getController("sceneControl").selectedPage)
 			{
-				transferTo("map");
+				nextScreen(MapScreen);
 			}
 		}
 		
@@ -219,21 +188,35 @@ package diary.ui.view
 		{
 			zoom(getChild("zoomSwitchButton").asButton.selected);
 		}
+		
+		[Handler(clickGTouch)]
+		public function mallButtonClick():void
+		{
+			transferTo("mall", function():void
+			{
+				addBackground("mallBG");
+			});
+		}
+		
+		
+		[Handler(clickGTouch)]
+		public function hangerClick():void
+		{
+			getTransition("t5").play();
+		}
 
 		override protected function onCreate():void
 		{
 			snapAtlas = new BitmapData(GRoot.inst.width, GRoot.inst.height, false, 0);
-			setGView("zz3d.dressup.gui", "Root")
-			fit(getChild("tpage").asLoader);
-
-			setupWorldmapSize();
-			setupWorldmap();
-			updateWorldMap();
-
-			getChild("hanger").asButton.addClickListener(function():void
+			setGView("zz3d.dressup.gui", "Dressup");
+			transferTo("game", function():void
 			{
-				getTransition("t5").play();
+				getChild("leftBar").asCom.getController("c1").selectedIndex = 1;
+				getChild("background").asImage.visible = false;
+				addAvatar("girl");
+				addBackground();
 			});
+
 			getChild("leftBar").asCom.getController("c1").addEventListener(StateChangeEvent.CHANGED, function():void
 			{
 				var cat:String = getChild("leftBar").asCom.getController("c1").selectedPage;
@@ -291,86 +274,11 @@ package diary.ui.view
 			transferTo("map");
 		}
 		
-		private function setupWorldmapSize():void
-		{
-			var world:GComponent = getChild("worldmap").asCom;
-			var width:int = GRoot.inst.width;
-			var height:int = GRoot.inst.height;
-			world.setSize(width, height);
-			
-			var offset:int = 0;
-			var scale:Number = 1;
-			for (var i:int = 0; i < world.numChildren; i++)
-			{
-				var child:GImage = world.getChildAt(i) as GImage;
-				if (child == null)
-					break;
-			}
-			for (i -= 1; i >= 0; i--)
-			{
-				child = world.getChildAt(i) as GImage;
-				scale = width / child.width;
-				child.width = Math.round(width);
-				child.height *= scale;
-				child.height = Math.round(height);
-				child.y = Math.round(offset);
-				offset += child.height;
-			}
-		}
-		
-		private function setupWorldmap():void
-		{
-			var n:int = getChild("worldmap").asCom.numChildren;
-			var worldMapCom:GComponent = getChild("worldmap").asCom;
-			worldMapButtons = [];
-			for (var i:int = 0; i < n; i++)
-			{
-				var button:GButton = worldMapCom.getChildAt(i).asButton;
-				if (!button)
-					continue;
-				worldMapButtons.push(button);
-				button.addEventListener(GTouchEvent.CLICK, function(event:GTouchEvent):void
-				{
-					var b:GButton = event.currentTarget as GButton;
-					var index:int = worldMapButtons.indexOf(b);
-					transferTo("game", function():void
-					{
-						getChild("leftBar").asCom.getController("c1").selectedIndex = 1;
-						getChild("background").asImage.visible = false;
-						addAvatar("girl");
-						addBackground();
-					});
-
-					trace("clicked: " + index);
-				})
-			}
-			worldMapButtons.sort(function(up:GButton, down:GButton):int
-			{
-				if (up.y > down.y)
-					return -1
-				if (up.y < down.y)
-					return 1
-				return 0;
-			});
-		}
-
-		private function updateWorldMap():void
-		{
-			for (var i:int = 0; i < numSceneOpen; i++)
-			{
-				GButton(worldMapButtons[i]).enabled = true;
-			}
-			for (var i:int = numSceneOpen; i < worldMapButtons.length; i++)
-			{
-				GButton(worldMapButtons[i]).enabled = false;
-			}
-		}
-		
-		public function addAvatar(name:String):void
+		public function addAvatar(name:String, gender:String="girl"):void
 		{
 			if (avatarlist[name] != null)
 				return;
-			avatar = new Avatar;
+			var avatar:Avatar = gender == "girl" ? new AvatarGirl : new AvatarBoy;
 			
 			avatar.addComponent(new RotationComponent);
 			avatar.addComponent(new AnimationTicker);
@@ -409,6 +317,10 @@ package diary.ui.view
 					y: fitRectZoomIn.y, //
 					scaleX: fitRectZoomIn.width / 480, //
 					scaleY: fitRectZoomIn.height / 800});
+				TweenLite.to(backImage, 0.25, {x: fitRectZoomIn.x, //
+					y: fitRectZoomIn.y, //
+					scaleX: fitRectZoomIn.width / 480, //
+					scaleY: fitRectZoomIn.height / 800});
 			}
 			else
 			{
@@ -419,6 +331,10 @@ package diary.ui.view
 					y: 195});
 				var fitRect:Rectangle = getFitRect(backList);
 				TweenLite.to(backList, 0.25, {x: fitRect.x, //
+					y: fitRect.y, //
+					scaleX: fitRect.width / 480, //
+					scaleY: fitRect.height / 800});
+				TweenLite.to(backImage, 0.25, {x: fitRect.x, //
 					y: fitRect.y, //
 					scaleX: fitRect.width / 480, //
 					scaleY: fitRect.height / 800});

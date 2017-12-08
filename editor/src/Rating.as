@@ -89,7 +89,7 @@ package
 		private var genderList:List;
 		private var aniList:List;
 
-		public static var resourceRoot = "file:///E:/zz2017/dress3d/resources/";
+		public static var resourceRoot = "file:///F:/zz2018/d3d/resources/";
 		private var globalB:Shader3D;
 		private var exporter:Object;
 

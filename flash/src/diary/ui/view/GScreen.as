@@ -56,13 +56,15 @@ package diary.ui.view
 		protected function loadAssets():void
 		{
 			FileUtil.dir = File.applicationDirectory;
-			UIPackage.addPackage( //
-				FileUtil.open("zz3d.dressup.gui"), //
-				FileUtil.open("zz3d.dressup@res.gui"));
+			doLoadAssets();
 			UIPackage.waitToLoadCompleted(initializeHandler);
 			FileUtil.dir = File.applicationStorageDirectory;
 		}
-
+		
+		protected function doLoadAssets():void
+		{
+		}
+		
 		protected function initializeHandler():void
 		{
 			initialized = true;
