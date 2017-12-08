@@ -10,12 +10,10 @@ package
 	import diary.services.ScreenShot;
 	import diary.services.ShareService;
 	import diary.ui.view.EnterScreen;
-	import diary.ui.view.EnterUI;
-	import diary.ui.view.GameScreen;
-	import diary.ui.view.GameUI;
 	import diary.ui.view.ScreenManager;
-	import diary.ui.view.State;
+	
 	import payment.ane.PaymentANE;
+	
 	import starling.textures.Texture;
 	
 	import zzsdk.utils.FileUtil;
