@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="480,800">
+  <displayList>
+    <image id="n0_m19y" name="infoBg" src="m19y1" xy="0,99"/>
+    <image id="n1_m19y" name="n1" src="m19y2" xy="0,0">
+      <relation target="" sidePair="width-width,top-top"/>
+    </image>
+    <component id="n3_m19y" name="scoreBar" src="m19y6" xy="303,64">
+      <ProgressBar value="50" max="100"/>
+    </component>
+  </displayList>
+</component>

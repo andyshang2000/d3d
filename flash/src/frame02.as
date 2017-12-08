@@ -1,6 +1,9 @@
 package
 {
+	import com.popchan.framework.core.Core;
+	
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.filesystem.File;
 	
@@ -18,7 +21,7 @@ package
 	
 	import zzsdk.utils.FileUtil;
 
-	[SWF(frameRate = "45")]
+	[SWF(width = "480", height = "800", frameRate = "45")]
 	public class frame02 extends Sprite
 	{
 		public function frame02()
@@ -30,15 +33,18 @@ package
 			catch (err:Error)
 			{
 			}
+
+			var stage:Stage = this.stage;
 			var screenMgr:ScreenManager = new ScreenManager(stage);
 			Texture.asyncBitmapUploadEnabled = true;
 			screenMgr.addService(ScreenShot.inst);
 			screenMgr.addService(ShareService.inst);
 			screenMgr.addEventListener(Event.COMPLETE, function():void
 			{
+				Core.init(stage);
 				screenMgr.changeScreen(EnterScreen);
 			});
-			
+
 			var dir:* = File.applicationStorageDirectory;
 			FileUtil.dir = dir;
 			if (!FileUtil.dir.resolvePath("gameconfig").exists)
@@ -50,12 +56,12 @@ package
 				start();
 			}
 		}
-		
+
 		private function start():void
 		{
 			trace(":)");
 		}
-		
+
 		private function firstRun():void
 		{
 			var zip:FZip = new FZip;
@@ -64,7 +70,7 @@ package
 			{
 				FileUtil.save(event.file.content, event.file.filename);
 				count--
-				if(count == 0)
+				if (count == 0)
 				{
 					start();
 				}
@@ -74,9 +80,9 @@ package
 			var json:Object = JSON.parse(FileUtil.readFile(File.applicationDirectory.resolvePath("map.json"), "text"));
 			var game:Object = json["game"];
 			var distrib:Array = [];
-			for each (var items:Array in game) 
+			for each (var items:Array in game)
 			{
-				for (var i:int = 4; i < items.length; i++) 
+				for (var i:int = 4; i < items.length; i++)
 				{
 					items[i].locked = true;
 					items[i].scene = 0;

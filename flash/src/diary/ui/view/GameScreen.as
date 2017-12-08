@@ -1,46 +1,32 @@
 package diary.ui.view
 {
 	import com.greensock.TweenLite;
-	import com.greensock.TweenNano;
-	import com.greensock.easing.Back;
 	
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
 	
-	import diary.avatar.AnimationTicker;
-	import diary.avatar.Avatar;
-	import diary.avatar.AvatarBoy;
-	import diary.avatar.AvatarGirl;
-	import diary.avatar.RotationComponent;
 	import diary.services.ScreenShot;
 	import diary.ui.Carousel;
 	
-	import fairygui.GButton;
 	import fairygui.GComponent;
 	import fairygui.GImage;
 	import fairygui.GList;
 	import fairygui.GRoot;
 	import fairygui.UIPackage;
-	import fairygui.event.GTouchEvent;
 	import fairygui.event.ItemEvent;
 	import fairygui.event.StateChangeEvent;
 	
-	import flare.core.Camera3D;
-	
-	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	
 	import zzsdk.utils.FileUtil;
 
-	public class GameScreen extends GScreen implements IScreen
+	public class GameScreen extends AvatarScreen implements IScreen
 	{
 		private var json:Object;
 
 		private var iconAtlas:TextureAtlas;
-		private var avatar:Avatar;
 
 		private var snapAtlas:BitmapData;
 		private var snapTextures:Array = [];
@@ -52,11 +38,7 @@ package diary.ui.view
 		private var initialized:Boolean;
 
 		public var leftBar:GComponent;
-		
-		private var back:Sprite
-		private var backImage:Image;
 		private var backList:Carousel;
-		private var avatarlist:Object = {};
 
 		public function GameScreen()
 		{
@@ -64,33 +46,6 @@ package diary.ui.view
 			iconAtlas = new TextureAtlas( //
 				Texture.fromAtfData(FileUtil.open("icon/texture.atf")), //
 				XML(FileUtil.open("icon/texture.xml", "text")));
-		}
-		
-		
-		override public function createLayer(name:String):*
-		{
-			if(name == "front")
-				return super.createLayer(name);
-			else if(name == "back")
-			{
-				if (back == null)
-				{
-					back = new Sprite;
-					backList = new Carousel;
-					var images:Array = [];
-					var len:int = 5;
-					for (var i:int = 1; i <= len; i++)
-					{
-						images.push("bg0" + (i) + ".png");
-					}
-					
-					backList.setImages(images);
-					backImage = new Image(Texture.empty(480, 800));
-					back.addChild(backImage);
-					back.addChild(backList);
-				}
-				return back;
-			}
 		}
 				
 		[Handler(clickGTouch)]
@@ -269,37 +224,19 @@ package diary.ui.view
 					});
 				}
 			});
-
+			
+			backList = new Carousel;
+			var images:Array = [];
+			var len:int = 5;
+			for (var i:int = 1; i <= len; i++)
+			{
+				images.push("bg0" + (i) + ".png");
+			}
+			
+			backList.setImages(images);
+			back.addChild(backList);
 			//prepare ad
 			transferTo("map");
-		}
-		
-		public function addAvatar(name:String, gender:String="girl"):void
-		{
-			if (avatarlist[name] != null)
-				return;
-			var avatar:Avatar = gender == "girl" ? new AvatarGirl : new AvatarBoy;
-			
-			avatar.addComponent(new RotationComponent);
-			avatar.addComponent(new AnimationTicker);
-			
-			scene.addChild(avatar);
-			scene.camera.setPosition(0, 195, -450);
-			scene.camera.setRotation(12, 0, 0);
-			scene.camera.fovMode = Camera3D.FOV_VERTICAL;
-			scene.camera.fieldOfView = 28;
-			
-			avatarlist[name] = avatar
-		}
-		
-		public function getAvatar(name):Avatar
-		{
-			return avatarlist[name]
-		}
-		
-		public function updatePart(id:String):void
-		{
-			avatar.updatePart(id, true);
 		}
 		
 		public function zoom(zoomIn:Boolean):void
@@ -344,13 +281,19 @@ package diary.ui.view
 		
 		public function addBackground(name:String = "bedroom2"):void
 		{
+			var image:GImage = UIPackage.createObject("zz3d.dressup.gui", name).asImage;
 			TweenLite.to(back, 0.5, {x: 0.1});
-			backImage.texture = Texture.fromTexture(UIPackage.createObject("zz3d.dressup.gui", name).asImage.texture);
 			backImage.visible = true;
 			backList.visible = false;
 			
 			setTimeout(function():void
 			{
+				if(image.texture == null)
+				{
+					setTimeout(arguments.callee, 1);
+					return;
+				}
+				backImage.texture = Texture.fromTexture(image.texture);
 				fit(backList);
 				fit(backImage);
 			}, 1);

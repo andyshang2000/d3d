@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="480,800">
+  <displayList>
+    <image id="n0_m19y" name="infoBg" src="mld80" xy="0,99" visible="false">
+      <relation target="" sidePair="center-center,top-top"/>
+    </image>
+    <image id="n1_m19y" name="n1" src="mld81" xy="0,0">
+      <relation target="" sidePair="width-width,top-top"/>
+    </image>
+    <component id="n3_m19y" name="scoreBar" src="mld83" xy="303,64">
+      <relation target="" sidePair="top-top,right-right"/>
+      <ProgressBar value="50" max="100"/>
+    </component>
+    <component id="n5_mld8" name="returnButton" src="mld87" xy="9,68"/>
+  </displayList>
+</component>

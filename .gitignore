@@ -34,3 +34,5 @@
 /flash/*.apk
 /editor/bin-debug
 /resources
+/app/src/main/assets/assets
+/flash/src/assets

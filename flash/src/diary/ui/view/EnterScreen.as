@@ -1,6 +1,14 @@
 package diary.ui.view
 {
+	import com.popchan.framework.core.Core;
+	import com.popchan.framework.utils.DataUtil;
+	import com.popchan.sugar.core.Model;
+	import com.popchan.sugar.core.manager.Sounds;
+	import com.popchan.sugar.modules.end.EndModule;
+	import com.popchan.sugar.modules.game.GameModule;
+	
 	import flash.display.BitmapData;
+	import flash.filesystem.File;
 	import flash.utils.setTimeout;
 	
 	import diary.avatar.Avatar;
@@ -9,6 +17,7 @@ package diary.ui.view
 	import fairygui.UIPackage;
 	
 	import starling.textures.TextureAtlas;
+	import starling.utils.AssetManager;
 	
 	import zzsdk.utils.FileUtil;
 	
@@ -35,12 +44,66 @@ package diary.ui.view
 		{
 		}
 		
+		override protected function loadAssets():void
+		{
+			var _local_1:AssetManager = Core.texturesManager;
+			_local_1.enqueue("assets/textures/card.png?rnd=1");
+			_local_1.enqueue("assets/textures/card.xml?rnd=100");
+			_local_1.enqueue("assets/textures/ui02.png");
+			_local_1.enqueue("assets/textures/ui02.xml");
+			_local_1.enqueue("assets/textures/map.png");
+			_local_1.enqueue("assets/textures/map.xml");
+			_local_1.enqueue("assets/textures/menu.png");
+			_local_1.enqueue("assets/textures/menu.xml");
+			_local_1.enqueue("assets/effect.png");
+			_local_1.enqueue("assets/effect.xml");
+			_local_1.enqueue("assets/textures/gameui.png");
+			_local_1.enqueue("assets/textures/gameui.xml");
+			_local_1.enqueue("assets/title_bg.jpg");
+			_local_1.enqueue("assets/worldBg_2.png");
+			_local_1.enqueue("assets/textures/game01.png");
+			_local_1.enqueue("assets/textures/game01.xml");
+			_local_1.enqueue("assets/textures/game02.png");
+			_local_1.enqueue("assets/textures/game02.xml");
+			_local_1.enqueue("assets/textures/game03.png");
+			_local_1.enqueue("assets/textures/game03.xml");
+			_local_1.enqueue((("assets/level/Level" + 125) + ".xml"));
+			var _local_2:int;
+			while (_local_2 <= 20)
+			{
+				_local_1.enqueue((("assets/level/Level" + _local_2) + ".xml"));
+				_local_2++;
+			};
+			_local_2 = 0;
+			_local_1.verbose = false;
+			_local_1.loadQueue(this.onLoadProgress);
+			DataUtil.id = "com.popchanniuniu.bubble410";
+			DataUtil.load(DataUtil.id);
+			Model.levelModel.loadData();
+			Sounds.init();
+			GameModule.getInstance().init();
+			EndModule.getInstance().init();
+		}
+		
+		private function onLoadProgress(ratio:Number):void
+		{
+			if(ratio == 1)
+			{
+				FileUtil.dir = File.applicationDirectory;
+				doLoadAssets();
+				UIPackage.waitToLoadCompleted(initializeHandler);
+				FileUtil.dir = File.applicationStorageDirectory;
+			}
+		}
 		
 		override protected function doLoadAssets():void
 		{
 			UIPackage.addPackage( //
 				FileUtil.open("zz3d.dressup.gui"), //
 				FileUtil.open("zz3d.dressup@res.gui"));
+			UIPackage.addPackage( //
+				FileUtil.open("zz3d.m3.gui"), //
+				FileUtil.open("zz3d.m3@res.gui"));
 		}
 		
 		override public function createLayer(name:String):*

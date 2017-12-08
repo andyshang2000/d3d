@@ -36,7 +36,7 @@
     <component id="n23" name="showLeftButton" src="jl4j1d" xy="5,350">
       <gearDisplay controller="sceneControl" pages="3"/>
     </component>
-    <component id="n38" name="zoomSwitchButton" src="tzxv1r" xy="12,640" size="56,56">
+    <component id="n38" name="zoomSwitchButton" src="tzxv1r" xy="11,682" size="56,56">
       <gearDisplay controller="sceneControl" pages="2,3"/>
       <relation target="" sidePair="bottom-bottom,left-left"/>
     </component>
@@ -89,7 +89,15 @@
       <relation target="n8" sidePair="top-top,right-right"/>
     </component>
     <image id="n62_x39n" name="n62" src="x39n2f" xy="-562,0"/>
-    <component id="n65_x39n" name="mallButton" src="x39n2k" xy="12,705">
+    <image id="n66_u55n" name="n66" src="u55n2r" xy="12,545" size="56,56">
+      <gearDisplay controller="sceneControl" pages="2"/>
+      <relation target="" sidePair="left-left,bottom-bottom"/>
+    </image>
+    <image id="n67_u55n" name="n67" src="u55n2s" xy="12,610" size="56,56">
+      <gearDisplay controller="sceneControl" pages="2"/>
+      <relation target="" sidePair="left-left,bottom-bottom"/>
+    </image>
+    <component id="n65_x39n" name="mallButton" src="x39n2k" xy="12,479">
       <gearDisplay controller="sceneControl" pages="2,3"/>
       <relation target="" sidePair="bottom-bottom,left-left"/>
     </component>

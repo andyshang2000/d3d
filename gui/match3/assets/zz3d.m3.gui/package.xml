@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="hem7gkdt" jpegQuality="80" compressPNG="true">
+  <resources>
+    <component id="m19y0" name="MissionPanel.xml" path="/"/>
+    <image id="m19y1" name="infoBg.png" path="/"/>
+    <image id="m19y2" name="infoTop.png" path="/" scale="9grid" scale9grid="144,21,158,21"/>
+    <image id="m19y4" name="progressBg.png" path="/"/>
+    <image id="m19y5" name="progressBar.png" path="/" scale="9grid" scale9grid="18,6,120,9"/>
+    <component id="m19y6" name="ProgressBar.xml" path="/"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>
