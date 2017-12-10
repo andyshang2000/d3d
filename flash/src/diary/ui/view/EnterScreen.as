@@ -16,6 +16,8 @@ package diary.ui.view
 	import fairygui.GComponent;
 	import fairygui.UIPackage;
 	
+	import payment.ane.PaymentANE;
+	
 	import starling.textures.TextureAtlas;
 	import starling.utils.AssetManager;
 	
@@ -127,6 +129,13 @@ package diary.ui.view
 			setGView("zz3d.dressup.gui", "Enter")
 			
 			fit(getChild("tpage").asLoader);
+			try
+			{
+				PaymentANE.call("ready");
+			}
+			catch (err:Error)
+			{
+			}
 			//prepare ad
 			transferTo("transpage");
 			setTimeout(function():void
