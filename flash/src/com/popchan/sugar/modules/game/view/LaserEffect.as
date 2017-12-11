@@ -21,7 +21,7 @@ package com.popchan.sugar.modules.game.view
             var _local_1:int;
             while (_local_1 < 6)
             {
-                _local_2 = ToolKit.createImage(this, Core.texturesManager.getTexture("sun"));
+                _local_2 = ToolKit.createImage(this, Core.getTexture("sun"));
                 addChild(_local_2);
                 this.suns.push(_local_2);
                 _local_1++;

@@ -1,40 +1,41 @@
 ﻿//Created by Action Script Viewer - http://www.buraks.com/asv
 package com.popchan.sugar.modules.game.view
 {
-    import com.popchan.framework.ds.BasePool;
-    import starling.display.CMovieClip;
-    import com.popchan.framework.utils.ToolKit;
-    import com.popchan.framework.core.Core;
-    import starling.events.Event;
+	import com.popchan.framework.core.Core;
+	import com.popchan.framework.ds.BasePool;
+	import com.popchan.framework.utils.ToolKit;
 
-    public class IceBombEffect extends Element 
-    {
+	import starling.display.MovieClip;
+	import starling.events.Event;
 
-        public static var pool:BasePool = new BasePool(IceBombEffect, 10);
+	public class IceBombEffect extends Element
+	{
 
-        private var animation:CMovieClip;
+		public static var pool:BasePool = new BasePool(IceBombEffect, 10);
 
-        public function IceBombEffect()
-        {
-            this.animation = ToolKit.createMovieClip(this, Core.texturesManager.getTextures("iceboom_"));
-            this.animation.frameRate = 10;
-            this.animation.loops = 1;
-            this.animation.scaleX = (this.animation.scaleY = 1.5);
-        }
+		private var animation:MovieClip;
 
-        public function play():void
-        {
-            this.animation.addEventListener(Event.COMPLETE, this.onAnimationEnd);
-            this.animation.gotoAndPlay(1);
-        }
+		public function IceBombEffect()
+		{
+			this.animation = ToolKit.createMovieClip(this, Core.getTextures("iceboom_"));
+			this.animation.fps = 10;
+			this.animation.loop = true;
+			this.animation.scaleX = (this.animation.scaleY = 1.5);
+			this.animation.stop();
+		}
 
-        private function onAnimationEnd(_arg_1:Event):void
-        {
-            this.animation.removeEventListener(Event.COMPLETE, this.onAnimationEnd);
-            this.removeFromParent();
-            pool.put(this);
-        }
+		public function play():void
+		{
+			this.animation.addEventListener(Event.COMPLETE, this.onAnimationEnd);
+			this.animation.play();
+		}
 
+		private function onAnimationEnd(_arg_1:Event):void
+		{
+			this.animation.removeEventListener(Event.COMPLETE, this.onAnimationEnd);
+			this.removeFromParent();
+			pool.put(this);
+		}
 
-    }
-}//package com.popchan.sugar.modules.game.view
+	}
+} //package com.popchan.sugar.modules.game.view

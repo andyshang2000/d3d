@@ -35,7 +35,7 @@ package com.popchan.sugar.modules.game.view
             this._brickID = _arg_1;
             if (_arg_1 == TileConst.BRICK)
             {
-                _local_2 = Texture.fromTexture(Core.texturesManager.getTexture("brick1"));
+                _local_2 = Texture.fromTexture(Core.getTexture("brick1"));
                 if (this.img == null)
                 {
                     this.img = new Image(_local_2);
@@ -50,7 +50,7 @@ package com.popchan.sugar.modules.game.view
             {
                 if (_arg_1 == TileConst.BRICK2)
                 {
-                    _local_2 = Texture.fromTexture(Core.texturesManager.getTexture("brick2"));
+                    _local_2 = Texture.fromTexture(Core.getTexture("brick2"));
                     if (this.img == null)
                     {
                         this.img = new Image(_local_2);
@@ -77,7 +77,7 @@ package com.popchan.sugar.modules.game.view
             };
             if (this._life == 2)
             {
-                this.img.texture = Texture.fromTexture(Core.texturesManager.getTexture("brick1"));
+                this.img.texture = Texture.fromTexture(Core.getTexture("brick1"));
                 _local_2 = (BrickExp.pool.take() as BrickExp);
                 _local_2.setInfo(2, _local_1);
                 _local_2.x = x;

@@ -22,9 +22,9 @@ package com.popchan.sugar.modules.game.view
 
         public function Ice()
         {
-            this.ice1 = ToolKit.createImage(this, Core.texturesManager.getTexture("sprite2"), 0, 0, true);
-            this.ice2 = ToolKit.createImage(this, Core.texturesManager.getTexture("spritemid"), 0, 0, true);
-            this.ice3 = ToolKit.createImage(this, Core.texturesManager.getTexture("sprite1"), 0, 0, true);
+            this.ice1 = ToolKit.createImage(this, Core.getTexture("sprite2"), 0, 0, true);
+            this.ice2 = ToolKit.createImage(this, Core.getTexture("spritemid"), 0, 0, true);
+            this.ice3 = ToolKit.createImage(this, Core.getTexture("sprite1"), 0, 0, true);
             this.ice1.scaleX = (this.ice1.scaleY = 1.2);
             this.ice2.scaleX = (this.ice2.scaleY = 1.2);
             this.ice3.scaleX = (this.ice3.scaleY = 1.2);

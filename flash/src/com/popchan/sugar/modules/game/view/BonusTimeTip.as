@@ -15,7 +15,7 @@ package com.popchan.sugar.modules.game.view
 
         public function BonusTimeTip()
         {
-            ToolKit.createImage(this, Core.texturesManager.getTexture("bonustime"), 0, 0, true);
+            ToolKit.createImage(this, Core.getTexture("bonustime"), 0, 0, true);
         }
 
         public function doAniamtion():void

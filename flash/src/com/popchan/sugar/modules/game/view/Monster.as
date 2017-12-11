@@ -20,7 +20,7 @@ package com.popchan.sugar.modules.game.view
 
         public function Monster()
         {
-            ToolKit.createImage(this, Core.texturesManager.getTexture("moveable"), 0, 0, true);
+            ToolKit.createImage(this, Core.getTexture("moveable"), 0, 0, true);
         }
 
         public function doAnimation():void

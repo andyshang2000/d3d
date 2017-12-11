@@ -38,25 +38,25 @@ package com.popchan.sugar.modules.game.view
             this.aimLabelDict = new Dictionary();
             this.aimIconDict = new Dictionary();
             super();
-            this.progress = new HProgressBar(Core.texturesManager.getTexture("progressBg"), Core.texturesManager.getTexture("progressBar"));
+            this.progress = new HProgressBar(Core.getTexture("progressBg"), Core.getTexture("progressBar"));
             this.progress.x = 412;
             this.progress.y = 67;
             this.addChild(this.progress);
             this.progress.ratio = 0;
-            this.pause_btn = ToolKit.createButton(this, Core.texturesManager.getTexture("pause_btn"), 589, 70, this.onPause);
-            ToolKit.createImage(this, Core.texturesManager.getTexture("infopanel"), 0, 0, false, false);
-            this.stepIcon = ToolKit.createImage(this, Core.texturesManager.getTexture("step"), 104, 20, true, false);
-            this.timeIcon = ToolKit.createImage(this, Core.texturesManager.getTexture("clock"), 104, 23, true, false);
-            ToolKit.createImage(this, Core.texturesManager.getTexture("score"), 539, 20, true, false);
-            this.stepLabel = ToolKit.createTextSprite(this, Core.texturesManager.getTextures("font1_"), 104, 30, 16, "0123456789/x+-", 24);
+            this.pause_btn = ToolKit.createButton(this, Core.getTexture("pause_btn"), 589, 70, this.onPause);
+            ToolKit.createImage(this, Core.getTexture("infopanel"), 0, 0, false, false);
+            this.stepIcon = ToolKit.createImage(this, Core.getTexture("step"), 104, 20, true, false);
+            this.timeIcon = ToolKit.createImage(this, Core.getTexture("clock"), 104, 23, true, false);
+            ToolKit.createImage(this, Core.getTexture("score"), 539, 20, true, false);
+            this.stepLabel = ToolKit.createTextSprite(this, Core.getTextures("font1_"), 104, 30, 16, "0123456789/x+-", 24);
             this.stepLabel.hAlign = "center";
-            this.timeLabel = ToolKit.createTextSprite(this, Core.texturesManager.getTextures("font1_"), 104, 30, 16, "0123456789/x+-", 24);
+            this.timeLabel = ToolKit.createTextSprite(this, Core.getTextures("font1_"), 104, 30, 16, "0123456789/x+-", 24);
             this.timeLabel.hAlign = "center";
-            this.score_txt = ToolKit.createTextSprite(this, Core.texturesManager.getTextures("font1_"), 539, 30, 16, "0123456789/x+-", 24);
+            this.score_txt = ToolKit.createTextSprite(this, Core.getTextures("font1_"), 539, 30, 16, "0123456789/x+-", 24);
             this.score_txt.hAlign = "center";
             this.score_txt.text = "0";
-            ToolKit.createImage(this, Core.texturesManager.getTexture("levelimg"), 316, 80, true, false);
-            this.levelLabel = ToolKit.createTextSprite(this, Core.texturesManager.getTextures("glevel_"), 378, 68, 18, "0123456789", 27);
+            ToolKit.createImage(this, Core.getTexture("levelimg"), 316, 80, true, false);
+            this.levelLabel = ToolKit.createTextSprite(this, Core.getTextures("glevel_"), 378, 68, 18, "0123456789", 27);
             this.levelLabel.hAlign = "center";
             MsgDispatcher.add(GameEvents.AIMS_CHANGE, this.onAimChange);
             MsgDispatcher.add(GameEvents.SCORE_CHANGE, this.onScoreChange);
@@ -164,7 +164,7 @@ package com.popchan.sugar.modules.game.view
                 _local_8 = int(_local_7[0]);
                 _local_9 = int(_local_7[1]);
                 Model.gameModel.addAim(_local_8, _local_9);
-                _local_2 = new Image(Texture.fromTexture(Core.texturesManager.getTexture(AimType.AIM_ICONS[_local_8])));
+                _local_2 = new Image(Texture.fromTexture(Core.getTexture(AimType.AIM_ICONS[_local_8])));
                 _local_2.pivotY = (_local_2.height >> 1);
                 if (_local_8 != AimType.SCORE)
                 {
@@ -179,7 +179,7 @@ package com.popchan.sugar.modules.game.view
                 _local_2.y = 31;
                 this.addChild(_local_2);
                 this.aimIconDict[_local_8] = _local_2;
-                _local_10 = ToolKit.createTextSprite(this, Core.texturesManager.getTextures("font1_"), 0, 0, 16, "0123456789/x+-");
+                _local_10 = ToolKit.createTextSprite(this, Core.getTextures("font1_"), 0, 0, 16, "0123456789/x+-");
                 addChild(_local_10);
                 _local_10.text = (_local_9 + "");
                 _local_10.x = ((_local_4 + 45) + (_local_5 * 80));

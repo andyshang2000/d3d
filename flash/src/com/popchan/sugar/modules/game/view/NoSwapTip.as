@@ -14,7 +14,7 @@ package com.popchan.sugar.modules.game.view
 
         public function NoSwapTip()
         {
-            ToolKit.createImage(this, Core.texturesManager.getTexture("nomatch"), 0, 0, true);
+            ToolKit.createImage(this, Core.getTexture("nomatch"), 0, 0, true);
         }
 
         public function doAniamtion(callBack:Function):void

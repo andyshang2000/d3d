@@ -30,18 +30,18 @@ package com.popchan.sugar.modules.game.view
         {
             this.resDict = new Dictionary();
             super();
-            this.resDict[1] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_heng_shang"));
-            this.resDict[2] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_heng_xia"));
-            this.resDict[3] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_left_down"));
-            this.resDict[4] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_left_down_x"));
-            this.resDict[5] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_left_up"));
-            this.resDict[6] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_left_up_x"));
-            this.resDict[7] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_right_down"));
-            this.resDict[8] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_right_down_x"));
-            this.resDict[9] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_right_up"));
-            this.resDict[10] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_right_up_x"));
-            this.resDict[11] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_shu_you"));
-            this.resDict[12] = ToolKit.createImage(this, Core.texturesManager.getTexture("x_border_shu_zuo"));
+            this.resDict[1] = ToolKit.createImage(this, Core.getTexture("x_border_heng_shang"));
+            this.resDict[2] = ToolKit.createImage(this, Core.getTexture("x_border_heng_xia"));
+            this.resDict[3] = ToolKit.createImage(this, Core.getTexture("x_border_left_down"));
+            this.resDict[4] = ToolKit.createImage(this, Core.getTexture("x_border_left_down_x"));
+            this.resDict[5] = ToolKit.createImage(this, Core.getTexture("x_border_left_up"));
+            this.resDict[6] = ToolKit.createImage(this, Core.getTexture("x_border_left_up_x"));
+            this.resDict[7] = ToolKit.createImage(this, Core.getTexture("x_border_right_down"));
+            this.resDict[8] = ToolKit.createImage(this, Core.getTexture("x_border_right_down_x"));
+            this.resDict[9] = ToolKit.createImage(this, Core.getTexture("x_border_right_up"));
+            this.resDict[10] = ToolKit.createImage(this, Core.getTexture("x_border_right_up_x"));
+            this.resDict[11] = ToolKit.createImage(this, Core.getTexture("x_border_shu_you"));
+            this.resDict[12] = ToolKit.createImage(this, Core.getTexture("x_border_shu_zuo"));
         }
 
         public function setType(_arg_1:int, _arg_2:Sprite, _arg_3:int, _arg_4:int):void

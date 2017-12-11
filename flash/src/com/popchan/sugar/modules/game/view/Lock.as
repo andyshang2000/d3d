@@ -24,7 +24,7 @@ package com.popchan.sugar.modules.game.view
 
         public function Lock()
         {
-            this.icon = new Image(Texture.fromTexture(Core.texturesManager.getTexture("lock")));
+            this.icon = new Image(Texture.fromTexture(Core.getTexture("lock")));
             addChild(this.icon);
             this.icon.pivotX = (this.icon.width >> 1);
             this.icon.pivotY = (this.icon.height >> 1);

@@ -10,17 +10,6 @@ package com.popchan.sugar.modules
         private var _winName:String;
         public var destoryAfterClose:Boolean = true;
 
-
-        public function get winName():String
-        {
-            return (this._winName);
-        }
-
-        public function set winName(_arg_1:String):void
-        {
-            this._winName = _arg_1;
-        }
-
         public function init():void
         {
         }
@@ -39,7 +28,6 @@ package com.popchan.sugar.modules
 
         public function close():void
         {
-            WindowManager3D.getInstance().removeWindow(this.winName);
         }
 
         public function destory():void

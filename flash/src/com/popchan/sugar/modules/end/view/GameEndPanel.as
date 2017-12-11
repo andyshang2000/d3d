@@ -56,13 +56,13 @@ package com.popchan.sugar.modules.end.view
             super();
             this.node = new Sprite();
             addChild(this.node);
-            ToolKit.createImage(this.node, Core.texturesManager.getTexture("endPanel"), 0, 0);
-            ToolKit.createImage(this.node, Core.texturesManager.getTexture("endscoreinfo"), 86, 216);
-            this.success = ToolKit.createImage(this.node, Core.texturesManager.getTexture("success"), 165, 5);
-            this.failed = ToolKit.createImage(this.node, Core.texturesManager.getTexture("failed"), 165, 5);
-            this.next_btn = ToolKit.createButton(this.node, Core.texturesManager.getTexture("next_btn"), 177, 436, this.onBtnTouch);
-            this.close_btn = ToolKit.createButton(this.node, Core.texturesManager.getTexture("close_btn"), 452, 24, this.onBtnTouch);
-            this.replay2_btn = ToolKit.createButton(this.node, Core.texturesManager.getTexture("replay2_btn"), 177, 436, this.onBtnTouch);
+            ToolKit.createImage(this.node, Core.getTexture("endPanel"), 0, 0);
+            ToolKit.createImage(this.node, Core.getTexture("endscoreinfo"), 86, 216);
+            this.success = ToolKit.createImage(this.node, Core.getTexture("success"), 165, 5);
+            this.failed = ToolKit.createImage(this.node, Core.getTexture("failed"), 165, 5);
+            this.next_btn = ToolKit.createButton(this.node, Core.getTexture("next_btn"), 177, 436, this.onBtnTouch);
+            this.close_btn = ToolKit.createButton(this.node, Core.getTexture("close_btn"), 452, 24, this.onBtnTouch);
+            this.replay2_btn = ToolKit.createButton(this.node, Core.getTexture("replay2_btn"), 177, 436, this.onBtnTouch);
             this.node.pivotX = 267;
             this.node.pivotY = 564;
             this.node.x = (Core.stage3DManager.canvasWidth >> 1);
@@ -122,7 +122,7 @@ package com.popchan.sugar.modules.end.view
                 i = 0;
                 while (i < getStar)
                 {
-                    bigstar = ToolKit.createImage(this.node, Core.texturesManager.getTexture("bigstar"), 91, -65);
+                    bigstar = ToolKit.createImage(this.node, Core.getTexture("bigstar"), 91, -65);
                     bigstar.x = (167 + (i * 97));
                     bigstar.y = 131;
                     bigstar.scaleX = (bigstar.scaleY = 4);

@@ -1,6 +1,5 @@
 package diary.ui.view
 {
-	import com.greensock.TweenLite;
 	import com.popchan.framework.core.MsgDispatcher;
 	import com.popchan.sugar.core.Model;
 	import com.popchan.sugar.core.cfg.Config;
@@ -19,6 +18,7 @@ package diary.ui.view
 	import fairygui.GImage;
 	import fairygui.GRoot;
 	import fairygui.UIPackage;
+	import fairygui.Window;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObjectContainer;
@@ -81,6 +81,14 @@ package diary.ui.view
 
 			addAvatar("girl");
 			addBackground();
+
+			MsgDispatcher.add(GameEvents.OPEN_GAME_END_UI, function():void
+			{
+				var win:Window = new Window();
+				win.contentPane = UIPackage.createObject("zz3d.m3.gui", "EndPanel").asCom;
+//				win.contentPane.getChild(
+				GRoot.inst.showPopup(win);
+			});
 		}
 
 		public function addBackground(name:String = "bedroom2"):void
@@ -167,7 +175,7 @@ package diary.ui.view
 				_local_8 = int(_local_7[0]);
 				_local_9 = int(_local_7[1]);
 				Model.gameModel.addAim(_local_8, _local_9);
-//				_local_2 = new Image(Texture.fromTexture(Core.texturesManager.getTexture(AimType.AIM_ICONS[_local_8])));
+//				_local_2 = new Image(Texture.fromTexture(Core.getTexture(AimType.AIM_ICONS[_local_8])));
 //				_local_2.pivotY = (_local_2.height >> 1);
 //				if (_local_8 != AimType.SCORE)
 //				{
@@ -182,7 +190,7 @@ package diary.ui.view
 //				_local_2.y = 31;
 //				this.addChild(_local_2);
 //				this.aimIconDict[_local_8] = _local_2;
-//				_local_10 = ToolKit.createTextSprite(this, Core.texturesManager.getTextures("font1_"), 0, 0, 16, "0123456789/x+-");
+//				_local_10 = ToolKit.createTextSprite(this, Core.getTextures("font1_"), 0, 0, 16, "0123456789/x+-");
 //				addChild(_local_10);
 //				_local_10.text = (_local_9 + "");
 //				_local_10.x = ((_local_4 + 45) + (_local_5 * 80));

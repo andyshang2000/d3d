@@ -13,7 +13,7 @@ package com.popchan.sugar.modules.game.view
 
         public function FruitDoor()
         {
-            var _local_1:Image = new Image(Texture.fromTexture(Core.texturesManager.getTexture("downP")));
+            var _local_1:Image = new Image(Texture.fromTexture(Core.getTexture("downP")));
             _local_1.pivotX = (_local_1.width >> 1);
             _local_1.pivotY = (_local_1.height >> 1);
             this.addChild(_local_1);

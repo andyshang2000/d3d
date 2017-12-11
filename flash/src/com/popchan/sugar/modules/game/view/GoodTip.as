@@ -18,9 +18,9 @@ package com.popchan.sugar.modules.game.view
         public function GoodTip()
         {
             this.tips = [null];
-            this.tips.push(ToolKit.createImage(this, Core.texturesManager.getTexture("good"), 0, 0, true));
-            this.tips.push(ToolKit.createImage(this, Core.texturesManager.getTexture("excellent"), 0, 0, true));
-            this.tips.push(ToolKit.createImage(this, Core.texturesManager.getTexture("prefect"), 0, 0, true));
+            this.tips.push(ToolKit.createImage(this, Core.getTexture("good"), 0, 0, true));
+            this.tips.push(ToolKit.createImage(this, Core.getTexture("excellent"), 0, 0, true));
+            this.tips.push(ToolKit.createImage(this, Core.getTexture("prefect"), 0, 0, true));
         }
 
         public function setType(_arg_1:int):void

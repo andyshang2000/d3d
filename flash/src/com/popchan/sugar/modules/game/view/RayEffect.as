@@ -13,7 +13,7 @@ package com.popchan.sugar.modules.game.view
 
         public function RayEffect()
         {
-            var _local_1:Image = ToolKit.createImage(this, Core.texturesManager.getTexture("sun"), 0, 0, true);
+            var _local_1:Image = ToolKit.createImage(this, Core.getTexture("sun"), 0, 0, true);
         }
 
     }

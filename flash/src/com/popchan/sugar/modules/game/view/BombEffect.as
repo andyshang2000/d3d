@@ -1,10 +1,11 @@
 ﻿//Created by Action Script Viewer - http://www.buraks.com/asv
 package com.popchan.sugar.modules.game.view
 {
-    import com.popchan.framework.ds.BasePool;
-    import starling.display.CMovieClip;
-    import com.popchan.framework.utils.ToolKit;
     import com.popchan.framework.core.Core;
+    import com.popchan.framework.ds.BasePool;
+    import com.popchan.framework.utils.ToolKit;
+    
+    import starling.display.MovieClip;
     import starling.events.Event;
 
     public class BombEffect extends Element 
@@ -12,20 +13,21 @@ package com.popchan.sugar.modules.game.view
 
         public static var pool:BasePool = new BasePool(BombEffect, 10);
 
-        private var animation:CMovieClip;
+        private var animation:MovieClip;
 
         public function BombEffect()
         {
-            this.animation = ToolKit.createMovieClip(this, Core.texturesManager.getTextures("candybomb_"));
-            this.animation.frameRate = 10;
-            this.animation.loops = 1;
+            this.animation = ToolKit.createMovieClip(this, Core.getTextures("candybomb_"));
+            this.animation.fps = 10;
+            this.animation.loop = true;
             this.animation.scaleX = (this.animation.scaleY = 1.5);
+			this.animation.stop();
         }
 
         public function play():void
         {
             this.animation.addEventListener(Event.COMPLETE, this.onAnimationEnd);
-            this.animation.gotoAndPlay(1);
+            this.animation.play();
         }
 
         private function onAnimationEnd(_arg_1:Event):void

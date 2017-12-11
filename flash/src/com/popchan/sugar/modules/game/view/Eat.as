@@ -21,7 +21,7 @@ package com.popchan.sugar.modules.game.view
 
         public function Eat()
         {
-            ToolKit.createImage(this, Core.texturesManager.getTexture("eat"), 0, 0, true);
+            ToolKit.createImage(this, Core.getTexture("eat"), 0, 0, true);
         }
 
         public function doAnimation():void

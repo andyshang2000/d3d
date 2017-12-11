@@ -17,10 +17,10 @@ package com.popchan.sugar.modules.game.view
 
         public function LineBombEffect()
         {
-            this.img1 = ToolKit.createImage(this, Core.texturesManager.getTexture("hengshu"));
+            this.img1 = ToolKit.createImage(this, Core.getTexture("hengshu"));
             this.img1.pivotX = (this.img1.width >> 1);
             this.img1.pivotY = (this.img1.height >> 1);
-            this.img2 = ToolKit.createImage(this, Core.texturesManager.getTexture("hengshu"));
+            this.img2 = ToolKit.createImage(this, Core.getTexture("hengshu"));
             this.img2.pivotX = (this.img2.width >> 1);
             this.img2.pivotY = (this.img2.height >> 1);
         }

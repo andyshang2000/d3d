@@ -8,7 +8,6 @@ package com.popchan.sugar.core.cfg
     public class WindowInfo 
     {
         public static var gamePanelInfo:Array = ["gamePanel", GamePanel];
-        public static var gameEndPanelInfo:Array = ["gameEndPanel", GameEndPanel];
         public static var missionPanelInfo:Array = ["missionPanel", MissonPanel];
 
 

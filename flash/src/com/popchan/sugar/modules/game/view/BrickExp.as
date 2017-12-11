@@ -29,7 +29,7 @@ package com.popchan.sugar.modules.game.view
         {
             if (_arg_1 == 1)
             {
-                this.texture = Texture.fromTexture(Core.texturesManager.getTexture("brick1"));
+                this.texture = Texture.fromTexture(Core.getTexture("brick1"));
                 if (this.img == null)
                 {
                     this.img = new Image(this.texture);
@@ -43,7 +43,7 @@ package com.popchan.sugar.modules.game.view
             {
                 if (_arg_1 == 2)
                 {
-                    this.texture = Texture.fromTexture(Core.texturesManager.getTexture("brick2"));
+                    this.texture = Texture.fromTexture(Core.getTexture("brick2"));
                     if (this.img == null)
                     {
                         this.img = new Image(this.texture);

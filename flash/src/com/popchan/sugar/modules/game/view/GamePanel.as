@@ -7,8 +7,6 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.framework.manager.Debug;
 	import com.popchan.framework.manager.SoundManager;
 	import com.popchan.sugar.core.Model;
-	import com.popchan.sugar.core.cfg.Config;
-	import com.popchan.sugar.core.cfg.LevelConfig;
 	import com.popchan.sugar.core.cfg.levels.LevelCO;
 	import com.popchan.sugar.core.data.AimType;
 	import com.popchan.sugar.core.data.CandySpecialStatus;
@@ -17,11 +15,9 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.data.TileConst;
 	import com.popchan.sugar.core.events.GameEvents;
-	import com.popchan.sugar.core.manager.WindowManager3D;
 	import com.popchan.sugar.modules.BasePanel3D;
 
 	import flash.geom.Point;
-	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 
@@ -32,7 +28,6 @@ package com.popchan.sugar.modules.game.view
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
-	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -610,38 +605,25 @@ package com.popchan.sugar.modules.game.view
 								_local_6 = this.newCandy(_local_3, _local_4, (_local_5 - 5));
 								_local_6.setSpecialStatus(CandySpecialStatus.HORIZ);
 							}
+							else if ((((_local_5 >= 11)) && ((_local_5 <= 15))))
+							{
+								_local_6 = this.newCandy(_local_3, _local_4, (_local_5 - 10));
+								_local_6.setSpecialStatus(CandySpecialStatus.VERT);
+							}
+							else if ((((_local_5 >= 16)) && ((_local_5 <= 20))))
+							{
+								_local_6 = this.newCandy(_local_3, _local_4, (_local_5 - 15));
+								_local_6.setSpecialStatus(CandySpecialStatus.BOMB);
+							}
+							else if (_local_5 == TileConst.COLORFUL)
+							{
+								_local_6 = this.newCandy(_local_3, _local_4);
+								_local_6.setSpecialStatus(CandySpecialStatus.COLORFUL);
+							}
 							else
 							{
-								if ((((_local_5 >= 11)) && ((_local_5 <= 15))))
-								{
-									_local_6 = this.newCandy(_local_3, _local_4, (_local_5 - 10));
-									_local_6.setSpecialStatus(CandySpecialStatus.VERT);
-								}
-								else
-								{
-									if ((((_local_5 >= 16)) && ((_local_5 <= 20))))
-									{
-										_local_6 = this.newCandy(_local_3, _local_4, (_local_5 - 15));
-										_local_6.setSpecialStatus(CandySpecialStatus.BOMB);
-									}
-									else
-									{
-										if (_local_5 == TileConst.COLORFUL)
-										{
-											_local_6 = this.newCandy(_local_3, _local_4);
-											_local_6.setSpecialStatus(CandySpecialStatus.COLORFUL);
-										}
-										else
-										{
-											this.newCandy(_local_3, _local_4, _local_5);
-										}
-										;
-									}
-									;
-								}
-								;
+								this.newCandy(_local_3, _local_4, _local_5);
 							}
-							;
 							_local_1 = false;
 						}
 						else
@@ -649,9 +631,7 @@ package com.popchan.sugar.modules.game.view
 							_local_1 = true;
 							this.newCandy(_local_3, _local_4, _local_5);
 						}
-						;
 					}
-					;
 					_local_4++;
 				}
 				;
@@ -665,11 +645,11 @@ package com.popchan.sugar.modules.game.view
 			;
 		}
 
-		private function newCandy(_arg_1:int, _arg_2:int, _arg_3:int = 0):Candy
+		private function newCandy(_arg_1:int, _arg_2:int, color:int = 0):Candy
 		{
-			if (_arg_3 == 0)
+			if (color == 0)
 			{
-				_arg_3 = int(((Math.random() * this.currentLevel.colorCount) + 1));
+				color = int(((Math.random() * this.currentLevel.colorCount) + 1));
 			}
 			;
 			var _local_4:Candy = (Candy.pool.take() as Candy);
@@ -679,7 +659,7 @@ package com.popchan.sugar.modules.game.view
 			_local_4.y = _local_5.y;
 			_local_4.row = _arg_1;
 			_local_4.col = _arg_2;
-			_local_4.color = _arg_3;
+			_local_4.color = color;
 			this.candys[_arg_1][_arg_2] = _local_4;
 			this.candy_layer.addChild(_local_4);
 			return (_local_4);
@@ -3973,50 +3953,33 @@ package com.popchan.sugar.modules.game.view
 				_local_4.play();
 				this.addChild(_local_4);
 			}
-			else
+			else if (_arg_1 == 1)
 			{
-				if (_arg_1 == 1)
-				{
-					_local_5 = LineBombEffect.pool.take();
-					_local_5.x = _arg_2;
-					_local_5.y = _arg_3;
-					_local_5.play(1);
-					addChild(_local_5);
-				}
-				else
-				{
-					if (_arg_1 == 2)
-					{
-						_local_6 = LineBombEffect.pool.take();
-						_local_6.x = _arg_2;
-						_local_6.y = _arg_3;
-						_local_6.play(2);
-						addChild(_local_6);
-					}
-					else
-					{
-						if (_arg_1 == 3)
-						{
-							_local_7 = BombEffect.pool.take();
-							_local_7.x = _arg_2;
-							_local_7.y = _arg_3;
-							_local_7.play();
-							this.addChild(_local_7);
-						}
-						else
-						{
-							if (_arg_1 == 4)
-							{
-							}
-							;
-						}
-						;
-					}
-					;
-				}
-				;
+				_local_5 = LineBombEffect.pool.take();
+				_local_5.x = _arg_2;
+				_local_5.y = _arg_3;
+				_local_5.play(1);
+				addChild(_local_5);
 			}
-			;
+			else if (_arg_1 == 2)
+			{
+				_local_6 = LineBombEffect.pool.take();
+				_local_6.x = _arg_2;
+				_local_6.y = _arg_3;
+				_local_6.play(2);
+				addChild(_local_6);
+			}
+			else if (_arg_1 == 3)
+			{
+				_local_7 = BombEffect.pool.take();
+				_local_7.x = _arg_2;
+				_local_7.y = _arg_3;
+				_local_7.play();
+				this.addChild(_local_7);
+			}
+			else if (_arg_1 == 4)
+			{
+			}
 		}
 
 		private function removeAll():void

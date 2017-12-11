@@ -19,8 +19,8 @@ package com.popchan.sugar.modules.game.view
 
         public function IronWire()
         {
-            this.img1 = ToolKit.createImage(this, Core.texturesManager.getTexture("ironWire"), -37, -24);
-            this.img2 = ToolKit.createImage(this, Core.texturesManager.getTexture("ironWire2"), -32, 30);
+            this.img1 = ToolKit.createImage(this, Core.getTexture("ironWire"), -37, -24);
+            this.img2 = ToolKit.createImage(this, Core.getTexture("ironWire2"), -32, 30);
         }
 
         public function get dir():int

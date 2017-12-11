@@ -8,11 +8,8 @@ package com.popchan.sugar.modules.game.view
 
         public var type:int;
 
-
         public function reset():void
-        {
-        }
-
-
+        { 
+		}
     }
 }//package com.popchan.sugar.modules.game.view
