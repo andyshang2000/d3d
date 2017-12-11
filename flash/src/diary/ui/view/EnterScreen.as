@@ -126,7 +126,7 @@ package diary.ui.view
 		
 		override protected function onCreate():void
 		{
-			setGView("zz3d.dressup.gui", "Enter")
+			setGView("zz3d.dressup.gui", "Enter");
 			
 			fit(getChild("tpage").asLoader);
 			try
