@@ -15,7 +15,6 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.data.TileConst;
 	import com.popchan.sugar.core.events.GameEvents;
-	import com.popchan.sugar.modules.BasePanel3D;
 
 	import flash.geom.Point;
 	import flash.utils.getTimer;
@@ -23,16 +22,13 @@ package com.popchan.sugar.modules.game.view
 
 	import caurina.transitions.Tweener;
 
+	import fairygui.GComponent;
 	import fairygui.GRoot;
+	import fairygui.event.GTouchEvent;
 
-	import starling.core.Starling;
-	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 
-	public class GamePanel extends BasePanel3D
+	public class GamePanel extends GComponent
 	{
 		private static const STATE_INIT:int = 1;
 		private static const STATE_GAME:int = 2;
@@ -67,19 +63,19 @@ package com.popchan.sugar.modules.game.view
 		public var tDoors:Array;
 		public var ironWires:Array;
 
-		public var infoPanel:InfoPanel;
+//		public var infoPanel:InfoPanel;
 
-		private var container:Sprite;
-		private var candy_layer:Sprite;
-		private var tileBg_layer:Sprite;
-		private var door_layer:Sprite;
-		private var brick_layer:Sprite;
-		private var ice_layer:Sprite;
-		private var stone_layer:Sprite;
-		private var lock_layer:Sprite;
-		private var eat_layer:Sprite;
-		private var monster_layer:Sprite;
-		private var ironWire_layer:Sprite;
+		private var container:GComponent;
+		private var candy_layer:GComponent;
+		private var tileBg_layer:GComponent;
+		private var door_layer:GComponent;
+		private var brick_layer:GComponent;
+		private var ice_layer:GComponent;
+		private var stone_layer:GComponent;
+		private var lock_layer:GComponent;
+		private var eat_layer:GComponent;
+		private var monster_layer:GComponent;
+		private var ironWire_layer:GComponent;
 		public var selectedCard:Candy;
 		public var aimCard:Candy;
 		private var isMoving:Boolean;
@@ -97,30 +93,29 @@ package com.popchan.sugar.modules.game.view
 		private var matchCountOnceSwap:int = 0;
 		private var _instanceName:String = "GamePanel";
 
-		override public function init():void
+		public function init():void
 		{
-			super.init();
-			this.container = new Sprite();
+			this.container = new GComponent();
 			this.addChild(this.container);
-			this.tileBg_layer = new Sprite();
+			this.tileBg_layer = new GComponent();
 			this.container.addChild(this.tileBg_layer);
-			this.brick_layer = new Sprite();
+			this.brick_layer = new GComponent();
 			this.container.addChild(this.brick_layer);
-			this.ice_layer = new Sprite();
+			this.ice_layer = new GComponent();
 			this.container.addChild(this.ice_layer);
-			this.stone_layer = new Sprite();
+			this.stone_layer = new GComponent();
 			this.container.addChild(this.stone_layer);
-			this.eat_layer = new Sprite();
+			this.eat_layer = new GComponent();
 			this.container.addChild(this.eat_layer);
-			this.candy_layer = new Sprite();
+			this.candy_layer = new GComponent();
 			this.container.addChild(this.candy_layer);
-			this.lock_layer = new Sprite();
+			this.lock_layer = new GComponent();
 			this.container.addChild(this.lock_layer);
-			this.monster_layer = new Sprite();
+			this.monster_layer = new GComponent();
 			this.container.addChild(this.monster_layer);
-			this.ironWire_layer = new Sprite();
+			this.ironWire_layer = new GComponent();
 			this.container.addChild(this.ironWire_layer);
-			this.door_layer = new Sprite();
+			this.door_layer = new GComponent();
 			this.container.addChild(this.door_layer);
 			this.tDoors = this.getBlankMapArray();
 			this.tileBgs = this.getBlankMapArray();
@@ -157,7 +152,9 @@ package com.popchan.sugar.modules.game.view
 		public function newGame(level:LevelCO):void
 		{
 			Model.gameModel.score = 0;
-			this.addEventListener(TouchEvent.TOUCH, this.onTouch);
+			GRoot.inst.addEventListener(GTouchEvent.BEGIN, this.onTouch);
+			GRoot.inst.addEventListener(GTouchEvent.DRAG, this.onTouch);
+			GRoot.inst.addEventListener(GTouchEvent.END, this.onTouch);
 			this.addEventListener(EnterFrameEvent.ENTER_FRAME, this.update);
 			this.currentLevel = level;
 			this.state = STATE_INIT;
@@ -312,13 +309,10 @@ package com.popchan.sugar.modules.game.view
 						_local_2 = _local_6;
 						break _loop_3;
 					}
-					;
 					_local_7++;
 				}
-				;
 				_local_6++;
 			}
-			;
 			_local_6 = (GameConst.ROW_COUNT - 1);
 			_loop_4: while (_local_6 >= 0)
 			{
@@ -330,18 +324,15 @@ package com.popchan.sugar.modules.game.view
 						_local_3 = _local_6;
 						break _loop_4;
 					}
-					;
 					_local_7++;
 				}
-				;
 				_local_6--;
 			}
-			;
 			var _local_12:int = ((GameConst.ROW_COUNT - _local_3) - _local_2);
 			var _local_13:int = ((GameConst.COL_COUNT - _local_5) - _local_4);
-			this.offsetX = (((Core.stage3DManager.canvasWidth - (GameConst.COL_COUNT * GameConst.CARD_W)) >> 1) + ((_local_13 * GameConst.CARD_W) * 0.5));
+//			this.offsetX = (((Core.stage3DManager.canvasWidth - (GameConst.COL_COUNT * GameConst.CARD_W)) >> 1) + ((_local_13 * GameConst.CARD_W) * 0.5));
 //            this.offsetY = (((((Core.stage3DManager.canvasHeight ) - (GameConst.ROW_COUNT * GameConst.CARD_W)) >> 1) + ((_local_12 * GameConst.CARD_W) * 0.5)) + 100);
-			this.offsetY = GRoot.inst.height - GameConst.ROW_COUNT * GameConst.CARD_W - 35;
+//			this.offsetY = GRoot.inst.height - GameConst.ROW_COUNT * GameConst.CARD_W - 35;
 			_local_6 = 0;
 			while (_local_6 < GameConst.ROW_COUNT)
 			{
@@ -936,7 +927,7 @@ package com.popchan.sugar.modules.game.view
 			}
 		}
 
-		private function onTouch(_arg_1:TouchEvent):void
+		private function onTouch(_arg_1:GTouchEvent):void
 		{
 			var _local_3:Point;
 			var _local_4:int;
@@ -950,62 +941,38 @@ package com.popchan.sugar.modules.game.view
 			{
 				return;
 			}
-			var _local_2:Touch = _arg_1.getTouch(Starling.current.stage);
-			if (!_local_2)
+			_local_3 = new Point(_arg_1.stageX, _arg_1.stageY);
+			_local_3 = container.globalToLocal(_local_3.x, _local_3.y)
+			if (_arg_1.type == GTouchEvent.BEGIN)
 			{
-				return;
-			}
-			if (_local_2.phase == TouchPhase.BEGAN)
-			{
-				_local_3 = _local_2.getLocation(Starling.current.stage);
-				_local_3 = container.globalToLocal(_local_3)
 				this.selectedCard = this.getCandyByTouch(_local_3);
 				if (this.selectedCard != null)
 				{
 					Debug.log(("选择的candy位置:row=" + this.selectedCard.row), ("col=" + this.selectedCard.col), this.selectedCard.x, this.selectedCard.y);
 				}
 			}
-			else
+			else if (_arg_1.type == GTouchEvent.DRAG)
 			{
-				if (_local_2.phase == TouchPhase.MOVED)
+				if (this.selectedCard != null)
 				{
-					if (this.selectedCard != null)
+					_local_4 = this.selectedCard.row;
+					_local_5 = this.selectedCard.col;
+					_local_6 = _local_3;
+					if (((((((((((((_local_5 - 1) >= 0)) && ((!((this.candys[_local_4][(_local_5 - 1)] == null)))))) && ((this.locks[_local_4][(_local_5 - 1)] == null)))) && ((this.monsters[_local_4][(_local_5 - 1)] == null)))) && (this.candys[_local_4][(_local_5 - 1)].collidePoint(_local_6)))) && ((!(this.hasIronWire(this.selectedCard.row, this.selectedCard.col, 1))))))
 					{
-						_local_4 = this.selectedCard.row;
-						_local_5 = this.selectedCard.col;
-						_local_6 = _local_2.getLocation(Starling.current.stage);
-						_local_6 = container.globalToLocal(_local_6)
-						if (((((((((((((_local_5 - 1) >= 0)) && ((!((this.candys[_local_4][(_local_5 - 1)] == null)))))) && ((this.locks[_local_4][(_local_5 - 1)] == null)))) && ((this.monsters[_local_4][(_local_5 - 1)] == null)))) && (this.candys[_local_4][(_local_5 - 1)].collidePoint(_local_6)))) && ((!(this.hasIronWire(this.selectedCard.row, this.selectedCard.col, 1))))))
-						{
-							this.makeSwap(this.selectedCard, this.candys[_local_4][(_local_5 - 1)]);
-						}
-						else
-						{
-							if (((((((((((((_local_5 + 1) < GameConst.COL_COUNT)) && ((!((this.candys[_local_4][(_local_5 + 1)] == null)))))) && ((this.locks[_local_4][(_local_5 + 1)] == null)))) && ((this.monsters[_local_4][(_local_5 + 1)] == null)))) && (this.candys[_local_4][(_local_5 + 1)].collidePoint(_local_6)))) && ((!(this.hasIronWire(_local_4, (_local_5 + 1), 1))))))
-							{
-								this.makeSwap(this.selectedCard, this.candys[_local_4][(_local_5 + 1)]);
-							}
-							else
-							{
-								if (((((((((((((_local_4 - 1) >= 0)) && ((!((this.candys[(_local_4 - 1)][_local_5] == null)))))) && ((this.locks[(_local_4 - 1)][_local_5] == null)))) && ((this.monsters[(_local_4 - 1)][_local_5] == null)))) && (this.candys[(_local_4 - 1)][_local_5].collidePoint(_local_6)))) && ((!(this.hasIronWire((_local_4 - 1), _local_5, 2))))))
-								{
-									this.makeSwap(this.selectedCard, this.candys[(_local_4 - 1)][_local_5]);
-								}
-								else
-								{
-									if (((((((((((((_local_4 + 1) < GameConst.ROW_COUNT)) && ((!((this.candys[(_local_4 + 1)][_local_5] == null)))))) && ((this.locks[(_local_4 + 1)][_local_5] == null)))) && ((this.monsters[(_local_4 + 1)][_local_5] == null)))) && (this.candys[(_local_4 + 1)][_local_5].collidePoint(_local_6)))) && ((!(this.hasIronWire(this.selectedCard.row, this.selectedCard.col, 2))))))
-									{
-										this.makeSwap(this.selectedCard, this.candys[(_local_4 + 1)][_local_5]);
-									}
-								}
-							}
-						}
+						this.makeSwap(this.selectedCard, this.candys[_local_4][(_local_5 - 1)]);
 					}
-				}
-				else
-				{
-					if (_local_2.phase == TouchPhase.ENDED)
+					else if (((((((((((((_local_5 + 1) < GameConst.COL_COUNT)) && ((!((this.candys[_local_4][(_local_5 + 1)] == null)))))) && ((this.locks[_local_4][(_local_5 + 1)] == null)))) && ((this.monsters[_local_4][(_local_5 + 1)] == null)))) && (this.candys[_local_4][(_local_5 + 1)].collidePoint(_local_6)))) && ((!(this.hasIronWire(_local_4, (_local_5 + 1), 1))))))
 					{
+						this.makeSwap(this.selectedCard, this.candys[_local_4][(_local_5 + 1)]);
+					}
+					else if (((((((((((((_local_4 - 1) >= 0)) && ((!((this.candys[(_local_4 - 1)][_local_5] == null)))))) && ((this.locks[(_local_4 - 1)][_local_5] == null)))) && ((this.monsters[(_local_4 - 1)][_local_5] == null)))) && (this.candys[(_local_4 - 1)][_local_5].collidePoint(_local_6)))) && ((!(this.hasIronWire((_local_4 - 1), _local_5, 2))))))
+					{
+						this.makeSwap(this.selectedCard, this.candys[(_local_4 - 1)][_local_5]);
+					}
+					else if (((((((((((((_local_4 + 1) < GameConst.ROW_COUNT)) && ((!((this.candys[(_local_4 + 1)][_local_5] == null)))))) && ((this.locks[(_local_4 + 1)][_local_5] == null)))) && ((this.monsters[(_local_4 + 1)][_local_5] == null)))) && (this.candys[(_local_4 + 1)][_local_5].collidePoint(_local_6)))) && ((!(this.hasIronWire(this.selectedCard.row, this.selectedCard.col, 2))))))
+					{
+						this.makeSwap(this.selectedCard, this.candys[(_local_4 + 1)][_local_5]);
 					}
 				}
 			}
@@ -2161,11 +2128,8 @@ package com.popchan.sugar.modules.game.view
 					{
 						_local_2.push(_local_6);
 					}
-					;
 				}
-				;
 			}
-			;
 			SoundManager.instance.playSound("boomcommon");
 			_local_4 = (_local_2.length - 1);
 			while (_local_4 >= 0)
@@ -2389,65 +2353,58 @@ package com.popchan.sugar.modules.game.view
 			for each (removeCandy in list)
 			{
 //                this.addScoreTip(removeCandy.x, removeCandy.y, 10, removeCandy.color);
-				this.addEffect(removeCandy.status, removeCandy.x, removeCandy.y);
+//				this.addEffect(removeCandy.status, removeCandy.x, removeCandy.y);
+//				removeCandy.reset();
+//				this.candys[removeCandy.row][removeCandy.col] = null;
+//				this.addChild(removeCandy);
+//				tp = new Point(0, 0);
+//				if (removeCandy.color == 7)
+//				{
+//					tp = this.infoPanel.getIconPos(AimType.FRUIT1);
+//				}
+//				else if (removeCandy.color == 8)
+//				{
+//					tp = this.infoPanel.getIconPos(AimType.FRUIT2);
+//				}
+//				else if (removeCandy.color == 9)
+//				{
+//					tp = this.infoPanel.getIconPos(AimType.FRUIT3);
+//				}
+//				if (removeCandy.color == ColorType.FRUIT1)
+//				{
+//					Model.gameModel.offsetAim(AimType.FRUIT1, 1);
+//				}
+//				else
+//				{
+//					if (removeCandy.color == ColorType.FRUIT2)
+//					{
+//						Model.gameModel.offsetAim(AimType.FRUIT2, 1);
+//					}
+//					else
+//					{
+//						if (removeCandy.color == ColorType.FRUIT3)
+//						{
+//							Model.gameModel.offsetAim(AimType.FRUIT3, 1);
+//						}
+//						;
+//					}
+//					;
+//				}
+//				;
+//				disX = ((tp.x + this.infoPanel.x) - removeCandy.x);
+//				disY = ((tp.y + this.infoPanel.y) - removeCandy.y);
+//				dis = Math.sqrt(((disX * disX) + (disY * disY)));
+//				t = (dis / 600);
+//				Tweener.addTween(removeCandy, {"time": t, "x": (tp.x + this.infoPanel.x), "y": (tp.y + this.infoPanel.y), "scaleX": 0.6, "scaleY": 0.6, "onCompleteParams": [removeCandy], "onComplete": function(_arg_1:Candy):void
+//				{
+//					Candy.pool.put(_arg_1);
+//					_arg_1.reset();
+//					_arg_1.removeFromParent();
+//				}});
+				Candy.pool.put(removeCandy);
 				removeCandy.reset();
-				this.candys[removeCandy.row][removeCandy.col] = null;
-				this.addChild(removeCandy);
-				tp = new Point(0, 0);
-				if (removeCandy.color == 7)
-				{
-					tp = this.infoPanel.getIconPos(AimType.FRUIT1);
-				}
-				else
-				{
-					if (removeCandy.color == 8)
-					{
-						tp = this.infoPanel.getIconPos(AimType.FRUIT2);
-					}
-					else
-					{
-						if (removeCandy.color == 9)
-						{
-							tp = this.infoPanel.getIconPos(AimType.FRUIT3);
-						}
-						;
-					}
-					;
-				}
-				;
-				if (removeCandy.color == ColorType.FRUIT1)
-				{
-					Model.gameModel.offsetAim(AimType.FRUIT1, 1);
-				}
-				else
-				{
-					if (removeCandy.color == ColorType.FRUIT2)
-					{
-						Model.gameModel.offsetAim(AimType.FRUIT2, 1);
-					}
-					else
-					{
-						if (removeCandy.color == ColorType.FRUIT3)
-						{
-							Model.gameModel.offsetAim(AimType.FRUIT3, 1);
-						}
-						;
-					}
-					;
-				}
-				;
-				disX = ((tp.x + this.infoPanel.x) - removeCandy.x);
-				disY = ((tp.y + this.infoPanel.y) - removeCandy.y);
-				dis = Math.sqrt(((disX * disX) + (disY * disY)));
-				t = (dis / 600);
-				Tweener.addTween(removeCandy, {"time": t, "x": (tp.x + this.infoPanel.x), "y": (tp.y + this.infoPanel.y), "scaleX": 0.6, "scaleY": 0.6, "onCompleteParams": [removeCandy], "onComplete": function(_arg_1:Candy):void
-				{
-					Candy.pool.put(_arg_1);
-					_arg_1.reset();
-					_arg_1.removeFromParent();
-				}});
+				removeCandy.removeFromParent();
 			}
-			;
 		}
 
 		private function searchSpecialRelativeCandys(_arg_1:Candy):Array
@@ -4039,10 +3996,10 @@ package com.popchan.sugar.modules.game.view
 			;
 		}
 
-		override public function destory():void
+		override public function dispose():void
 		{
 			this.removeAll();
-			super.destory();
+			super.dispose();
 		}
 
 	}

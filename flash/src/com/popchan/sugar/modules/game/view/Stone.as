@@ -3,28 +3,18 @@ package com.popchan.sugar.modules.game.view
 {
 	import com.popchan.framework.core.Core;
 	import com.popchan.framework.ds.BasePool;
-	import com.popchan.framework.utils.ToolKit;
 	
-	import starling.display.Image;
-	import starling.display.Sprite;
+	import fairygui.GImage;
 
-	public class Stone extends Sprite
+	public class Stone extends XImage
 	{
 
 		public static var pool:BasePool = new BasePool(Stone, 20);
 
 		public var row:int;
 		public var col:int;
-		private var stone1:Image;
-		private var stone2:Image;
 		private var _life:int;
 		private var _tileID:int;
-
-		public function Stone()
-		{
-			this.stone2 = ToolKit.createImage(this, Core.getTexture("stone1"), 0, 0, true);
-			this.stone1 = ToolKit.createImage(this, Core.getTexture("stone2"), 0, 0, true);
-		}
 
 		public function get tileID():int
 		{
@@ -48,16 +38,11 @@ package com.popchan.sugar.modules.game.view
 			this._life = _arg_1;
 			if (this._life == 2)
 			{
-				this.stone1.visible = false;
-				this.stone2.visible = true;
+				texture2 = ("stone1")
 			}
-			else
+			else if (this._life == 1)
 			{
-				if (this._life == 1)
-				{
-					this.stone1.visible = true;
-					this.stone2.visible = false;
-				}
+				texture2 = ("stone1")
 			}
 			if (_arg_2)
 			{

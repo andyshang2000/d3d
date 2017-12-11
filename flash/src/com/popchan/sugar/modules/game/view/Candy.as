@@ -1,24 +1,25 @@
 ﻿//Created by Action Script Viewer - http://www.buraks.com/asv
 package com.popchan.sugar.modules.game.view
 {
-	import com.popchan.framework.ds.BasePool;
-	import starling.display.Image;
-	import starling.display.TextSprite;
-	import com.popchan.sugar.core.data.ColorType;
-	import com.popchan.sugar.core.data.CandySpecialStatus;
-	import com.popchan.framework.core.Core;
-	import flash.geom.Rectangle;
-	import flash.geom.Point;
-	import caurina.transitions.Tweener;
-	import starling.textures.Texture;
-	import com.popchan.framework.manager.SoundManager;
-	import com.popchan.framework.manager.Debug;
-	import com.popchan.framework.utils.ToolKit;
-	import com.popchan.sugar.core.Model;
 	import com.popchan.framework.core.MsgDispatcher;
+	import com.popchan.framework.ds.BasePool;
+	import com.popchan.framework.manager.Debug;
+	import com.popchan.framework.manager.SoundManager;
+	import com.popchan.sugar.core.Model;
+	import com.popchan.sugar.core.data.CandySpecialStatus;
+	import com.popchan.sugar.core.data.ColorType;
 	import com.popchan.sugar.core.events.GameEvents;
 
-	public class Candy extends Element
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+
+	import caurina.transitions.Tweener;
+
+	import fairygui.GComponent;
+
+	import starling.display.TextSprite;
+
+	public class Candy extends GComponent
 	{
 
 		public static var pool:BasePool = new BasePool(Candy, 81);
@@ -27,7 +28,7 @@ package com.popchan.sugar.modules.game.view
 		public var col:int;
 		private var _color:int;
 		private var _status:int;
-		private var img:Image;
+		private var img:XImage;
 		public var mark:Boolean = false;
 		public var remove:Boolean = false;
 		private var _bombLeftCount:int = 0;
@@ -41,9 +42,11 @@ package com.popchan.sugar.modules.game.view
 
 		public function Candy()
 		{
+			super();
 			this.path = [];
 			this.queue = [];
-			super();
+			this.img = new XImage();
+			addChild(img);
 		}
 
 		public function get isShake():Boolean
@@ -66,20 +69,12 @@ package com.popchan.sugar.modules.game.view
 			{
 				return (0);
 			}
-			;
 			return (this._color);
 		}
 
 		public function set color(_arg_1:int):void
 		{
 			this._color = _arg_1;
-			if (this.img != null)
-			{
-				this.img.removeFromParent(true);
-				this.img.dispose();
-				this.img = null;
-			}
-			;
 			var _local_2:String = ("candy" + (this.color - 1));
 			if (this.color == 7)
 			{
@@ -92,12 +87,8 @@ package com.popchan.sugar.modules.game.view
 			else if (this.color == 9)
 			{
 				_local_2 = "fruit3";
-
 			}
-			this.img = new Image(Core.getTexture(_local_2));
-			this.img.pivotX = (this.img.width >> 1);
-			this.img.pivotY = (this.img.height >> 1);
-			this.addChild(this.img);
+			this.img.texture2 = (_local_2);
 		}
 
 		public function collidePoint(_arg_1:Point):Boolean
@@ -126,7 +117,6 @@ package com.popchan.sugar.modules.game.view
 			if ((_arg_1 is Point))
 			{
 			}
-			;
 		}
 
 		public function stopAllActions():void
@@ -148,15 +138,10 @@ package com.popchan.sugar.modules.game.view
 			{
 				_local_2 = this.getCandyMoveAction(new Point(x, y), _local_1.pos);
 			}
-			else
+			else if (_local_1.type == 2)
 			{
-				if (_local_1.type == 2)
-				{
-					_local_2 = this.setCandMoveAction(_local_1.pos);
-				}
-				;
+				_local_2 = this.setCandMoveAction(_local_1.pos);
 			}
-			;
 			this.queue.push(_local_2);
 			var _local_3:int = 1;
 			while (_local_3 < this.path.length)
@@ -172,13 +157,10 @@ package com.popchan.sugar.modules.game.view
 					{
 						_local_7 = this.setCandMoveAction(this.path[_local_3].pos);
 					}
-					;
 				}
-				;
 				this.queue.push(_local_7);
 				_local_3++;
 			}
-			;
 			var _local_4:Object = {"time": 0.1, "y": (this.path[(_local_3 - 1)].pos.y - 3), "transition": "easeOutSine"};
 			var _local_5:Object = {"time": 0.1, "y": (this.path[(_local_3 - 1)].pos.y + 3), "transition": "easeOutSine"};
 			this.queue.push(_local_4);
@@ -199,7 +181,6 @@ package com.popchan.sugar.modules.game.view
 				};
 				Tweener.addTween(this, param);
 			}
-			;
 		}
 
 		private function getCandyMoveAction(_arg_1:Point, _arg_2:Point):Object
@@ -219,46 +200,24 @@ package com.popchan.sugar.modules.game.view
 
 		public function setSpecialStatus(_arg_1:int, _arg_2:Boolean = false, _arg_3:Boolean = false):void
 		{
-			if (this.img != null)
-			{
-				this.img.removeFromParent(true);
-				this.img.dispose();
-				this.img = null;
-			}
-			;
-			this.img = new Image(Texture.fromTexture(Core.getTexture(("candy" + (this.color - 1)))));
+			this.img.texture2 = ("candy" + (this.color - 1));
 			this._status = _arg_1;
 			if (_arg_1 == CandySpecialStatus.HORIZ)
 			{
-				this.img = new Image(Texture.fromTexture(Core.getTexture((("candy" + (this.color - 1)) + "a"))));
+				this.img.texture2 = ("candy" + (this.color - 1) + "a");
 			}
-			else
+			else if (_arg_1 == CandySpecialStatus.VERT)
 			{
-				if (_arg_1 == CandySpecialStatus.VERT)
-				{
-					this.img = new Image(Texture.fromTexture(Core.getTexture((("candy" + (this.color - 1)) + "b"))));
-				}
-				else
-				{
-					if (_arg_1 == CandySpecialStatus.BOMB)
-					{
-						this.img = new Image(Texture.fromTexture(Core.getTexture(("candybomb" + (this.color - 1)))));
-					}
-					else
-					{
-						if (_arg_1 == CandySpecialStatus.COLORFUL)
-						{
-							this.img = new Image(Texture.fromTexture(Core.getTexture("candyking")));
-						}
-						;
-					}
-					;
-				}
-				;
+				this.img.texture2 = ("candy" + (this.color - 1) + "b");
 			}
-			;
-			this.img.pivotX = (this.img.width >> 1);
-			this.img.pivotY = (this.img.height >> 1);
+			else if (_arg_1 == CandySpecialStatus.BOMB)
+			{
+				this.img.texture2 = ("candybomb" + (this.color - 1));
+			}
+			else if (_arg_1 == CandySpecialStatus.COLORFUL)
+			{
+				this.img.texture2 = ("candyking");
+			}
 			this.addChild(this.img);
 			this.img.scaleX = (this.img.scaleY = 1);
 			if (_arg_2)
@@ -267,36 +226,23 @@ package com.popchan.sugar.modules.game.view
 				Tweener.addTween(this.img, {"time": 0.25, "scaleX": 1, "scaleY": 1});
 				SoundManager.instance.playSound("candyspgrow1", false, 0, 1, 1, true);
 			}
-			;
 			if (_arg_1 == 4)
 			{
 				this._color = 0;
 			}
-			;
 		}
 
 		public function setBomb(_arg_1:int):void
 		{
-			if (this.img != null)
-			{
-				this.img.removeFromParent(true);
-				this.img.dispose();
-				this.img = null;
-			}
-			;
-			this.img = new Image(Texture.fromTexture(Core.getTexture(("candytimer" + (this.color - 1)))));
-			this.img.pivotX = (this.img.width >> 1);
-			this.img.pivotY = (this.img.height >> 1);
-			this.addChild(this.img);
+			this.img.texture2 = ("candytimer" + (this.color - 1));
 			this._bombLeftCount = _arg_1;
 			Debug.log(("炸弹步数:" + _arg_1));
 			if (!this.bomb_txt)
 			{
-				this.bomb_txt = ToolKit.createTextSprite(this, Core.getTextures("bombtxt_"), -22, 0, 8, "0123456789", 24);
+//				this.bomb_txt = ToolKit.createTextSprite(this, Core.getTextures("bombtxt_"), -22, 0, 8, "0123456789", 24);
 			}
-			;
-			addChild(this.bomb_txt);
-			this.bomb_txt.text = (_arg_1 + "");
+//			addChild(this.bomb_txt);
+//			this.bomb_txt.text = (_arg_1 + "");
 		}
 
 		public function isBomb():Boolean
@@ -321,7 +267,7 @@ package com.popchan.sugar.modules.game.view
 			return (this._bombLeftCount);
 		}
 
-		override public function reset():void
+		public function reset():void
 		{
 			Tweener.removeTweens(this);
 			this.stopShake();
@@ -334,7 +280,6 @@ package com.popchan.sugar.modules.game.view
 			{
 				this.img.scaleX = (this.img.scaleY = 1);
 			}
-			;
 		}
 
 		public function shake():void
@@ -360,7 +305,6 @@ package com.popchan.sugar.modules.game.view
 				Tweener.removeTweens(this.img);
 				this.img.rotation = 0;
 			}
-			;
 			this.r = 0;
 		}
 

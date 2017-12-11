@@ -124,6 +124,7 @@
     <component id="mld83d" name="EndPanel.xml" path="/" exported="true"/>
     <image id="mld83e" name="bigstar.png" path="/"/>
     <component id="mld83f" name="returnButton(1).xml" path="/"/>
+    <image id="mld83h" name="cube.png" path="/candys/" exported="true"/>
   </resources>
   <publish name="zz3d.m3.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug"/>
 </packageDescription>

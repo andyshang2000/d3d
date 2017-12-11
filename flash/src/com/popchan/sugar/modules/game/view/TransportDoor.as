@@ -5,7 +5,7 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.framework.ds.BasePool;
 	import com.popchan.framework.utils.ToolKit;
 	import com.popchan.sugar.core.data.TileConst;
-
+	
 	import starling.display.MovieClip;
 
 	public class TransportDoor extends Element
@@ -20,7 +20,7 @@ package com.popchan.sugar.modules.game.view
 
 		public function TransportDoor()
 		{
-			this.animation = ToolKit.createMovieClip(this, Core.getTextures("chuansong_"));
+//			this.animation = ToolKit.createMovieClip(this, Core.getTextures("chuansong_"));
 			this.animation.fps = 5;
 			this.animation.loop = true;
 		}
@@ -48,9 +48,7 @@ package com.popchan.sugar.modules.game.view
 				{
 					this.animation.y = -30;
 				}
-				;
 			}
-			;
 		}
 
 		override public function dispose():void

@@ -4,10 +4,12 @@ package com.popchan.framework.core
 	import com.popchan.framework.manager.Stage3DManager;
 	import com.popchan.framework.manager.StageManager;
 	import com.popchan.framework.manager.TimerManager;
-	
+
 	import flash.display.Stage;
 	import flash.geom.Rectangle;
-	
+
+	import fairygui.UIPackage;
+
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
@@ -27,12 +29,19 @@ package com.popchan.framework.core
 
 		public static function getTexture(name:String):Texture
 		{
-			return texturesManager.getTexture(name);
+			var res:Texture = UIPackage.getByName("zz3d.m3.gui").getImage(name);
+			if (res == null)
+			{
+				trace(name);
+			}
+			return res;
+//			return texturesManager.getTexture(name);
 		}
-		
+
 		public static function getTextures(name:String):Vector.<Texture>
 		{
-			return texturesManager.getTextures(name);
+//			....
+			return null;
 		}
 	}
 }

@@ -3,6 +3,10 @@ package com.popchan.framework.utils
 {
 	import __AS3__.vec.Vector;
 	
+	import fairygui.GComponent;
+	import fairygui.GImage;
+	import fairygui.UIPackage;
+	
 	import starling.display.Button;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
@@ -15,9 +19,9 @@ package com.popchan.framework.utils
 	public class ToolKit
 	{
 
-		public static function createImage(_arg_1:DisplayObjectContainer, _arg_2:Texture, _arg_3:int = 0, _arg_4:int = 0, _arg_5:Boolean = false, _arg_6:Boolean = true):Image
+		public static function createImage(_arg_1:GComponent, _arg_2:*, _arg_3:int = 0, _arg_4:int = 0, _arg_5:Boolean = false, _arg_6:Boolean = true):GImage
 		{
-			var _local_7:Image = new Image(_arg_2);
+			var _local_7:GImage = UIPackage.createObject("zz3d.m3.gui", _arg_2).asImage;
 			_local_7.x = _arg_3;
 			_local_7.y = _arg_4;
 			_local_7.touchable = _arg_6;

@@ -47,13 +47,14 @@ package diary.ui.view
 		private var firstRun:Boolean;
 
 		private var view:GamePanel;
+		private var imageLoaded:Boolean;
 
 		override protected function onCreate():void
 		{
 			setGView("zz3d.m3.gui", "Match3");
-
 			view = new GamePanel();
-			DisplayObjectContainer(Starling.current.root).addChild(view);
+			GRoot.inst.addChild(view);
+//			DisplayObjectContainer(Starling.current.root).addChild(view);
 
 //			var infoPanel:InfoPanel = new InfoPanel();
 //			GRoot.inst.nativeStage.addChild(infoPanel);
@@ -65,10 +66,10 @@ package diary.ui.view
 			var sf:Number = GRoot.contentScaleFactor;
 			var gWidth:Number = GRoot.inst.width * sf;
 			var gHeight:Number = GRoot.inst.height * sf;
-			view.scaleX = gWidth / (640 - 40);
-			view.scaleY = view.scaleX;
+//			view.scaleX = gWidth / (640 - 40);
+//			view.scaleY = view.scaleX;
 //			view.x = 20
-			view.x = view.scaleX * ((640 - 40) - gWidth) / 2;
+//			view.x = view.scaleX * ((640 - 40) - gWidth) / 2;
 
 			MsgDispatcher.add(GameEvents.AIMS_CHANGE, this.onAimChange);
 			MsgDispatcher.add(GameEvents.SCORE_CHANGE, this.onScoreChange);
@@ -228,7 +229,7 @@ package diary.ui.view
 		override public function dispose():void
 		{
 			super.dispose();
-			view.destory();
+			view.dispose();
 			trace("dispose!!!!");
 		}
 	}

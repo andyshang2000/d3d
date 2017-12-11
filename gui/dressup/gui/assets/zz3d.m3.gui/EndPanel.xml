@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="534,591">
+  <displayList>
+    <image id="n6_mld8" name="n6" src="mld836" xy="0,0"/>
+    <image id="n7_mld8" name="n7" src="mld837" xy="77,216"/>
+    <image id="n8_mld8" name="n8" src="mld838" xy="160,21"/>
+    <image id="n9_mld8" name="n9" src="mld839" xy="161,20"/>
+    <image id="n10_mld8" name="n10" src="mld83a" xy="272,440"/>
+    <image id="n11_mld8" name="n11" src="mld83b" xy="458,25"/>
+    <image id="n12_mld8" name="n12" src="mld83c" xy="77,439"/>
+    <image id="n13_mld8" name="n13" src="mld83e" xy="129,93"/>
+  </displayList>
+</component>

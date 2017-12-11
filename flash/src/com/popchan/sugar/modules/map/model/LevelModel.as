@@ -8,8 +8,8 @@ package com.popchan.sugar.modules.map.model
     public class LevelModel 
     {
 
-        public var currentLevel:int = 1;
-        public var selectedLevel:int = 1;
+        public var currentLevel:int = 6;
+        public var selectedLevel:int = 6;
         private var levelsMap:Object;
         public var totalLevel:int = 330;
 
