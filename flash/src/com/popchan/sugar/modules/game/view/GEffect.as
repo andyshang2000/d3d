@@ -11,6 +11,8 @@ package com.popchan.sugar.modules.game.view
 		public function GEffect(pkg, res)
 		{
 			animation = UIPackage.createObject(pkg, res).asMovieClip;
+			animation.x = -16;
+			animation.y = -16;
 			animation.playing = false;
 			addChild(animation);
 		}

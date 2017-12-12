@@ -5,11 +5,13 @@ package diary.ui.view
 	import com.popchan.sugar.core.cfg.Config;
 	import com.popchan.sugar.core.cfg.levels.LevelCO;
 	import com.popchan.sugar.core.data.AimType;
+	import com.popchan.sugar.core.data.GameConst;
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.events.GameEvents;
 	import com.popchan.sugar.modules.game.view.GamePanel;
 
 	import flash.display.BitmapData;
+	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
 
 	import diary.avatar.Avatar;
@@ -20,12 +22,11 @@ package diary.ui.view
 	import fairygui.UIPackage;
 	import fairygui.Window;
 
-	import starling.core.Starling;
-	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.TextSprite;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+	import starling.utils.RectangleUtil;
 
 	public class Match3Screen extends AvatarScreen implements IScreen
 	{
@@ -61,20 +62,23 @@ package diary.ui.view
 //			view.infoPanel = infoPanel;
 //			view.infoPanel.setInfo(Config.levelConfig.getLevel(Model.levelModel.selectedLevel));
 
-//			view.x = 240;
-//			view.y = 300;
-			var sf:Number = GRoot.contentScaleFactor;
-			var gWidth:Number = GRoot.inst.width * sf;
-			var gHeight:Number = GRoot.inst.height * sf;
-//			view.scaleX = gWidth / (640 - 40);
-//			view.scaleY = view.scaleX;
-//			view.x = 20
-//			view.x = view.scaleX * ((640 - 40) - gWidth) / 2;
+			var initWidth:int = GameConst.CARD_W * 9;
+			var initHeight:int = GameConst.CARD_W * 9;
+			var port480x800:Rectangle = new Rectangle(0, 0, 480, 800);
+			var port:Rectangle = RectangleUtil.fit(port480x800, new Rectangle(10, 0, GRoot.inst.width - 20, GRoot.inst.height));
+
+			view.scaleX = port.width / initWidth;
+			view.scaleY = port.width / initWidth;
+			var actualWidth:int = initWidth * view.scaleX;
+			view.x = port.x;
+			view.y = port.bottom - actualWidth - 10;
 
 			MsgDispatcher.add(GameEvents.AIMS_CHANGE, this.onAimChange);
 			MsgDispatcher.add(GameEvents.SCORE_CHANGE, this.onScoreChange);
 			MsgDispatcher.add(GameEvents.STEP_CHANGE, this.onStepChange);
 			MsgDispatcher.add(GameEvents.TIME_CHANGE, this.onTimeChange);
+
+			var rect:Rectangle
 
 			view.init();
 			view.newGame(Config.levelConfig.getLevel(Model.levelModel.selectedLevel));
@@ -223,7 +227,6 @@ package diary.ui.view
 			{
 				return;
 			}
-//			this.aimLabelDict[_arg_1.type].text = ((_arg_1.orgValue - _arg_1.value) + "");
 		}
 
 		override public function dispose():void

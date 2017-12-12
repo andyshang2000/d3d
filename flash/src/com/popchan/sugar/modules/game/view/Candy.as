@@ -93,7 +93,7 @@ package com.popchan.sugar.modules.game.view
 
 		public function collidePoint(_arg_1:Point):Boolean
 		{
-			var _local_2:Rectangle = new Rectangle((-32 + this.x), (-32 + this.y), 64, 64);
+			var _local_2:Rectangle = new Rectangle((this.x), (this.y), 64, 64);
 			if (_local_2.containsPoint(_arg_1))
 			{
 				return (true);

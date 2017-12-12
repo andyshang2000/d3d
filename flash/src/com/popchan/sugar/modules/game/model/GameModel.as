@@ -1,11 +1,12 @@
 ﻿//Created by Action Script Viewer - http://www.buraks.com/asv
 package com.popchan.sugar.modules.game.model
 {
-    import flash.utils.Dictionary;
     import com.popchan.framework.core.MsgDispatcher;
-    import com.popchan.sugar.core.events.GameEvents;
     import com.popchan.framework.manager.SoundManager;
     import com.popchan.sugar.core.data.AimType;
+    import com.popchan.sugar.core.events.GameEvents;
+    
+    import flash.utils.Dictionary;
 
     public class GameModel 
     {
@@ -18,6 +19,7 @@ package com.popchan.sugar.modules.game.model
         public var highScore:int;
         public var isSuccess:Boolean;
         public var isTest:Boolean = false;
+		public var failReason:int = -1;
 
         public function GameModel()
         {
@@ -80,6 +82,7 @@ package com.popchan.sugar.modules.game.model
             };
             this.isSuccess = false;
             this.score = 0;
+			failReason = -1;
         }
 
         public function addAim(_arg_1:int, _arg_2:int):void

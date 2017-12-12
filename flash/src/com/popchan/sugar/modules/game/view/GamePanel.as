@@ -167,6 +167,7 @@ package com.popchan.sugar.modules.game.view
 			this.createDoor();
 			this.createBrick();
 			this.createBarrier();
+			this.createIronWires()
 			this.createCandys();
 			this.createBombs();
 			this.container.x = 650;
@@ -237,15 +238,11 @@ package com.popchan.sugar.modules.game.view
 							case TileConst.BOMB:
 								break;
 						}
-						;
 					}
-					;
 					_local_3++;
 				}
-				;
 				_local_2++;
 			}
-			;
 		}
 
 		private function createTileBg():void
@@ -291,13 +288,10 @@ package com.popchan.sugar.modules.game.view
 						_local_5 = _local_7;
 						break _loop_2;
 					}
-					;
 					_local_6++;
 				}
-				;
 				_local_7--;
 			}
-			;
 			_local_6 = 0;
 			_loop_3: while (_local_6 < GameConst.ROW_COUNT)
 			{
@@ -330,9 +324,6 @@ package com.popchan.sugar.modules.game.view
 			}
 			var _local_12:int = ((GameConst.ROW_COUNT - _local_3) - _local_2);
 			var _local_13:int = ((GameConst.COL_COUNT - _local_5) - _local_4);
-//			this.offsetX = (((Core.stage3DManager.canvasWidth - (GameConst.COL_COUNT * GameConst.CARD_W)) >> 1) + ((_local_13 * GameConst.CARD_W) * 0.5));
-//            this.offsetY = (((((Core.stage3DManager.canvasHeight ) - (GameConst.ROW_COUNT * GameConst.CARD_W)) >> 1) + ((_local_12 * GameConst.CARD_W) * 0.5)) + 100);
-//			this.offsetY = GRoot.inst.height - GameConst.ROW_COUNT * GameConst.CARD_W - 35;
 			_local_6 = 0;
 			while (_local_6 < GameConst.ROW_COUNT)
 			{
@@ -348,98 +339,99 @@ package com.popchan.sugar.modules.game.view
 						_local_15.y = _local_16.y;
 						this.tileBgs[_local_6][_local_7] = _local_15;
 						this.tileBg_layer.addChild(_local_15);
-						if (((((this.isBlank(_local_6, (_local_7 - 1))) && (this.isBlank((_local_6 - 1), _local_7)))) && (this.isBlank((_local_6 - 1), (_local_7 - 1)))))
+						if (this.isBlank(_local_6, _local_7 - 1) && // 
+							this.isBlank(_local_6 - 1, _local_7) && // 
+							this.isBlank(_local_6 - 1, _local_7 - 1))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_up, this.tileBg_layer, (_local_16.x - 38), (_local_16.y - 38));
+							_local_17.setType(TileBoarder.x_border_left_up, this.tileBg_layer, (_local_16.x - 5), (_local_16.y - 5));
+//							_local_17.setType(TileBoarder.x_border_left_up, this.tileBg_layer, (_local_16.x - 38), (_local_16.y - 38));
 							this.tileBoarders.push(_local_17);
 						}
-						;
 						if ((((!(this.isBlank((_local_6 + 1), (_local_7 - 1))))) && (this.isBlank((_local_6 + 1), _local_7))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_up_x, this.tileBg_layer, (_local_16.x - 32), (_local_16.y + 32));
+							_local_17.setType(TileBoarder.x_border_left_up_x, this.tileBg_layer, (_local_16.x), (_local_16.y + GameConst.CARD_W));
+//							_local_17.setType(TileBoarder.x_border_left_up_x, this.tileBg_layer, (_local_16.x - 32), (_local_16.y + 32));
 							this.tileBoarders.push(_local_17);
 						}
-						;
 						if (((((this.isBlank(_local_6, (_local_7 + 1))) && (this.isBlank((_local_6 - 1), _local_7)))) && (this.isBlank((_local_6 - 1), (_local_7 + 1)))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_right_up, this.tileBg_layer, (_local_16.x - 3), (_local_16.y - 38));
+//							_local_17.setType(TileBoarder.x_border_right_up, this.tileBg_layer, (_local_16.x - 0), (_local_16.y - 0));
+							_local_17.setType(TileBoarder.x_border_right_up, this.tileBg_layer, (_local_16.x + GameConst.CARD_W / 2 - 3), (_local_16.y - 5));
 							this.tileBoarders.push(_local_17);
 						}
-						;
 						if ((((!(this.isBlank((_local_6 + 1), (_local_7 + 1))))) && (this.isBlank((_local_6 + 1), _local_7))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_right_up_x, this.tileBg_layer, (_local_16.x - 4), (_local_16.y + 32));
+							_local_17.setType(TileBoarder.x_border_right_up_x, this.tileBg_layer, (_local_16.x + GameConst.CARD_W / 2 - 2.5), (_local_16.y + GameConst.CARD_W));
+//							_local_17.setType(TileBoarder.x_border_right_up_x, this.tileBg_layer, (_local_16.x - 4), (_local_16.y + 32));
 							this.tileBoarders.push(_local_17);
 						}
-						;
 						if (((((this.isBlank((_local_6 - 1), _local_7)) && ((!(this.isBlank(_local_6, (_local_7 + 1))))))) && (this.isBlank((_local_6 - 1), (_local_7 + 1)))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_heng_xia, this.tileBg_layer, _local_16.x, (_local_16.y - 38));
+							_local_17.setType(TileBoarder.x_border_heng_xia, this.tileBg_layer, _local_16.x + GameConst.CARD_W / 2, (_local_16.y - 5));
+//							_local_17.setType(TileBoarder.x_border_heng_xia, this.tileBg_layer, _local_16.x, (_local_16.y - 38));
 							this.tileBoarders.push(_local_17);
 						}
-						;
 						if (((((this.isBlank(_local_6, (_local_7 - 1))) && ((!(this.isBlank((_local_6 + 1), _local_7)))))) && (this.isBlank((_local_6 + 1), (_local_7 - 1)))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_shu_you, this.tileBg_layer, (_local_16.x - 38), _local_16.y);
+//							_local_17.setType(TileBoarder.x_border_shu_you, this.tileBg_layer, (_local_16.x - 38), _local_16.y);
+							_local_17.setType(TileBoarder.x_border_shu_you, this.tileBg_layer, (_local_16.x - 5), _local_16.y + GameConst.CARD_W / 2);
 							this.tileBoarders.push(_local_17);
 						}
-						;
 						if (((((this.isBlank(_local_6, (_local_7 + 1))) && ((!(this.isBlank((_local_6 + 1), _local_7)))))) && (this.isBlank((_local_6 + 1), (_local_7 + 1)))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_shu_zuo, this.tileBg_layer, (_local_16.x + 32), _local_16.y);
+//							_local_17.setType(TileBoarder.x_border_shu_zuo, this.tileBg_layer, (_local_16.x + 32), _local_16.y);
+							_local_17.setType(TileBoarder.x_border_shu_zuo, this.tileBg_layer, (_local_16.x + GameConst.CARD_W), _local_16.y + GameConst.CARD_W / 2);
 							this.tileBoarders.push(_local_17);
 						}
-						;
 						if (((((this.isBlank(_local_6, (_local_7 - 1))) && (this.isBlank((_local_6 + 1), _local_7)))) && (this.isBlank((_local_6 + 1), (_local_7 - 1)))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_down, this.tileBg_layer, (_local_16.x - 38), (_local_16.y - 3));
+//							_local_17.setType(TileBoarder.x_border_left_down, this.tileBg_layer, (_local_16.x - 38), (_local_16.y - 3));
+							_local_17.setType(TileBoarder.x_border_left_down, this.tileBg_layer, (_local_16.x - 5), (_local_16.y + GameConst.CARD_W / 2 - 3));
 							this.tileBoarders.push(_local_17);
 						}
-						;
 						if (((this.isBlank(_local_6, (_local_7 + 1))) && ((!(this.isBlank((_local_6 + 1), (_local_7 + 1)))))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_down_x, this.tileBg_layer, (_local_16.x + 32), (_local_16.y - 4));
+							_local_17.setType(TileBoarder.x_border_left_down_x, this.tileBg_layer, (_local_16.x + GameConst.CARD_W), (_local_16.y + GameConst.CARD_W / 2 - 3));
+//							_local_17.setType(TileBoarder.x_border_left_down_x, this.tileBg_layer, (_local_16.x + 32), (_local_16.y - 4));
 							this.tileBoarders.push(_local_17);
 						}
-						;
 						if (((((this.isBlank(_local_6, (_local_7 + 1))) && (this.isBlank((_local_6 + 1), _local_7)))) && (this.isBlank((_local_6 + 1), (_local_7 + 1)))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_right_down, this.tileBg_layer, (_local_16.x - 3), (_local_16.y - 3));
+//							_local_17.setType(TileBoarder.x_border_right_down, this.tileBg_layer, (_local_16.x - 3), (_local_16.y - 3));
+							_local_17.setType(TileBoarder.x_border_right_down, this.tileBg_layer, (_local_16.x + GameConst.CARD_W / 2 - 3), (_local_16.y + GameConst.CARD_W / 2 - 3));
 							this.tileBoarders.push(_local_17);
 						}
 						;
 						if (((this.isBlank(_local_6, (_local_7 - 1))) && ((!(this.isBlank((_local_6 + 1), (_local_7 - 1)))))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_right_down_x, this.tileBg_layer, (_local_16.x - 68), (_local_16.y - 4));
+//							_local_17.setType(TileBoarder.x_border_right_down_x, this.tileBg_layer, (_local_16.x - 68), (_local_16.y - 4));
+							_local_17.setType(TileBoarder.x_border_right_down_x, this.tileBg_layer, (_local_16.x - GameConst.CARD_W / 2 - 3), (_local_16.y + GameConst.CARD_W / 2 - 3));
 							this.tileBoarders.push(_local_17);
 						}
 						;
 						if (((((this.isBlank((_local_6 + 1), _local_7)) && ((!(this.isBlank(_local_6, (_local_7 + 1))))))) && (this.isBlank((_local_6 + 1), (_local_7 + 1)))))
 						{
 							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_heng_shang, this.tileBg_layer, _local_16.x, (_local_16.y + 32));
+//							_local_17.setType(TileBoarder.x_border_heng_shang, this.tileBg_layer, _local_16.x, (_local_16.y + 32));
+							_local_17.setType(TileBoarder.x_border_heng_shang, this.tileBg_layer, _local_16.x + GameConst.CARD_W / 2, (_local_16.y + GameConst.CARD_W));
 							this.tileBoarders.push(_local_17);
 						}
-						;
 					}
-					;
 					_local_7++;
 				}
-				;
 				_local_6++;
 			}
-			;
 		}
 
 		private function isBlank(_arg_1:int, _arg_2:int):Boolean
@@ -679,23 +671,15 @@ package com.popchan.sugar.modules.game.view
 						{
 							this.createIronWire(_local_2, _local_3, 1);
 						}
-						else
+						else if (_local_4 == TileConst.IRONWIRE2)
 						{
-							if (_local_4 == TileConst.IRONWIRE2)
-							{
-								this.createIronWire(_local_2, _local_3, 2);
-							}
-							;
+							this.createIronWire(_local_2, _local_3, 2);
 						}
-						;
 					}
-					;
 					_local_3++;
 				}
-				;
 				_local_2++;
 			}
-			;
 		}
 
 		private function createIronWire(_arg_1:int, _arg_2:int, _arg_3:int = 1):void
@@ -707,6 +691,16 @@ package com.popchan.sugar.modules.game.view
 			var _local_5:Point = this.getCandyPosition(_arg_1, _arg_2);
 			_local_4.x = _local_5.x;
 			_local_4.y = _local_5.y;
+			if (_arg_3 == 2)
+			{
+				_local_4.x -= 2;
+				_local_4.y += GameConst.CARD_W - 2;
+			}
+			else
+			{
+				_local_4.x -= 4;
+				_local_4.y -= 2;
+			}
 			this.ironWire_layer.addChild(_local_4);
 			this.ironWires[_arg_1][_arg_2] = _local_4;
 		}
@@ -914,7 +908,6 @@ package com.popchan.sugar.modules.game.view
 				this.gameState = STATE_GAME_WAIT;
 				Debug.log("居然有可以消除的，不用洗牌", _local_1[0]);
 			}
-			;
 		}
 
 		private function onTimer():void
@@ -1733,11 +1726,8 @@ package com.popchan.sugar.modules.game.view
 						_local_7.y = _local_8.y;
 						this.eat_layer.addChild(_local_7);
 					}
-					;
 				}
-				;
 			}
-			;
 			this.eatRemoved = false;
 			var _local_1:Array = this.getMonsterAndAroundCandys();
 			if (_local_1.length > 0)
@@ -1753,31 +1743,20 @@ package com.popchan.sugar.modules.game.view
 					_local_12 = this.getCandyPosition(_local_11.x, _local_11.y);
 					Tweener.addTween(_local_10, {"time": 0.1, "x": _local_12.x, "y": _local_12.y});
 				}
-				;
 				SoundManager.instance.playSound("msc_moveable");
 			}
-			;
 			if (this.matchCountOnceSwap >= 40)
 			{
 				this.addGoodTip(3);
 			}
-			else
+			else if (this.matchCountOnceSwap >= 25)
 			{
-				if (this.matchCountOnceSwap >= 25)
-				{
-					this.addGoodTip(2);
-				}
-				else
-				{
-					if (this.matchCountOnceSwap >= 10)
-					{
-						this.addGoodTip(1);
-					}
-					;
-				}
-				;
+				this.addGoodTip(2);
 			}
-			;
+			else if (this.matchCountOnceSwap >= 10)
+			{
+				this.addGoodTip(1);
+			}
 			this.matchCountOnceSwap = 0;
 		}
 
@@ -3674,7 +3653,11 @@ package com.popchan.sugar.modules.game.view
 				;
 				_local_3 = (_local_3 + 1);
 				if (_local_3 > 1000)
+				{
+					Model.gameModel.failReason = 1;
+					handleFailed();
 					break;
+				}
 				if ((((!(this.checkHasMatches()))) && ((this.checkConnectable().length > 0))))
 					break;
 			}
@@ -3699,15 +3682,11 @@ package com.popchan.sugar.modules.game.view
 							_local_13.x = _local_14.x;
 							_local_13.y = _local_14.y;
 						}
-						;
 					}
-					;
 					_local_12++;
 				}
-				;
 				_local_4++;
 			}
-			;
 		}
 
 		private function moveToRightPos(_arg_1:Candy, _arg_2:Function = null):void
@@ -3823,15 +3802,10 @@ package com.popchan.sugar.modules.game.view
 				{
 					step = Model.gameModel.step;
 				}
-				else
+				else if (currentLevel.mode == GameMode.TIME)
 				{
-					if (currentLevel.mode == GameMode.TIME)
-					{
-						step = (Model.gameModel.time / 5);
-					}
-					;
+					step = (Model.gameModel.time / 5);
 				}
-				;
 				if (step > 0)
 				{
 					candys = getNormalCandys();
@@ -3866,15 +3840,11 @@ package com.popchan.sugar.modules.game.view
 									Model.gameModel.step = 0;
 									queueToBouns();
 								}
-								;
 							}});
 							i = (i + 1);
 						}
-						;
 					}
-					;
 				}
-				;
 			}, 1200);
 		}
 

@@ -1,10 +1,7 @@
 ﻿//Created by Action Script Viewer - http://www.buraks.com/asv
 package com.popchan.sugar.modules.game.view
 {
-	import com.popchan.framework.core.Core;
 	import com.popchan.framework.ds.BasePool;
-	
-	import fairygui.GImage;
 
 	public class IronWire extends XImage
 	{
@@ -23,10 +20,16 @@ package com.popchan.sugar.modules.game.view
 		public function set dir(_arg_1:int):void
 		{
 			this._dir = _arg_1;
-			if(_arg_1 == 1)
+			if (_arg_1 == 1)
+			{
 				texture2 = ("ironWire");
-			else 
+				scaleY = 1.2;
+			}
+			else
+			{
 				texture2 = ("ironWire2");
+				scaleX = 1.2;
+			}
 		}
 	}
 } //package com.popchan.sugar.modules.game.view

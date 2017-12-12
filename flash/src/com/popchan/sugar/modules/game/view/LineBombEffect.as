@@ -3,12 +3,10 @@ package com.popchan.sugar.modules.game.view
 {
 	import com.popchan.framework.core.Core;
 	import com.popchan.framework.ds.BasePool;
-	import com.popchan.framework.utils.ToolKit;
-
+	
 	import caurina.transitions.Tweener;
-
+	
 	import fairygui.GComponent;
-	import fairygui.GImage;
 
 	public class LineBombEffect extends GComponent
 	{
@@ -42,7 +40,7 @@ package com.popchan.sugar.modules.game.view
 				this.img1.pivotX = this.img1.width;
 				this.img1.rotation = 0;
 				this.img2.pivotX = 0;
-				this.img2.rotation = Math.PI;
+				this.img2.rotation = 180;
 				this.img1.scaleX = (this.img2.scaleX = 0.2);
 				this.img1.scaleY = (this.img2.scaleY = 0.7);
 				t1 = Math.abs(((-(x) - this.img1.width) * 0.001));
@@ -60,9 +58,9 @@ package com.popchan.sugar.modules.game.view
 			}
 			else
 			{
-				this.img1.rotation = (-(Math.PI) / 2);
+				this.img1.rotation = -90;
 				this.img1.pivotX = 0;
-				this.img2.rotation = (Math.PI / 2);
+				this.img2.rotation = 90;
 				this.img2.pivotX = 0;
 				this.img1.scaleX = (this.img2.scaleX = 0.2);
 				this.img1.scaleY = (this.img2.scaleY = 0.7);
