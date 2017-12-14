@@ -67,10 +67,8 @@
     <image id="iybv2o" name="Pause.png" path="/"/>
     <component id="iybv2p" name="PauseButton.xml" path="/"/>
     <component id="iybv2q" name="Map.xml" path="/" exported="true"/>
-    <image id="u55n2r" name="dance.png" path="/"/>
-    <image id="u55n2s" name="wedding.png" path="/"/>
   </resources>
-  <publish name="zz3d.dressup.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug">
+  <publish name="zz3d.dressup.gui" path="F:\zz2018\d3d\flash\bin-debug">
     <atlas name="默认" index="0"/>
     <atlas name="UI" index="1"/>
     <atlas name="地图" index="2"/>
