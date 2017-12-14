@@ -24,8 +24,6 @@ package com.popchan.sugar.modules.game.view
 		public function Lock()
 		{
 			texture2 = ("lock");
-			this.pivotX = (this.texture.width >> 1);
-			this.pivotY = (this.texture.height >> 1);
 			this.scaleX = 1.25;
 			this.scaleY = 1.25;
 		}

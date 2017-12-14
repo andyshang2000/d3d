@@ -8,5 +8,13 @@
     </image>
     <component id="n5_mld8" name="returnButton" src="mld87" xy="9,68"/>
     <text id="n13_ljz9" name="stepLabel" xy="0,12" size="50,37" font="微软雅黑" fontSize="30" color="#ffff99" align="center" vAlign="bottom" autoSize="shrink" bold="true" strokeColor="#cc6633" text="27"/>
+    <list id="n16_9icv" name="aimList" xy="103,2" size="287,71" touchable="false" layout="flow_hz" selectionMode="none" colGap="5" defaultItem="ui://5t4h99ba9icv47" align="center">
+      <relation target="" sidePair="top-top,width-width"/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+    </list>
   </displayList>
 </component>

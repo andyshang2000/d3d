@@ -67,7 +67,7 @@ package diary.ui.view
 //			enqueue(_local_1, "assets/textures/game02.xml");
 //			enqueue(_local_1, "assets/textures/game03.png");
 //			enqueue(_local_1, "assets/textures/game03.xml");
-			_local_1.enqueue((("assets/level/Level" + 199) + ".xml"));
+			_local_1.enqueue((("assets/level/Level" + 105) + ".xml"));
 			_local_1.enqueue((("assets/level/Level" + 216) + ".xml"));
 			var _local_2:int;
 			while (_local_2 <= 20)

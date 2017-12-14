@@ -1,6 +1,7 @@
 package diary.ui.view
 {
 	import com.greensock.TweenLite;
+	import com.greensock.easing.Back;
 	import com.greensock.easing.Bounce;
 	import com.popchan.framework.core.MsgDispatcher;
 	import com.popchan.sugar.core.Model;
@@ -11,24 +12,26 @@ package diary.ui.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.events.GameEvents;
 	import com.popchan.sugar.modules.game.view.GamePanel;
-
+	import com.popchan.sugar.modules.game.view.XImage;
+	
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
-
+	
 	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
 	import diary.avatar.MatchRespond;
-
+	
 	import fairygui.GComponent;
 	import fairygui.GImage;
+	import fairygui.GList;
 	import fairygui.GRoot;
 	import fairygui.UIObjectFactory;
 	import fairygui.UIPackage;
 	import fairygui.Window;
-
+	
 	import flare.core.Camera3D;
-
+	
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.TextSprite;
@@ -57,6 +60,7 @@ package diary.ui.view
 
 		private var view:GamePanel;
 		private var imageLoaded:Boolean;
+		private var aimDic:Array = [];
 
 		override protected function onCreate():void
 		{
@@ -155,94 +159,33 @@ package diary.ui.view
 
 		public function setInfo(_arg_1:LevelCO):void
 		{
-			var _local_2:Image;
-			var _local_3:*;
-			var _local_6:TextSprite;
 			var _local_7:Array;
-			var _local_8:int;
-			var _local_9:int;
-			var _local_10:TextSprite;
-//			this.scoreAim = _arg_1.needScore;
-//			for (_local_3 in aimIconDict)
-//			{
-//				_local_2 = this.aimIconDict[_local_3];
-//				_local_2.removeFromParent(true);
-//				_local_2 = null;
-//				delete this.aimIconDict[_local_3];
-//			};
-//			for (_local_3 in aimLabelDict)
-//			{
-//				_local_6 = this.aimLabelDict[_local_3];
-//				_local_6.removeFromParent(true);
-//				_local_6 = null;
-//				delete this.aimLabelDict[_local_3];
-//			};
+			var aimID:int;
+			var amiOrg:int;
 			if (_arg_1.mode == GameMode.NORMAL)
 			{
-				Model.gameModel.step = (_arg_1.step + 10);
+				Model.gameModel.step = (_arg_1.step);
 			}
-			else
+			else if (_arg_1.mode == GameMode.TIME)
 			{
-				if (_arg_1.mode == GameMode.TIME)
-				{
-					Model.gameModel.time = (_arg_1.step + 15);
-				}
+				Model.gameModel.time = (_arg_1.step);
 			}
-			var _local_4:int;
-			if (_arg_1.aim.length == 1)
+
+			getChild("aimList").asList.itemRenderer = function(i:int, item:GComponent):void
 			{
-				_local_4 = 300;
-			}
-			else
-			{
-				if (_arg_1.aim.length == 2)
-				{
-					_local_4 = 240;
-				}
-				else
-				{
-					if (_arg_1.aim.length == 3)
-					{
-						_local_4 = 200;
-					}
-				}
-			}
-			var _local_5:int;
-			while (_local_5 < _arg_1.aim.length)
-			{
-				_local_7 = _arg_1.aim[_local_5].split(",");
-				_local_8 = int(_local_7[0]);
-				_local_9 = int(_local_7[1]);
-				Model.gameModel.addAim(_local_8, _local_9);
-//				_local_2 = new Image(Texture.fromTexture(Core.getTexture(AimType.AIM_ICONS[_local_8])));
-//				_local_2.pivotY = (_local_2.height >> 1);
-//				if (_local_8 != AimType.SCORE)
-//				{
-//					_local_2.pivotX = (_local_2.width >> 1);
-//					_local_2.scaleX = (_local_2.scaleY = 0.6);
-//				}
-//				else
-//				{
-//					_local_2.pivotX = _local_2.width;
-//				};
-//				_local_2.x = ((_local_4 + (_local_5 * 80)) + 30);
-//				_local_2.y = 31;
-//				this.addChild(_local_2);
-//				this.aimIconDict[_local_8] = _local_2;
-//				_local_10 = ToolKit.createTextSprite(this, Core.getTextures("font1_"), 0, 0, 16, "0123456789/x+-");
-//				addChild(_local_10);
-//				_local_10.text = (_local_9 + "");
-//				_local_10.x = ((_local_4 + 45) + (_local_5 * 80));
-//				_local_10.y = 23;
-//				this.aimLabelDict[_local_8] = _local_10;
-				_local_5++;
-			}
+				_local_7 = _arg_1.aim[i].split(",");
+				aimID = int(_local_7[0]);
+				amiOrg = int(_local_7[1]);
+				Model.gameModel.addAim(aimID, amiOrg);
+				new XImage(item.getChild("icon").asImage).texture2 = AimType.AIM_ICONS[aimID];
+				aimDic[aimID] = item;
+				item.getChild("value").asTextField.text = amiOrg + "";
+			};
+			getChild("aimList").asList.numItems = _arg_1.aim.length;
 		}
 
 		private function onTimeChange():void
 		{
-			// TODO Auto Generated method stub
-
 		}
 
 		private function onStepChange():void
@@ -257,7 +200,6 @@ package diary.ui.view
 			var p = Model.gameModel.score / (cfg.needScore * 10)
 			TweenLite.killTweensOf(bar.getChild("bar"));
 			TweenLite.to(bar.getChild("bar"), 0.8, {rotation: 20 - 135 * Math.min(1.0, p), ease: Bounce.easeOut})
-			trace(Model.gameModel.score)
 			if (Model.gameModel.score > cfg.needScore * 6)
 			{
 				bar.getChild("star3").grayed = false;
@@ -274,9 +216,23 @@ package diary.ui.view
 
 		private function onAimChange(_arg_1:*):void
 		{
+//			MsgDispatcher.execute(GameEvents.AIMS_CHANGE, { //
+//				"type": _arg_1, //
+//				"value": this.aim[_arg_1], //
+//				"orgValue": this.aimOrg[_arg_1]});
 			if (_arg_1.type == AimType.SCORE)
 			{
 				return;
+			}
+			var list:GList = getChild("aimList").asList
+			var item:GComponent = aimDic[_arg_1.type];
+			item.getChild("value").text = (_arg_1.orgValue - _arg_1.value) + "";
+			if (_arg_1.orgValue - _arg_1.value == 0)
+			{
+				TweenLite.to(item, 0.8, {scaleX:0.1, scaleY:0.1, ease:Back.easeIn, onComplete:function():void
+				{
+					item.visible = false;
+				}});
 			}
 		}
 

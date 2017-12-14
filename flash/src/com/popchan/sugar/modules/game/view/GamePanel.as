@@ -15,18 +15,18 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.data.TileConst;
 	import com.popchan.sugar.core.events.GameEvents;
-	
+
 	import flash.geom.Point;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-	
+
 	import caurina.transitions.Tweener;
-	
+
 	import fairygui.GComponent;
 	import fairygui.GList;
 	import fairygui.GRoot;
 	import fairygui.event.GTouchEvent;
-	
+
 	import starling.events.EnterFrameEvent;
 
 	public class GamePanel extends GComponent
@@ -89,7 +89,6 @@ package com.popchan.sugar.modules.game.view
 		private var matchCountOnceSwap:int = 0;
 		private var _instanceName:String = "GamePanel";
 
-		
 		override protected function constructFromXML(xml:XML):void
 		{
 			super.constructFromXML(xml);
@@ -476,7 +475,6 @@ package com.popchan.sugar.modules.game.view
 			{
 				this.shuffle();
 			}
-			;
 		}
 
 		private function newCandy(_arg_1:int, _arg_2:int, color:int = 0):Candy
@@ -485,7 +483,6 @@ package com.popchan.sugar.modules.game.view
 			{
 				color = int(((Math.random() * this.currentLevel.colorCount) + 1));
 			}
-			;
 			var _local_4:Candy = (Candy.pool.take() as Candy);
 			_local_4.reset();
 			var _local_5:Point = this.getCandyPosition(_arg_1, _arg_2);
@@ -1006,9 +1003,7 @@ package com.popchan.sugar.modules.game.view
 				{
 					Model.gameModel.step--;
 				}
-				;
 			}
-			;
 		}
 
 		private function checkHasMatches(_arg_1:Boolean = true):Boolean
@@ -1617,9 +1612,7 @@ package com.popchan.sugar.modules.game.view
 				{
 					return (true);
 				}
-				;
 			}
-			;
 			return (false);
 		}
 
@@ -2177,58 +2170,37 @@ package com.popchan.sugar.modules.game.view
 			Debug.log("移除水果");
 			for each (removeCandy in list)
 			{
-//                this.addScoreTip(removeCandy.x, removeCandy.y, 10, removeCandy.color);
-//				this.addEffect(removeCandy.status, removeCandy.x, removeCandy.y);
-//				removeCandy.reset();
-//				this.candys[removeCandy.row][removeCandy.col] = null;
-//				this.addChild(removeCandy);
-//				tp = new Point(0, 0);
-//				if (removeCandy.color == 7)
-//				{
-//					tp = this.infoPanel.getIconPos(AimType.FRUIT1);
-//				}
-//				else if (removeCandy.color == 8)
-//				{
-//					tp = this.infoPanel.getIconPos(AimType.FRUIT2);
-//				}
-//				else if (removeCandy.color == 9)
-//				{
-//					tp = this.infoPanel.getIconPos(AimType.FRUIT3);
-//				}
-//				if (removeCandy.color == ColorType.FRUIT1)
-//				{
-//					Model.gameModel.offsetAim(AimType.FRUIT1, 1);
-//				}
-//				else
-//				{
-//					if (removeCandy.color == ColorType.FRUIT2)
-//					{
-//						Model.gameModel.offsetAim(AimType.FRUIT2, 1);
-//					}
-//					else
-//					{
-//						if (removeCandy.color == ColorType.FRUIT3)
-//						{
-//							Model.gameModel.offsetAim(AimType.FRUIT3, 1);
-//						}
-//						;
-//					}
-//					;
-//				}
-//				;
-//				disX = ((tp.x + this.infoPanel.x) - removeCandy.x);
-//				disY = ((tp.y + this.infoPanel.y) - removeCandy.y);
-//				dis = Math.sqrt(((disX * disX) + (disY * disY)));
-//				t = (dis / 600);
-//				Tweener.addTween(removeCandy, {"time": t, "x": (tp.x + this.infoPanel.x), "y": (tp.y + this.infoPanel.y), "scaleX": 0.6, "scaleY": 0.6, "onCompleteParams": [removeCandy], "onComplete": function(_arg_1:Candy):void
-//				{
-//					Candy.pool.put(_arg_1);
-//					_arg_1.reset();
-//					_arg_1.removeFromParent();
-//				}});
-				Candy.pool.put(removeCandy);
+				this.addScoreTip(removeCandy.x, removeCandy.y, 10, removeCandy.color);
+				this.addEffect(removeCandy.status, removeCandy.x, removeCandy.y);
 				removeCandy.reset();
-				removeCandy.removeFromParent();
+				this.candys[removeCandy.row][removeCandy.col] = null;
+				this.addChild(removeCandy);
+				tp = new Point(0, 0);
+				if (removeCandy.color == ColorType.FRUIT1)
+				{
+					Model.gameModel.offsetAim(AimType.FRUIT1, 1);
+				}
+				else if (removeCandy.color == ColorType.FRUIT2)
+				{
+					Model.gameModel.offsetAim(AimType.FRUIT2, 1);
+				}
+				else if (removeCandy.color == ColorType.FRUIT3)
+				{
+					Model.gameModel.offsetAim(AimType.FRUIT3, 1);
+				}
+				disX = 0;
+				disY = 0;
+				dis = Math.sqrt(((disX * disX) + (disY * disY)));
+				t = (dis / 600);
+				Tweener.addTween(removeCandy, {"time": t, "x": tp.x, //
+						"y": tp.y, //
+						"scaleX": 0.6, "scaleY": 0.6, "onCompleteParams": [removeCandy], // 
+						"onComplete": function(_arg_1:Candy):void
+						{
+							Candy.pool.put(_arg_1);
+							_arg_1.reset();
+							_arg_1.removeFromParent();
+						}});
 			}
 		}
 
@@ -2960,12 +2932,9 @@ package com.popchan.sugar.modules.game.view
 						{
 							_local_3.push(_local_6);
 						}
-						;
 						_local_5++;
 					}
-					;
 				}
-				;
 				_local_7++;
 			}
 			;
@@ -2983,15 +2952,11 @@ package com.popchan.sugar.modules.game.view
 						{
 							_local_3.push(_local_6);
 						}
-						;
 						_local_4++;
 					}
-					;
 				}
-				;
 				_local_7++;
 			}
-			;
 			return (_local_3);
 		}
 
@@ -3001,17 +2966,14 @@ package com.popchan.sugar.modules.game.view
 			{
 				return (this.getCandysByRow(_arg_1.row));
 			}
-			;
 			if (_arg_1.status == CandySpecialStatus.VERT)
 			{
 				return (this.getCandysByCol(_arg_1.col));
 			}
-			;
 			if (_arg_1.status == CandySpecialStatus.BOMB)
 			{
 				return (this.getAroundCandys(_arg_1.row, _arg_1.col));
 			}
-			;
 			return ([]);
 		}
 

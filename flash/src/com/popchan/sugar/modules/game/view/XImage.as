@@ -6,8 +6,18 @@ package com.popchan.sugar.modules.game.view
 
 	public class XImage extends GImage
 	{
-		public function XImage()
+		private var gImage:GImage;
+
+		public function XImage(gImage:GImage = null)
 		{
+			if (gImage != null)
+			{
+				this.gImage = gImage;
+			}
+			else
+			{
+				this.gImage = this;
+			}
 		}
 
 		public function set texture2(name:String):void
@@ -20,7 +30,7 @@ package com.popchan.sugar.modules.game.view
 				trace("????????????" + name)
 			if (t != null)
 			{
-				texture = t;
+				gImage.texture = t;
 				onTextureSet();
 			}
 			else
@@ -33,7 +43,7 @@ package com.popchan.sugar.modules.game.view
 					}
 					if (i != null)
 					{
-						texture = i.texture;
+						gImage.texture = i.texture;
 						onTextureSet();
 					}
 				});
