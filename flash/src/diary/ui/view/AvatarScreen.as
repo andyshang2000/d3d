@@ -1,13 +1,19 @@
 package diary.ui.view
 {
+	import flash.filesystem.File;
+	
 	import diary.avatar.Avatar;
 	import diary.avatar.AvatarBoy;
 	import diary.avatar.AvatarGirl;
 	import diary.avatar.RotationComponent;
+	import diary.res.ResManager;
+	import diary.res.ZF3D;
 	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
+	
+	import zzsdk.utils.FileUtil;
 
 	public class AvatarScreen extends GScreen
 	{
@@ -38,8 +44,16 @@ package diary.ui.view
 			if (avatarlist[name] != null)
 				return avatarlist[name];
 			var avatar:Avatar = gender == "girl" ? new AvatarGirl : new AvatarBoy;
-
+			FileUtil.dir = File.applicationDirectory;
+			ResManager.getResAsync("scene.zf3d", ZF3D, function(zf3d:ZF3D):void
+			{
+				scene.addChild(zf3d.content);
+				zf3d.content.z = 140;
+				zf3d.content.rotateY(12);
+			});
+			FileUtil.dir = File.applicationStorageDirectory;
 			scene.addChild(avatar);
+			scene.camera
 			avatarlist[name] = avatar;
 
 			return avatar;

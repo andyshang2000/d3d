@@ -49,7 +49,9 @@ package diary.ui
 			antialias = 2;
 			autoResize = false;
 			autoDispose = true;
-			lights.techniqueName = LightFilter.NO_LIGHTS;
+			lights.setGamma(4,4,4);
+			lights.maxPointLights = 5;
+			lights.techniqueName = LightFilter.SAMPLED;
 			//
 			scene.addEventListener(Scene3D.RENDER_EVENT, firstRenderEvent);
 		}

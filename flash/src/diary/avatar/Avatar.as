@@ -2,19 +2,20 @@ package diary.avatar
 
 {
 	import com.greensock.TweenLite;
-
+	
 	import flash.events.Event;
 	import flash.utils.clearTimeout;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-
+	
 	import diary.res.ResManager;
 	import diary.res.ZF3D;
-
+	
 	import flare.core.Label3D;
 	import flare.core.Mesh3D;
 	import flare.core.Pivot3D;
 	import flare.core.Surface3D;
+	import flare.materials.Material3D;
 	import flare.materials.Shader3D;
 	import flare.materials.filters.TextureMapFilter;
 	import flare.utils.Pivot3DUtils;
@@ -136,6 +137,7 @@ package diary.avatar
 //				zf3d.content.hide();
 				takeOff(type);
 				addChild(zf3d.content);
+				removeLights(zf3d.content);
 				trace(getTimer() - t);
 				for (var i:int = 0; i < type.length; i++)
 				{
@@ -159,7 +161,24 @@ package diary.avatar
 				}
 			});
 		}
-
+		
+		private function removeLights(content:Pivot3D):void
+		{
+			content.children.forEach(function(p:Pivot3D, ...args):void
+			{
+				if(p is Mesh3D)
+				{
+					var mesh:Mesh3D = p as Mesh3D;
+					var materials:Vector.<Material3D> = mesh.getMaterials(true);
+					materials.forEach(function(m:Material3D, ...args):void
+					{
+						if(m is Shader3D)
+							(m as Shader3D).enableLights = false;
+					});
+				}
+			});
+		}
+		
 		protected function updatePoseByPart(part:String):Boolean
 		{
 			return updatePose(getPoseByPart(part));

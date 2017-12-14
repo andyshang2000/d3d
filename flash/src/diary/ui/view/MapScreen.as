@@ -1,43 +1,15 @@
 package diary.ui.view
 {
-	import flash.display.BitmapData;
-	
-	import diary.avatar.Avatar;
-	import diary.ui.Carousel;
-	
 	import fairygui.GButton;
 	import fairygui.GComponent;
 	import fairygui.GImage;
 	import fairygui.GRoot;
 	import fairygui.event.GTouchEvent;
-	
-	import starling.display.Image;
-	import starling.display.Sprite;
-	import starling.textures.TextureAtlas;
 
 	public class MapScreen extends GScreen implements IScreen
 	{
-		private var json:Object;
-
-		private var iconAtlas:TextureAtlas;
-		private var avatar:Avatar;
-
-		private var snapAtlas:BitmapData;
-		private var snapTextures:Array = [];
-
 		private var worldMapButtons:Array;
-		private var numSceneOpen:int = 3;
-
-		private var onInitCallback:Function = null;
-		private var initialized:Boolean;
-
-		public var leftBar:GComponent;
-		
-		private var back:Sprite
-		private var backImage:Image;
-		private var backList:Carousel;
-		private var avatarlist:Object = {};
-		
+		private var numSceneOpen:int = 3;		
 		
 		override public function createLayer(name:String):*
 		{

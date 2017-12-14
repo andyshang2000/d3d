@@ -5,50 +5,20 @@ package diary.ui.view
 	import com.popchan.sugar.core.Model;
 	import com.popchan.sugar.core.manager.Sounds;
 	
-	import flash.display.BitmapData;
-	import flash.display.Loader;
-	import flash.display.PNGEncoderOptions;
-	import flash.events.Event;
 	import flash.filesystem.File;
-	import flash.geom.Matrix;
-	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
 	
-	import diary.avatar.Avatar;
-	
-	import fairygui.GComponent;
 	import fairygui.UIPackage;
 	
 	import payment.ane.PaymentANE;
 	
-	import starling.textures.TextureAtlas;
 	import starling.utils.AssetManager;
-	import starling.utils.StringUtil;
 	
 	import zzsdk.utils.FileUtil;
 
 	public class EnterScreen extends GScreen implements IScreen
 	{
-		private var json:Object;
-
-		private var iconAtlas:TextureAtlas;
-		private var avatar:Avatar;
-
-		private var snapAtlas:BitmapData;
-		private var snapTextures:Array = [];
-
-		private var worldMapButtons:Array;
-		private var numSceneOpen:int = 3;
-
-		private var onInitCallback:Function = null;
-		private var initialized:Boolean;
-
-		public var leftBar:GComponent;
 		private var firstRun:Boolean;
-
-		public function EnterScreen()
-		{
-		}
 
 		override protected function loadAssets():void
 		{
