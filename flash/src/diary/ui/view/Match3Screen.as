@@ -9,24 +9,25 @@ package diary.ui.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.events.GameEvents;
 	import com.popchan.sugar.modules.game.view.GamePanel;
-	
+
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
-	
+
 	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
 	import diary.avatar.MatchRespond;
 	import diary.avatar.RotationComponent;
-	
+
 	import fairygui.GComponent;
 	import fairygui.GImage;
 	import fairygui.GRoot;
+	import fairygui.UIObjectFactory;
 	import fairygui.UIPackage;
 	import fairygui.Window;
-	
+
 	import flare.core.Camera3D;
-	
+
 	import starling.display.Image;
 	import starling.display.TextSprite;
 	import starling.textures.Texture;
@@ -58,7 +59,9 @@ package diary.ui.view
 		override protected function onCreate():void
 		{
 			setGView("zz3d.m3.gui", "Match3");
-			view = new GamePanel();
+			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/GamePanel", GamePanel);
+
+			view = GamePanel(UIPackage.createObject("zz3d.m3.gui", "GamePanel"));
 			GRoot.inst.addChild(view);
 //			DisplayObjectContainer(Starling.current.root).addChild(view);
 
@@ -83,9 +86,6 @@ package diary.ui.view
 			MsgDispatcher.add(GameEvents.STEP_CHANGE, this.onStepChange);
 			MsgDispatcher.add(GameEvents.TIME_CHANGE, this.onTimeChange);
 
-			var rect:Rectangle
-
-			view.init();
 			view.newGame(Config.levelConfig.getLevel(Model.levelModel.selectedLevel));
 			setInfo(Config.levelConfig.getLevel(Model.levelModel.selectedLevel));
 

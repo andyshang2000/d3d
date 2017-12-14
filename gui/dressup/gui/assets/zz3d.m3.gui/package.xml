@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <packageDescription id="5t4h99ba" jpegQuality="80" compressPNG="true">
   <resources>
-    <image id="mld80" name="infoBg.png" path="/ui/" exported="true" scale="" atlas="alone"/>
+    <image id="mld80" name="infoBg.png" path="/ui/" exported="true" atlas="alone"/>
     <image id="mld81" name="infoTop.png" path="/ui/" exported="true" scale="9grid" scale9grid="144,21,158,21"/>
     <component id="mld82" name="Match3.xml" path="/" exported="true"/>
     <component id="mld83" name="ProgressBar.xml" path="/" exported="true"/>
@@ -10,7 +10,7 @@
     <font id="mld86" name="Font_Title.fnt" path="/" exported="true"/>
     <component id="mld87" name="returnButton.xml" path="/" exported="true"/>
     <image id="mld88" name="returnIcon.png" path="/assets/"/>
-    <image id="mld89" name="bg04.png" path="/" exported="true" scale="" atlas="alone"/>
+    <image id="mld89" name="bg04.png" path="/" exported="true" atlas="alone"/>
     <image id="mld8a" name="candy5.png" path="/candys/" exported="true"/>
     <image id="mld8b" name="candy0.png" path="/candys/" exported="true"/>
     <image id="mld8c" name="candy0a.png" path="/candys/" exported="true"/>
@@ -125,6 +125,8 @@
     <image id="mld83e" name="bigstar.png" path="/"/>
     <component id="mld83f" name="returnButton(1).xml" path="/"/>
     <image id="mld83h" name="cube.png" path="/candys/" exported="true"/>
+    <component id="ljz93i" name="GamePanel.xml" path="/" exported="true"/>
+    <component id="ljz93j" name="TileBg.xml" path="/"/>
   </resources>
   <publish name="zz3d.m3.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug"/>
 </packageDescription>

@@ -15,17 +15,18 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.data.TileConst;
 	import com.popchan.sugar.core.events.GameEvents;
-
+	
 	import flash.geom.Point;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-
+	
 	import caurina.transitions.Tweener;
-
+	
 	import fairygui.GComponent;
+	import fairygui.GList;
 	import fairygui.GRoot;
 	import fairygui.event.GTouchEvent;
-
+	
 	import starling.events.EnterFrameEvent;
 
 	public class GamePanel extends GComponent
@@ -52,7 +53,6 @@ package com.popchan.sugar.modules.game.view
 		private var contentW:int;
 		private var contentH:int;
 		public var tileBgs:Array;
-		public var tileBoarders:Array;
 		public var candys:Array;
 		public var bricks:Array;
 		public var locks:Array;
@@ -63,11 +63,7 @@ package com.popchan.sugar.modules.game.view
 		public var tDoors:Array;
 		public var ironWires:Array;
 
-//		public var infoPanel:InfoPanel;
-
-		private var container:GComponent;
 		private var candy_layer:GComponent;
-		private var tileBg_layer:GComponent;
 		private var door_layer:GComponent;
 		private var brick_layer:GComponent;
 		private var ice_layer:GComponent;
@@ -93,30 +89,28 @@ package com.popchan.sugar.modules.game.view
 		private var matchCountOnceSwap:int = 0;
 		private var _instanceName:String = "GamePanel";
 
-		public function init():void
+		
+		override protected function constructFromXML(xml:XML):void
 		{
-			this.container = new GComponent();
-			this.addChild(this.container);
-			this.tileBg_layer = new GComponent();
-			this.container.addChild(this.tileBg_layer);
+			super.constructFromXML(xml);
 			this.brick_layer = new GComponent();
-			this.container.addChild(this.brick_layer);
+			addChild(this.brick_layer);
 			this.ice_layer = new GComponent();
-			this.container.addChild(this.ice_layer);
+			addChild(this.ice_layer);
 			this.stone_layer = new GComponent();
-			this.container.addChild(this.stone_layer);
+			addChild(this.stone_layer);
 			this.eat_layer = new GComponent();
-			this.container.addChild(this.eat_layer);
+			addChild(this.eat_layer);
 			this.candy_layer = new GComponent();
-			this.container.addChild(this.candy_layer);
+			addChild(this.candy_layer);
 			this.lock_layer = new GComponent();
-			this.container.addChild(this.lock_layer);
+			addChild(this.lock_layer);
 			this.monster_layer = new GComponent();
-			this.container.addChild(this.monster_layer);
+			addChild(this.monster_layer);
 			this.ironWire_layer = new GComponent();
-			this.container.addChild(this.ironWire_layer);
+			addChild(this.ironWire_layer);
 			this.door_layer = new GComponent();
-			this.container.addChild(this.door_layer);
+			addChild(this.door_layer);
 			this.tDoors = this.getBlankMapArray();
 			this.tileBgs = this.getBlankMapArray();
 			this.candys = this.getBlankMapArray();
@@ -127,7 +121,6 @@ package com.popchan.sugar.modules.game.view
 			this.locks = this.getBlankMapArray();
 			this.ironWires = this.getBlankMapArray();
 			this.monsters = this.getBlankMapArray();
-			this.tileBoarders = [];
 		}
 
 		private function getBlankMapArray():Array
@@ -163,15 +156,13 @@ package com.popchan.sugar.modules.game.view
 
 		private function createElements():void
 		{
-			this.createTileBg();
+			this.createTileBg2();
 			this.createDoor();
 			this.createBrick();
 			this.createBarrier();
 			this.createIronWires()
 			this.createCandys();
 			this.createBombs();
-			this.container.x = 650;
-			Tweener.addTween(this.container, {"time": 0.6, "x": 0, "delay": 0.1, "transition": "easeBackOut"});
 		}
 
 		private function createBombs():void
@@ -245,207 +236,70 @@ package com.popchan.sugar.modules.game.view
 			}
 		}
 
-		private function createTileBg():void
+		private function createTileBg2():void
 		{
-			var _local_6:int;
-			var _local_7:int;
-			var _local_8:*;
-			var _local_9:*;
-			var _local_10:*;
-			var _local_11:*;
-			var _local_14:int;
-			var _local_15:TileBg;
-			var _local_16:Point;
-			var _local_17:TileBoarder;
-			var _local_1:Array = this.currentLevel.tile;
-			var _local_2:int;
-			var _local_3:int = (GameConst.ROW_COUNT - 1);
-			var _local_4:int;
-			var _local_5:int = (GameConst.COL_COUNT - 1);
-			_local_7 = 0;
-			_loop_1: while (_local_7 < GameConst.COL_COUNT)
+//			var bg:GComponent = UIPackage.createObject("zz3d.m3.gui", "GamePanel").asCom;
+			var bgLayer:GList = getChild("bgLayer").asList;
+			bgLayer.itemRenderer = function(i:int, renderer:GComponent):void
 			{
-				_local_6 = 0;
-				while (_local_6 < GameConst.ROW_COUNT)
+				var y:int = int(i / GameConst.COL_COUNT);
+				var x:int = int(i % GameConst.COL_COUNT);
+				var item:* = currentLevel.tile[y][x];
+				if (item > 0)
 				{
-					if (_local_1[_local_6][_local_7] > 0)
-					{
-						_local_4 = _local_7;
-						break _loop_1;
-					}
-					_local_6++;
+					renderer.visible = true;
+					setupFrame(x, y, renderer)
 				}
-				_local_7++;
-			}
-			_local_7 = (GameConst.COL_COUNT - 1);
-			_loop_2: while (_local_7 >= 0)
-			{
-				_local_6 = 0;
-				while (_local_6 < GameConst.ROW_COUNT)
+				else
 				{
-					if (_local_1[_local_6][_local_7] > 0)
-					{
-						_local_5 = _local_7;
-						break _loop_2;
-					}
-					_local_6++;
+					renderer.visible = false;
 				}
-				_local_7--;
-			}
-			_local_6 = 0;
-			_loop_3: while (_local_6 < GameConst.ROW_COUNT)
-			{
-				_local_7 = 0;
-				while (_local_7 < GameConst.COL_COUNT)
-				{
-					if (_local_1[_local_6][_local_7] > 0)
-					{
-						_local_2 = _local_6;
-						break _loop_3;
-					}
-					_local_7++;
-				}
-				_local_6++;
-			}
-			_local_6 = (GameConst.ROW_COUNT - 1);
-			_loop_4: while (_local_6 >= 0)
-			{
-				_local_7 = 0;
-				while (_local_7 < GameConst.COL_COUNT)
-				{
-					if (_local_1[_local_6][_local_7] > 0)
-					{
-						_local_3 = _local_6;
-						break _loop_4;
-					}
-					_local_7++;
-				}
-				_local_6--;
-			}
-			var _local_12:int = ((GameConst.ROW_COUNT - _local_3) - _local_2);
-			var _local_13:int = ((GameConst.COL_COUNT - _local_5) - _local_4);
-			_local_6 = 0;
-			while (_local_6 < GameConst.ROW_COUNT)
-			{
-				_local_7 = 0;
-				while (_local_7 < GameConst.COL_COUNT)
-				{
-					_local_14 = _local_1[_local_6][_local_7];
-					if (_local_14 > 0)
-					{
-						_local_15 = (TileBg.pool.take() as TileBg);
-						_local_16 = this.getCandyPosition(_local_6, _local_7);
-						_local_15.x = _local_16.x;
-						_local_15.y = _local_16.y;
-						this.tileBgs[_local_6][_local_7] = _local_15;
-						this.tileBg_layer.addChild(_local_15);
-						if (this.isBlank(_local_6, _local_7 - 1) && // 
-							this.isBlank(_local_6 - 1, _local_7) && // 
-							this.isBlank(_local_6 - 1, _local_7 - 1))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_up, this.tileBg_layer, (_local_16.x - 5), (_local_16.y - 5));
-//							_local_17.setType(TileBoarder.x_border_left_up, this.tileBg_layer, (_local_16.x - 38), (_local_16.y - 38));
-							this.tileBoarders.push(_local_17);
-						}
-						if ((((!(this.isBlank((_local_6 + 1), (_local_7 - 1))))) && (this.isBlank((_local_6 + 1), _local_7))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_up_x, this.tileBg_layer, (_local_16.x), (_local_16.y + GameConst.CARD_W));
-//							_local_17.setType(TileBoarder.x_border_left_up_x, this.tileBg_layer, (_local_16.x - 32), (_local_16.y + 32));
-							this.tileBoarders.push(_local_17);
-						}
-						if (((((this.isBlank(_local_6, (_local_7 + 1))) && (this.isBlank((_local_6 - 1), _local_7)))) && (this.isBlank((_local_6 - 1), (_local_7 + 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-//							_local_17.setType(TileBoarder.x_border_right_up, this.tileBg_layer, (_local_16.x - 0), (_local_16.y - 0));
-							_local_17.setType(TileBoarder.x_border_right_up, this.tileBg_layer, (_local_16.x + GameConst.CARD_W / 2 - 3), (_local_16.y - 5));
-							this.tileBoarders.push(_local_17);
-						}
-						if ((((!(this.isBlank((_local_6 + 1), (_local_7 + 1))))) && (this.isBlank((_local_6 + 1), _local_7))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_right_up_x, this.tileBg_layer, (_local_16.x + GameConst.CARD_W / 2 - 2.5), (_local_16.y + GameConst.CARD_W));
-//							_local_17.setType(TileBoarder.x_border_right_up_x, this.tileBg_layer, (_local_16.x - 4), (_local_16.y + 32));
-							this.tileBoarders.push(_local_17);
-						}
-						if (((((this.isBlank((_local_6 - 1), _local_7)) && ((!(this.isBlank(_local_6, (_local_7 + 1))))))) && (this.isBlank((_local_6 - 1), (_local_7 + 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_heng_xia, this.tileBg_layer, _local_16.x + GameConst.CARD_W / 2, (_local_16.y - 5));
-//							_local_17.setType(TileBoarder.x_border_heng_xia, this.tileBg_layer, _local_16.x, (_local_16.y - 38));
-							this.tileBoarders.push(_local_17);
-						}
-						if (((((this.isBlank(_local_6, (_local_7 - 1))) && ((!(this.isBlank((_local_6 + 1), _local_7)))))) && (this.isBlank((_local_6 + 1), (_local_7 - 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-//							_local_17.setType(TileBoarder.x_border_shu_you, this.tileBg_layer, (_local_16.x - 38), _local_16.y);
-							_local_17.setType(TileBoarder.x_border_shu_you, this.tileBg_layer, (_local_16.x - 5), _local_16.y + GameConst.CARD_W / 2);
-							this.tileBoarders.push(_local_17);
-						}
-						if (((((this.isBlank(_local_6, (_local_7 + 1))) && ((!(this.isBlank((_local_6 + 1), _local_7)))))) && (this.isBlank((_local_6 + 1), (_local_7 + 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-//							_local_17.setType(TileBoarder.x_border_shu_zuo, this.tileBg_layer, (_local_16.x + 32), _local_16.y);
-							_local_17.setType(TileBoarder.x_border_shu_zuo, this.tileBg_layer, (_local_16.x + GameConst.CARD_W), _local_16.y + GameConst.CARD_W / 2);
-							this.tileBoarders.push(_local_17);
-						}
-						if (((((this.isBlank(_local_6, (_local_7 - 1))) && (this.isBlank((_local_6 + 1), _local_7)))) && (this.isBlank((_local_6 + 1), (_local_7 - 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-//							_local_17.setType(TileBoarder.x_border_left_down, this.tileBg_layer, (_local_16.x - 38), (_local_16.y - 3));
-							_local_17.setType(TileBoarder.x_border_left_down, this.tileBg_layer, (_local_16.x - 5), (_local_16.y + GameConst.CARD_W / 2 - 3));
-							this.tileBoarders.push(_local_17);
-						}
-						if (((this.isBlank(_local_6, (_local_7 + 1))) && ((!(this.isBlank((_local_6 + 1), (_local_7 + 1)))))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_down_x, this.tileBg_layer, (_local_16.x + GameConst.CARD_W), (_local_16.y + GameConst.CARD_W / 2 - 3));
-//							_local_17.setType(TileBoarder.x_border_left_down_x, this.tileBg_layer, (_local_16.x + 32), (_local_16.y - 4));
-							this.tileBoarders.push(_local_17);
-						}
-						if (((((this.isBlank(_local_6, (_local_7 + 1))) && (this.isBlank((_local_6 + 1), _local_7)))) && (this.isBlank((_local_6 + 1), (_local_7 + 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-//							_local_17.setType(TileBoarder.x_border_right_down, this.tileBg_layer, (_local_16.x - 3), (_local_16.y - 3));
-							_local_17.setType(TileBoarder.x_border_right_down, this.tileBg_layer, (_local_16.x + GameConst.CARD_W / 2 - 3), (_local_16.y + GameConst.CARD_W / 2 - 3));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((this.isBlank(_local_6, (_local_7 - 1))) && ((!(this.isBlank((_local_6 + 1), (_local_7 - 1)))))))
-						{
-							_local_17 = TileBoarder.pool.take();
-//							_local_17.setType(TileBoarder.x_border_right_down_x, this.tileBg_layer, (_local_16.x - 68), (_local_16.y - 4));
-							_local_17.setType(TileBoarder.x_border_right_down_x, this.tileBg_layer, (_local_16.x - GameConst.CARD_W / 2 - 3), (_local_16.y + GameConst.CARD_W / 2 - 3));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((((this.isBlank((_local_6 + 1), _local_7)) && ((!(this.isBlank(_local_6, (_local_7 + 1))))))) && (this.isBlank((_local_6 + 1), (_local_7 + 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-//							_local_17.setType(TileBoarder.x_border_heng_shang, this.tileBg_layer, _local_16.x, (_local_16.y + 32));
-							_local_17.setType(TileBoarder.x_border_heng_shang, this.tileBg_layer, _local_16.x + GameConst.CARD_W / 2, (_local_16.y + GameConst.CARD_W));
-							this.tileBoarders.push(_local_17);
-						}
-					}
-					_local_7++;
-				}
-				_local_6++;
-			}
+			};
+			bgLayer.numItems = 9 * 9;
+//			container.addChildAt(bg, 0);
 		}
 
-		private function isBlank(_arg_1:int, _arg_2:int):Boolean
+		private function setupFrame(x:int, y:int, frame:GComponent):void
 		{
-			if (!this.isValidPos(_arg_1, _arg_2))
+			var page:String = "";
+			if (isBlank(x - 1, y))
+			{
+				page = append(page, "left");
+			}
+			else if (isBlank(x + 1, y))
+			{
+				page = append(page, "right");
+			}
+			if (isBlank(x, y - 1))
+			{
+				page = append(page, "up");
+			}
+			else if (isBlank(x, y + 1))
+			{
+				page = append(page, "down");
+			}
+			frame.getController("frameType").selectedPage = page;
+		}
+
+		private function append(str:String, str2:String):String
+		{
+			if (str.length > 0)
+			{
+				str += "_";
+			}
+			return str + str2;
+		}
+
+		private function isBlank(x:int, y:int):Boolean
+		{
+			if (!this.isValidPos(y, x))
 			{
 				return (true);
 			}
-			;
-			if (this.currentLevel.tile[_arg_1][_arg_2] == 0)
+			if (this.currentLevel.tile[y][x] == 0)
 			{
 				return (true);
 			}
-			;
 			return (false);
 		}
 
@@ -529,13 +383,10 @@ package com.popchan.sugar.modules.game.view
 						this.brick_layer.addChild(_local_5);
 						this.bricks[_local_2][_local_3] = _local_5;
 					}
-					;
 					_local_3++;
 				}
-				;
 				_local_2++;
 			}
-			;
 		}
 
 		private function createIce(_arg_1:int, _arg_2:int, _arg_3:int):Ice
@@ -935,7 +786,7 @@ package com.popchan.sugar.modules.game.view
 				return;
 			}
 			_local_3 = new Point(_arg_1.stageX, _arg_1.stageY);
-			_local_3 = container.globalToLocal(_local_3.x, _local_3.y)
+			_local_3 = globalToLocal(_local_3.x, _local_3.y)
 			if (_arg_1.type == GTouchEvent.BEGIN)
 			{
 				this.selectedCard = this.getCandyByTouch(_local_3);
@@ -1676,13 +1527,10 @@ package com.popchan.sugar.modules.game.view
 					{
 						_local_3.bombCountUpdate();
 					}
-					;
 					_local_2++;
 				}
-				;
 				_local_1++;
 			}
-			;
 		}
 
 		private function checkEatAndMonster():void
@@ -2304,7 +2152,6 @@ package com.popchan.sugar.modules.game.view
 				Ice.pool.put(_arg_1);
 				_arg_1.removeFromParent();
 			}
-			;
 		}
 
 		private function removeBrick(_arg_1:Brick):void
@@ -2317,7 +2164,6 @@ package com.popchan.sugar.modules.game.view
 				_arg_1.removeFromParent();
 				Model.gameModel.offsetAim(AimType.BOARD, 1);
 			}
-			;
 		}
 
 		private function removeFruits(list:Array):void
@@ -3606,9 +3452,7 @@ package com.popchan.sugar.modules.game.view
 				{
 					return (true);
 				}
-				;
 			}
-			;
 			return (false);
 		}
 
@@ -3914,11 +3758,9 @@ package com.popchan.sugar.modules.game.view
 			var _local_1:int;
 			var _local_2:int;
 			var _local_3:int;
-			var _local_4:TileBoarder;
 			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, this.update);
 			Core.timerManager.remove(this, this.onTimer);
 			this.removeAllElements(this.candys, Candy.pool);
-			this.removeAllElements(this.tileBgs, TileBg.pool);
 			this.removeAllElements(this.bricks, Brick.pool);
 			this.removeAllElements(this.locks, Lock.pool);
 			this.removeAllElements(this.eats, Eat.pool);
@@ -3926,16 +3768,6 @@ package com.popchan.sugar.modules.game.view
 			this.removeAllElements(this.monsters, Monster.pool);
 			this.removeAllElements(this.tDoors, TransportDoor.pool);
 			this.removeAllElements(this.ironWires, IronWire.pool);
-			_local_3 = (this.tileBoarders.length - 1);
-			while (_local_3 >= 0)
-			{
-				_local_4 = this.tileBoarders[_local_3];
-				TileBoarder.pool.put(_local_4);
-				_local_4.removeFromParent();
-				this.tileBoarders.splice(_local_3, 1);
-				_local_3--;
-			}
-			;
 			Model.gameModel.reset();
 		}
 
@@ -3952,7 +3784,7 @@ package com.popchan.sugar.modules.game.view
 					_local_5 = _arg_1[_local_3][_local_4];
 					if (_local_5 != null)
 					{
-						if(_local_5.hasOwnProperty("reset"))
+						if (_local_5.hasOwnProperty("reset"))
 							_local_5.reset();
 						_arg_2.put(_local_5);
 						_local_5.removeFromParent();
