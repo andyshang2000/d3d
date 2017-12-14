@@ -1,14 +1,10 @@
 package diary.ui.view
 {
-	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
 	import diary.avatar.AvatarBoy;
 	import diary.avatar.AvatarGirl;
 	import diary.avatar.RotationComponent;
-	import diary.ui.Carousel;
-
-	import flare.core.Camera3D;
-
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.textures.Texture;

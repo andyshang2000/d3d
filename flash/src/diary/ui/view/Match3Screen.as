@@ -1,5 +1,7 @@
 package diary.ui.view
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Bounce;
 	import com.popchan.framework.core.MsgDispatcher;
 	import com.popchan.sugar.core.Model;
 	import com.popchan.sugar.core.cfg.Config;
@@ -17,7 +19,6 @@ package diary.ui.view
 	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
 	import diary.avatar.MatchRespond;
-	import diary.avatar.RotationComponent;
 
 	import fairygui.GComponent;
 	import fairygui.GImage;
@@ -29,6 +30,7 @@ package diary.ui.view
 	import flare.core.Camera3D;
 
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.TextSprite;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -58,28 +60,13 @@ package diary.ui.view
 
 		override protected function onCreate():void
 		{
-			setGView("zz3d.m3.gui", "Match3");
 			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/GamePanel", GamePanel);
 
-			view = GamePanel(UIPackage.createObject("zz3d.m3.gui", "GamePanel"));
-			GRoot.inst.addChild(view);
-//			DisplayObjectContainer(Starling.current.root).addChild(view);
+			setGView("zz3d.m3.gui", "Match3");
+			view = GamePanel(getChild("board"));
 
-//			var infoPanel:InfoPanel = new InfoPanel();
-//			GRoot.inst.nativeStage.addChild(infoPanel);
-//			view.infoPanel = infoPanel;
-//			view.infoPanel.setInfo(Config.levelConfig.getLevel(Model.levelModel.selectedLevel));
-
-			var initWidth:int = GameConst.CARD_W * 9;
-			var initHeight:int = GameConst.CARD_W * 9;
-			var port480x800:Rectangle = new Rectangle(0, 0, 480, 800);
-			var port:Rectangle = RectangleUtil.fit(port480x800, new Rectangle(10, 0, GRoot.inst.width - 20, GRoot.inst.height));
-
-			view.scaleX = port.width / initWidth;
-			view.scaleY = port.width / initWidth;
-			var actualWidth:int = initWidth * view.scaleX;
-			view.x = port.x;
-			view.y = port.bottom - actualWidth - 10;
+			setupCircle();
+			setupViewSize();
 
 			MsgDispatcher.add(GameEvents.AIMS_CHANGE, this.onAimChange);
 			MsgDispatcher.add(GameEvents.SCORE_CHANGE, this.onScoreChange);
@@ -105,8 +92,42 @@ package diary.ui.view
 			{
 				var win:Window = new Window();
 				win.contentPane = UIPackage.createObject("zz3d.m3.gui", "EndPanel").asCom;
+				Model.gameModel.isScoreAimLevel()
+				win.contentPane.getTransition("t0").play();
+				win.contentPane.getTransition("t1").play();
+				win.contentPane.getTransition("t2").play();
 				GRoot.inst.showPopup(win);
 			});
+		}
+
+		private function setupCircle():void
+		{
+			var bar:GComponent = getChild("progressBar").asCom;
+			bar.getChild("bar").rotation = 20;
+			bar.getChild("bar").asMovieClip.playing = false;
+			var a = function():void
+			{
+//				bar.getChild("bar").asMovieClip.playing = false;
+//				bar.getChild("bar").asMovieClip.setPlaySettings(0, -1, 30, -1, function():void
+//				{
+//					setTimeout(a, 3000);
+//				});
+			};
+			a();
+		}
+
+		private function setupViewSize():void
+		{
+			var initWidth:int = GameConst.CARD_W * 9;
+			var initHeight:int = GameConst.CARD_W * 9;
+			var port480x800:Rectangle = new Rectangle(0, 0, 480, 800);
+			var port:Rectangle = RectangleUtil.fit(port480x800, new Rectangle(10, 0, GRoot.inst.width - 20, GRoot.inst.height));
+
+			view.scaleX = port.width / initWidth;
+			view.scaleY = port.width / initWidth;
+			var actualWidth:int = initWidth * view.scaleX;
+			view.x = port.x;
+			view.y = port.bottom - actualWidth - 10;
 		}
 
 		public function addBackground(name:String = "bedroom2"):void
@@ -226,12 +247,29 @@ package diary.ui.view
 
 		private function onStepChange():void
 		{
-//			getChild("stepsRemain").text = (Model.gameModel.step + "");
+			getChild("stepLabel").text = (Model.gameModel.step + "");
 		}
 
 		private function onScoreChange():void
 		{
-			// TODO Auto Generated method stub
+			var cfg:* = Config.levelConfig.getLevel(Model.levelModel.selectedLevel);
+			var bar:GComponent = getChild("progressBar").asCom;
+			var p = Model.gameModel.score / (cfg.needScore * 10)
+			TweenLite.killTweensOf(bar.getChild("bar"));
+			TweenLite.to(bar.getChild("bar"), 0.8, {rotation: 20 - 135 * Math.min(1.0, p), ease: Bounce.easeOut})
+			trace(Model.gameModel.score)
+			if (Model.gameModel.score > cfg.needScore * 6)
+			{
+				bar.getChild("star3").grayed = false;
+			}
+			if (Model.gameModel.score > cfg.needScore * 3)
+			{
+				bar.getChild("star2").grayed = false;
+			}
+			if (Model.gameModel.score > cfg.needScore)
+			{
+				bar.getChild("star1").grayed = false;
+			}
 		}
 
 		private function onAimChange(_arg_1:*):void

@@ -38,7 +38,22 @@ package fairygui
 	public class GObject extends EventDispatcher
 	{
 		public var data:Object;
-		public var packageItem:PackageItem;
+		private var _packageItem:PackageItem;
+
+		public function get packageItem():PackageItem
+		{
+			return _packageItem;
+		}
+
+		public function set packageItem(value:PackageItem):void
+		{
+			if(value == null)
+			{
+				trace("????packageItem value = " + value);
+			}
+			_packageItem = value;
+		}
+
 		public static var draggingObject:GObject;
 		
 		public var sourceWidth:Number;

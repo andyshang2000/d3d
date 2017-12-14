@@ -1,18 +1,18 @@
 package diary.ui.view
 {
 	import com.greensock.TweenLite;
-	
+
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
-	
+
 	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
 	import diary.avatar.RandomPoseComp;
 	import diary.avatar.RotationComponent;
 	import diary.services.ScreenShot;
 	import diary.ui.Carousel;
-	
+
 	import fairygui.GComponent;
 	import fairygui.GImage;
 	import fairygui.GList;
@@ -20,12 +20,12 @@ package diary.ui.view
 	import fairygui.UIPackage;
 	import fairygui.event.ItemEvent;
 	import fairygui.event.StateChangeEvent;
-	
+
 	import flare.core.Camera3D;
-	
+
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
-	
+
 	import zzsdk.utils.FileUtil;
 
 	public class GameScreen extends AvatarScreen implements IScreen

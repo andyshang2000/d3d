@@ -127,6 +127,27 @@
     <image id="mld83h" name="cube.png" path="/candys/" exported="true"/>
     <component id="ljz93i" name="GamePanel.xml" path="/" exported="true"/>
     <component id="ljz93j" name="TileBg.xml" path="/"/>
+    <image id="ljz93k" name="startCircle.png" path="/"/>
+    <component id="ljz93l" name="ProgressBar1.xml" path="/"/>
+    <image id="ljz93m" name="startCircleBar.png" path="/"/>
+    <component id="ljz93n" name="circleBar.xml" path="/"/>
+    <image id="ljz93p" name="barMask(1).png" path="/"/>
+    <image id="ljz93r" name="rr0011.png" path="/rainbow/"/>
+    <image id="ljz93s" name="rr0012.png" path="/rainbow/"/>
+    <image id="ljz93t" name="rr0013.png" path="/rainbow/"/>
+    <image id="ljz93u" name="rr0014.png" path="/rainbow/"/>
+    <image id="ljz93v" name="rr0001.png" path="/rainbow/"/>
+    <image id="ljz93w" name="rr0002.png" path="/rainbow/"/>
+    <image id="ljz93x" name="rr0003.png" path="/rainbow/"/>
+    <image id="ljz93y" name="rr0004.png" path="/rainbow/"/>
+    <image id="ljz93z" name="rr0005.png" path="/rainbow/"/>
+    <image id="ljz940" name="rr0006.png" path="/rainbow/"/>
+    <image id="ljz941" name="rr0007.png" path="/rainbow/"/>
+    <image id="ljz942" name="rr0008.png" path="/rainbow/"/>
+    <image id="ljz943" name="rr0009.png" path="/rainbow/"/>
+    <image id="ljz944" name="rr0010.png" path="/rainbow/"/>
+    <movieclip id="9icv45" name="RainBow.jta" path="/"/>
+    <image id="9icv46" name="smallStar.png" path="/"/>
   </resources>
   <publish name="zz3d.m3.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug"/>
 </packageDescription>

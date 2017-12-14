@@ -47,6 +47,7 @@ package
 
 			var dir:* = File.applicationStorageDirectory;
 			FileUtil.dir = dir;
+			trace(dir.nativePath);
 			if (!FileUtil.dir.resolvePath("gameconfig").exists)
 			{
 				firstRun();
