@@ -7,6 +7,7 @@ package com.popchan.framework.manager
 
         public static function log(... _args):void
         {
+			trace.apply(null, _args);
         }
 
 

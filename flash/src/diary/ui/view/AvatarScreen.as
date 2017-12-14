@@ -1,13 +1,9 @@
 package diary.ui.view
 {
-	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
 	import diary.avatar.AvatarBoy;
 	import diary.avatar.AvatarGirl;
 	import diary.avatar.RotationComponent;
-	import diary.ui.Carousel;
-	
-	import flare.core.Camera3D;
 	
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -16,16 +12,16 @@ package diary.ui.view
 	public class AvatarScreen extends GScreen
 	{
 		private var avatarlist:Object = {};
-		
-		
+
 		protected var back:Sprite
 		protected var backImage:Image;
-				
+		protected var rotationComp:RotationComponent;
+
 		override final public function createLayer(name:String):*
 		{
-			if(name == "front")
+			if (name == "front")
 				return super.createLayer(name);
-			else if(name == "back")
+			else if (name == "back")
 			{
 				if (back == null)
 				{
@@ -37,22 +33,16 @@ package diary.ui.view
 			}
 		}
 
-		public function addAvatar(name:String, gender:String = "girl"):void
+		public function addAvatar(name:String, gender:String = "girl"):Avatar
 		{
 			if (avatarlist[name] != null)
-				return;
+				return avatarlist[name];
 			var avatar:Avatar = gender == "girl" ? new AvatarGirl : new AvatarBoy;
 
-			avatar.addComponent(new RotationComponent);
-			avatar.addComponent(new AnimationTicker);
-
 			scene.addChild(avatar);
-			scene.camera.setPosition(0, 195, -450);
-			scene.camera.setRotation(12, 0, 0);
-			scene.camera.fovMode = Camera3D.FOV_VERTICAL;
-			scene.camera.fieldOfView = 28;
+			avatarlist[name] = avatar;
 
-			avatarlist[name] = avatar
+			return avatar;
 		}
 
 		public function getAvatar(name):Avatar

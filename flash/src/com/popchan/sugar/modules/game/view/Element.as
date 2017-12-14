@@ -1,18 +1,15 @@
 ﻿//Created by Action Script Viewer - http://www.buraks.com/asv
 package com.popchan.sugar.modules.game.view
 {
-    import starling.display.Sprite;
+	import fairygui.GObject;
 
-    public class Element extends Sprite 
-    {
+	public class Element extends GObject
+	{
 
-        public var type:int;
+		public var type:int;
 
-
-        public function reset():void
-        {
-        }
-
-
-    }
-}//package com.popchan.sugar.modules.game.view
+		public function reset():void
+		{
+		}
+	}
+} //package com.popchan.sugar.modules.game.view

@@ -1,16 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <packageDescription id="5t4h99ba" jpegQuality="80" compressPNG="true">
   <resources>
-    <image id="mld80" name="infoBg.png" path="/"/>
-    <image id="mld81" name="infoTop.png" path="/" scale="9grid" scale9grid="144,21,158,21"/>
+    <image id="mld80" name="infoBg.png" path="/ui/" exported="true" atlas="alone"/>
+    <image id="mld81" name="infoTop.png" path="/ui/" exported="true" scale="9grid" scale9grid="144,21,158,21"/>
     <component id="mld82" name="Match3.xml" path="/" exported="true"/>
-    <component id="mld83" name="ProgressBar.xml" path="/"/>
-    <image id="mld84" name="progressBar.png" path="/" scale="9grid" scale9grid="18,6,120,9"/>
-    <image id="mld85" name="progressBg.png" path="/"/>
+    <component id="mld83" name="ProgressBar.xml" path="/" exported="true"/>
+    <image id="mld84" name="progressBar.png" path="/ui/" exported="true" scale="9grid" scale9grid="18,6,120,9"/>
+    <image id="mld85" name="progressBg.png" path="/ui/" exported="true"/>
     <font id="mld86" name="Font_Title.fnt" path="/" exported="true"/>
-    <component id="mld87" name="returnButton.xml" path="/"/>
+    <component id="mld87" name="returnButton.xml" path="/" exported="true"/>
     <image id="mld88" name="returnIcon.png" path="/assets/"/>
-    <image id="mld89" name="bg04.png" path="/" exported="true"/>
+    <image id="mld89" name="bg04.png" path="/" exported="true" atlas="alone"/>
+    <image id="mld8a" name="candy5.png" path="/candys/" exported="true"/>
+    <image id="mld8b" name="candy0.png" path="/candys/" exported="true"/>
+    <image id="mld8c" name="candy0a.png" path="/candys/" exported="true"/>
+    <image id="mld8d" name="candy0b.png" path="/candys/" exported="true"/>
+    <image id="mld8e" name="candy1.png" path="/candys/" exported="true"/>
+    <image id="mld8f" name="candy1a.png" path="/candys/" exported="true"/>
+    <image id="mld8g" name="candy1b.png" path="/candys/" exported="true"/>
+    <image id="mld8h" name="candy2.png" path="/candys/" exported="true"/>
+    <image id="mld8i" name="candy2a.png" path="/candys/" exported="true"/>
+    <image id="mld8j" name="candy2b.png" path="/candys/" exported="true"/>
+    <image id="mld8k" name="candy3.png" path="/candys/" exported="true"/>
+    <image id="mld8l" name="candy3a.png" path="/candys/" exported="true"/>
+    <image id="mld8m" name="candy3b.png" path="/candys/" exported="true"/>
+    <image id="mld8n" name="candy4.png" path="/candys/" exported="true"/>
+    <image id="mld8o" name="candy4a.png" path="/candys/" exported="true"/>
+    <image id="mld8p" name="candy4b.png" path="/candys/" exported="true"/>
+    <image id="mld8q" name="candytimer0.png" path="/candys/" exported="true"/>
+    <image id="mld8r" name="candytimer1.png" path="/candys/" exported="true"/>
+    <image id="mld8s" name="candytimer2.png" path="/candys/" exported="true"/>
+    <image id="mld8t" name="candytimer3.png" path="/candys/" exported="true"/>
+    <image id="mld8u" name="candytimer4.png" path="/candys/" exported="true"/>
+    <image id="mld8v" name="cat.png" path="/candys/" exported="true"/>
+    <image id="mld8w" name="candybomb0.png" path="/candys/" exported="true"/>
+    <image id="mld8x" name="candybomb1.png" path="/candys/" exported="true"/>
+    <image id="mld8y" name="candybomb2.png" path="/candys/" exported="true"/>
+    <image id="mld8z" name="candybomb3.png" path="/candys/" exported="true"/>
+    <image id="mld810" name="candybomb4.png" path="/candys/" exported="true"/>
+    <image id="mld811" name="candyking.png" path="/candys/" exported="true"/>
+    <image id="mld812" name="fruit1.png" path="/candys/" exported="true"/>
+    <image id="mld813" name="fruit2.png" path="/candys/" exported="true"/>
+    <image id="mld814" name="fruit3.png" path="/candys/" exported="true"/>
+    <image id="mld815" name="candybomb_01.png" path="/effects/" exported="true"/>
+    <image id="mld816" name="candybomb_02.png" path="/effects/" exported="true"/>
+    <image id="mld817" name="candybomb_03.png" path="/effects/" exported="true"/>
+    <image id="mld818" name="candybomb_04.png" path="/effects/" exported="true"/>
+    <image id="mld819" name="candybomb_05.png" path="/effects/" exported="true"/>
+    <movieclip id="mld81a" name="candybomb.jta" path="/effects/" exported="true"/>
+    <movieclip id="mld81b" name="warp.jta" path="/effects/" exported="true"/>
+    <image id="mld81c" name="chuansong_03.png" path="/effects/" exported="true"/>
+    <image id="mld81d" name="chuansong_04.png" path="/effects/" exported="true"/>
+    <image id="mld81e" name="chuansong_05.png" path="/effects/" exported="true"/>
+    <image id="mld81f" name="chuansong_06.png" path="/effects/" exported="true"/>
+    <image id="mld81g" name="chuansong_01.png" path="/effects/" exported="true"/>
+    <image id="mld81h" name="chuansong_02.png" path="/effects/" exported="true"/>
+    <image id="mld81i" name="cream3.png" path="/candys/" exported="true"/>
+    <image id="mld81j" name="cream1.png" path="/candys/" exported="true"/>
+    <image id="mld81k" name="cream2.png" path="/candys/" exported="true"/>
+    <image id="mld81l" name="eat.png" path="/candys/" exported="true"/>
+    <image id="mld81m" name="ice2.png" path="/candys/" exported="true"/>
+    <image id="mld81n" name="ice1.png" path="/candys/" exported="true"/>
+    <movieclip id="mld81o" name="iceboom.jta" path="/effects/" exported="true"/>
+    <image id="mld81p" name="iceboom_01.png" path="/effects/" exported="true"/>
+    <image id="mld81q" name="iceboom_02.png" path="/effects/" exported="true"/>
+    <image id="mld81r" name="iceboom_03.png" path="/effects/" exported="true"/>
+    <image id="mld81s" name="iceboom_04.png" path="/effects/" exported="true"/>
+    <image id="mld81t" name="ironWire2.png" path="/candys/" exported="true"/>
+    <image id="mld81u" name="ironWire.png" path="/candys/" exported="true"/>
+    <image id="mld81v" name="makespshang_01.png" path="/effects/" exported="true"/>
+    <image id="mld81w" name="makespshang_02.png" path="/effects/" exported="true"/>
+    <image id="mld81x" name="makespshang_03.png" path="/effects/" exported="true"/>
+    <image id="mld81y" name="makespshang_04.png" path="/effects/" exported="true"/>
+    <image id="mld81z" name="makespshang_05.png" path="/effects/" exported="true"/>
+    <image id="mld820" name="makespshang_06.png" path="/effects/" exported="true"/>
+    <movieclip id="mld821" name="makespshang.jta" path="/effects/" exported="true"/>
+    <image id="mld822" name="moveable.png" path="/candys/" exported="true"/>
+    <image id="mld823" name="spritemid.png" path="/candys/" exported="true"/>
+    <image id="mld824" name="stone1.png" path="/candys/" exported="true"/>
+    <image id="mld825" name="stone2.png" path="/candys/" exported="true"/>
+    <image id="mld826" name="wenxiang.png" path="/candys/" exported="true"/>
+    <image id="mld827" name="sprite1.png" path="/candys/" exported="true"/>
+    <image id="mld828" name="sprite2.png" path="/candys/" exported="true"/>
+    <image id="mld829" name="xxx.png" path="/frame/" exported="true"/>
+    <image id="mld82a" name="x_border_heng_shang.png" path="/frame/" exported="true"/>
+    <image id="mld82b" name="x_border_heng_xia.png" path="/frame/" exported="true"/>
+    <image id="mld82c" name="x_border_left_down.png" path="/frame/" exported="true"/>
+    <image id="mld82d" name="x_border_left_down_x.png" path="/frame/" exported="true"/>
+    <image id="mld82e" name="x_border_left_up.png" path="/frame/" exported="true"/>
+    <image id="mld82f" name="x_border_left_up_x.png" path="/frame/" exported="true"/>
+    <image id="mld82g" name="x_border_right_down.png" path="/frame/" exported="true"/>
+    <image id="mld82h" name="x_border_right_down_x.png" path="/frame/" exported="true"/>
+    <image id="mld82i" name="x_border_right_up.png" path="/frame/" exported="true"/>
+    <image id="mld82j" name="x_border_right_up_x.png" path="/frame/" exported="true"/>
+    <image id="mld82k" name="x_border_shu_you.png" path="/frame/" exported="true"/>
+    <image id="mld82l" name="x_border_shu_zuo.png" path="/frame/" exported="true"/>
+    <image id="mld82m" name="zanp.png" path="/good!/" exported="true"/>
+    <image id="mld82n" name="zane.png" path="/good!/" exported="true"/>
+    <image id="mld82o" name="zang.png" path="/good!/" exported="true"/>
+    <image id="mld82p" name="levelimg.png" path="/good!/" exported="true"/>
+    <image id="mld82q" name="good.png" path="/good!/" exported="true"/>
+    <image id="mld82r" name="hengshu1.png" path="/effects/" exported="true"/>
+    <image id="mld82s" name="hengshu.png" path="/effects/" exported="true"/>
+    <image id="mld82t" name="lock.png" path="/candys/" exported="true"/>
+    <image id="mld82u" name="success.png" path="/good!/" exported="true"/>
+    <image id="mld82v" name="prefect.png" path="/good!/" exported="true"/>
+    <image id="mld82w" name="nomatch.png" path="/good!/" exported="true"/>
+    <image id="mld82x" name="nomorematch.png" path="/good!/" exported="true"/>
+    <image id="mld82y" name="movebonus.png" path="/good!/" exported="true"/>
+    <image id="mld830" name="failed.png" path="/good!/" exported="true"/>
+    <image id="mld831" name="excellent.png" path="/good!/" exported="true"/>
+    <image id="mld832" name="bonustime.png" path="/good!/" exported="true"/>
+    <image id="mld833" name="bigstar.png" path="/ui/" exported="true"/>
+    <image id="mld834" name="brick2.png" path="/candys/" exported="true"/>
+    <image id="mld835" name="brick1.png" path="/candys/" exported="true"/>
+    <image id="mld836" name="endPanel.png" path="/"/>
+    <image id="mld837" name="endscoreinfo.png" path="/"/>
+    <image id="mld838" name="success.png" path="/"/>
+    <image id="mld839" name="failed.png" path="/"/>
+    <image id="mld83a" name="next_btn.png" path="/"/>
+    <image id="mld83b" name="close_btn.png" path="/"/>
+    <image id="mld83c" name="replay2_btn.png" path="/"/>
+    <component id="mld83d" name="EndPanel.xml" path="/" exported="true"/>
+    <image id="mld83e" name="bigstar.png" path="/"/>
+    <component id="mld83f" name="returnButton(1).xml" path="/"/>
+    <image id="mld83h" name="cube.png" path="/candys/" exported="true"/>
+    <component id="ljz93i" name="GamePanel.xml" path="/" exported="true"/>
+    <component id="ljz93j" name="TileBg.xml" path="/"/>
+    <image id="ljz93k" name="startCircle.png" path="/"/>
+    <component id="ljz93l" name="ProgressBar1.xml" path="/"/>
+    <image id="ljz93m" name="startCircleBar.png" path="/"/>
+    <component id="ljz93n" name="circleBar.xml" path="/"/>
+    <image id="ljz93p" name="barMask(1).png" path="/"/>
+    <image id="ljz93r" name="rr0011.png" path="/rainbow/"/>
+    <image id="ljz93s" name="rr0012.png" path="/rainbow/"/>
+    <image id="ljz93t" name="rr0013.png" path="/rainbow/"/>
+    <image id="ljz93u" name="rr0014.png" path="/rainbow/"/>
+    <image id="ljz93v" name="rr0001.png" path="/rainbow/"/>
+    <image id="ljz93w" name="rr0002.png" path="/rainbow/"/>
+    <image id="ljz93x" name="rr0003.png" path="/rainbow/"/>
+    <image id="ljz93y" name="rr0004.png" path="/rainbow/"/>
+    <image id="ljz93z" name="rr0005.png" path="/rainbow/"/>
+    <image id="ljz940" name="rr0006.png" path="/rainbow/"/>
+    <image id="ljz941" name="rr0007.png" path="/rainbow/"/>
+    <image id="ljz942" name="rr0008.png" path="/rainbow/"/>
+    <image id="ljz943" name="rr0009.png" path="/rainbow/"/>
+    <image id="ljz944" name="rr0010.png" path="/rainbow/"/>
+    <movieclip id="9icv45" name="RainBow.jta" path="/"/>
+    <image id="9icv46" name="smallStar.png" path="/"/>
+    <component id="9icv47" name="AimItem.xml" path="/"/>
   </resources>
   <publish name="zz3d.m3.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug"/>
 </packageDescription>

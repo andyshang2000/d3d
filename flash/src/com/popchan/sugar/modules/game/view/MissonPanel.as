@@ -45,8 +45,8 @@ package com.popchan.sugar.modules.game.view
 
         override public function init():void
         {
-            var _local_1:Image = ToolKit.createImage(this, Core.texturesManager.getTexture("missionbg"));
-            this.levelTxt = ToolKit.createTextSprite(this, Core.texturesManager.getTextures("font1_"), 0, 0, 16, "0123456789/x+-", 24);
+            var _local_1:Image = ToolKit.createImage(this, Core.getTexture("missionbg"));
+            this.levelTxt = ToolKit.createTextSprite(this, Core.getTextures("font1_"), 0, 0, 16, "0123456789/x+-", 24);
             this.levelTxt.hAlign = "center";
             this.levelTxt.x = 320;
             this.levelTxt.y = 28;
@@ -111,7 +111,7 @@ package com.popchan.sugar.modules.game.view
                 aimArr = info.aim[i].split(",");
                 aimType = int(aimArr[0]);
                 aimValue = int(aimArr[1]);
-                icon = new Image(Texture.fromTexture(Core.texturesManager.getTexture(AimType.AIM_ICONS[aimType])));
+                icon = new Image(Texture.fromTexture(Core.getTexture(AimType.AIM_ICONS[aimType])));
                 icon.pivotY = (icon.height >> 1);
                 if (aimType != AimType.SCORE)
                 {
@@ -126,7 +126,7 @@ package com.popchan.sugar.modules.game.view
                 icon.y = 117;
                 this.addChild(icon);
                 this.aimIconDict[aimType] = icon;
-                aimLabel = ToolKit.createTextSprite(this, Core.texturesManager.getTextures("font1_"), 0, 0, 16, "0123456789/x+-");
+                aimLabel = ToolKit.createTextSprite(this, Core.getTextures("font1_"), 0, 0, 16, "0123456789/x+-");
                 addChild(aimLabel);
                 aimLabel.text = (aimValue + "");
                 aimLabel.x = ((posX + 20) + (i * 80));

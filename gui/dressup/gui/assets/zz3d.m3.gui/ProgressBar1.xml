@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="64,63" overflow="hidden">
+  <displayList>
+    <movieclip id="n6_9icv" name="bar" src="9icv45" xy="-30,-30" pivot="0.5,0.5" rotation="20"/>
+    <image id="n5_ljz9" name="starCircle" src="ljz93k" xy="0,0" size="60,60" aspect="true"/>
+    <image id="n7_9icv" name="star1" src="9icv46" xy="9,52" size="12,12" grayed="true"/>
+    <image id="n8_9icv" name="star2" src="9icv46" xy="35,42" size="12,12" grayed="true"/>
+    <image id="n9_9icv" name="star3" src="9icv46" xy="53,15" size="12,12" grayed="true"/>
+  </displayList>
+</component>

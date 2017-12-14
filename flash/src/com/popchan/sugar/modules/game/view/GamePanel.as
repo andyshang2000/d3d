@@ -7,8 +7,6 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.framework.manager.Debug;
 	import com.popchan.framework.manager.SoundManager;
 	import com.popchan.sugar.core.Model;
-	import com.popchan.sugar.core.cfg.Config;
-	import com.popchan.sugar.core.cfg.LevelConfig;
 	import com.popchan.sugar.core.cfg.levels.LevelCO;
 	import com.popchan.sugar.core.data.AimType;
 	import com.popchan.sugar.core.data.CandySpecialStatus;
@@ -17,27 +15,21 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.data.TileConst;
 	import com.popchan.sugar.core.events.GameEvents;
-	import com.popchan.sugar.core.manager.WindowManager3D;
-	import com.popchan.sugar.modules.BasePanel3D;
 
 	import flash.geom.Point;
-	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 
 	import caurina.transitions.Tweener;
 
+	import fairygui.GComponent;
+	import fairygui.GList;
 	import fairygui.GRoot;
+	import fairygui.event.GTouchEvent;
 
-	import starling.core.Starling;
-	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
-	import starling.events.KeyboardEvent;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 
-	public class GamePanel extends BasePanel3D
+	public class GamePanel extends GComponent
 	{
 		private static const STATE_INIT:int = 1;
 		private static const STATE_GAME:int = 2;
@@ -61,7 +53,6 @@ package com.popchan.sugar.modules.game.view
 		private var contentW:int;
 		private var contentH:int;
 		public var tileBgs:Array;
-		public var tileBoarders:Array;
 		public var candys:Array;
 		public var bricks:Array;
 		public var locks:Array;
@@ -72,19 +63,15 @@ package com.popchan.sugar.modules.game.view
 		public var tDoors:Array;
 		public var ironWires:Array;
 
-		public var infoPanel:InfoPanel;
-
-		private var container:Sprite;
-		private var candy_layer:Sprite;
-		private var tileBg_layer:Sprite;
-		private var door_layer:Sprite;
-		private var brick_layer:Sprite;
-		private var ice_layer:Sprite;
-		private var stone_layer:Sprite;
-		private var lock_layer:Sprite;
-		private var eat_layer:Sprite;
-		private var monster_layer:Sprite;
-		private var ironWire_layer:Sprite;
+		private var candy_layer:GComponent;
+		private var door_layer:GComponent;
+		private var brick_layer:GComponent;
+		private var ice_layer:GComponent;
+		private var stone_layer:GComponent;
+		private var lock_layer:GComponent;
+		private var eat_layer:GComponent;
+		private var monster_layer:GComponent;
+		private var ironWire_layer:GComponent;
 		public var selectedCard:Candy;
 		public var aimCard:Candy;
 		private var isMoving:Boolean;
@@ -102,31 +89,27 @@ package com.popchan.sugar.modules.game.view
 		private var matchCountOnceSwap:int = 0;
 		private var _instanceName:String = "GamePanel";
 
-		override public function init():void
+		override protected function constructFromXML(xml:XML):void
 		{
-			super.init();
-			this.container = new Sprite();
-			this.addChild(this.container);
-			this.tileBg_layer = new Sprite();
-			this.container.addChild(this.tileBg_layer);
-			this.brick_layer = new Sprite();
-			this.container.addChild(this.brick_layer);
-			this.ice_layer = new Sprite();
-			this.container.addChild(this.ice_layer);
-			this.stone_layer = new Sprite();
-			this.container.addChild(this.stone_layer);
-			this.eat_layer = new Sprite();
-			this.container.addChild(this.eat_layer);
-			this.candy_layer = new Sprite();
-			this.container.addChild(this.candy_layer);
-			this.lock_layer = new Sprite();
-			this.container.addChild(this.lock_layer);
-			this.monster_layer = new Sprite();
-			this.container.addChild(this.monster_layer);
-			this.ironWire_layer = new Sprite();
-			this.container.addChild(this.ironWire_layer);
-			this.door_layer = new Sprite();
-			this.container.addChild(this.door_layer);
+			super.constructFromXML(xml);
+			this.brick_layer = new GComponent();
+			addChild(this.brick_layer);
+			this.ice_layer = new GComponent();
+			addChild(this.ice_layer);
+			this.stone_layer = new GComponent();
+			addChild(this.stone_layer);
+			this.eat_layer = new GComponent();
+			addChild(this.eat_layer);
+			this.candy_layer = new GComponent();
+			addChild(this.candy_layer);
+			this.lock_layer = new GComponent();
+			addChild(this.lock_layer);
+			this.monster_layer = new GComponent();
+			addChild(this.monster_layer);
+			this.ironWire_layer = new GComponent();
+			addChild(this.ironWire_layer);
+			this.door_layer = new GComponent();
+			addChild(this.door_layer);
 			this.tDoors = this.getBlankMapArray();
 			this.tileBgs = this.getBlankMapArray();
 			this.candys = this.getBlankMapArray();
@@ -137,7 +120,6 @@ package com.popchan.sugar.modules.game.view
 			this.locks = this.getBlankMapArray();
 			this.ironWires = this.getBlankMapArray();
 			this.monsters = this.getBlankMapArray();
-			this.tileBoarders = [];
 		}
 
 		private function getBlankMapArray():Array
@@ -162,7 +144,9 @@ package com.popchan.sugar.modules.game.view
 		public function newGame(level:LevelCO):void
 		{
 			Model.gameModel.score = 0;
-			this.addEventListener(TouchEvent.TOUCH, this.onTouch);
+			GRoot.inst.addEventListener(GTouchEvent.BEGIN, this.onTouch);
+			GRoot.inst.addEventListener(GTouchEvent.DRAG, this.onTouch);
+			GRoot.inst.addEventListener(GTouchEvent.END, this.onTouch);
 			this.addEventListener(EnterFrameEvent.ENTER_FRAME, this.update);
 			this.currentLevel = level;
 			this.state = STATE_INIT;
@@ -171,14 +155,13 @@ package com.popchan.sugar.modules.game.view
 
 		private function createElements():void
 		{
-			this.createTileBg();
+			this.createTileBg2();
 			this.createDoor();
 			this.createBrick();
 			this.createBarrier();
+			this.createIronWires()
 			this.createCandys();
 			this.createBombs();
-			this.container.x = 650;
-			Tweener.addTween(this.container, {"time": 0.6, "x": 0, "delay": 0.1, "transition": "easeBackOut"});
 		}
 
 		private function createBombs():void
@@ -245,229 +228,77 @@ package com.popchan.sugar.modules.game.view
 							case TileConst.BOMB:
 								break;
 						}
-						;
 					}
-					;
 					_local_3++;
 				}
-				;
 				_local_2++;
 			}
-			;
 		}
 
-		private function createTileBg():void
+		private function createTileBg2():void
 		{
-			var _local_6:int;
-			var _local_7:int;
-			var _local_8:*;
-			var _local_9:*;
-			var _local_10:*;
-			var _local_11:*;
-			var _local_14:int;
-			var _local_15:TileBg;
-			var _local_16:Point;
-			var _local_17:TileBoarder;
-			var _local_1:Array = this.currentLevel.tile;
-			var _local_2:int;
-			var _local_3:int = (GameConst.ROW_COUNT - 1);
-			var _local_4:int;
-			var _local_5:int = (GameConst.COL_COUNT - 1);
-			_local_7 = 0;
-			_loop_1: while (_local_7 < GameConst.COL_COUNT)
+//			var bg:GComponent = UIPackage.createObject("zz3d.m3.gui", "GamePanel").asCom;
+			var bgLayer:GList = getChild("bgLayer").asList;
+			bgLayer.itemRenderer = function(i:int, renderer:GComponent):void
 			{
-				_local_6 = 0;
-				while (_local_6 < GameConst.ROW_COUNT)
+				var y:int = int(i / GameConst.COL_COUNT);
+				var x:int = int(i % GameConst.COL_COUNT);
+				var item:* = currentLevel.tile[y][x];
+				if (item > 0)
 				{
-					if (_local_1[_local_6][_local_7] > 0)
-					{
-						_local_4 = _local_7;
-						break _loop_1;
-					}
-					_local_6++;
+					renderer.visible = true;
+					setupFrame(x, y, renderer)
 				}
-				_local_7++;
-			}
-			_local_7 = (GameConst.COL_COUNT - 1);
-			_loop_2: while (_local_7 >= 0)
-			{
-				_local_6 = 0;
-				while (_local_6 < GameConst.ROW_COUNT)
+				else
 				{
-					if (_local_1[_local_6][_local_7] > 0)
-					{
-						_local_5 = _local_7;
-						break _loop_2;
-					}
-					;
-					_local_6++;
+					renderer.visible = false;
 				}
-				;
-				_local_7--;
-			}
-			;
-			_local_6 = 0;
-			_loop_3: while (_local_6 < GameConst.ROW_COUNT)
-			{
-				_local_7 = 0;
-				while (_local_7 < GameConst.COL_COUNT)
-				{
-					if (_local_1[_local_6][_local_7] > 0)
-					{
-						_local_2 = _local_6;
-						break _loop_3;
-					}
-					;
-					_local_7++;
-				}
-				;
-				_local_6++;
-			}
-			;
-			_local_6 = (GameConst.ROW_COUNT - 1);
-			_loop_4: while (_local_6 >= 0)
-			{
-				_local_7 = 0;
-				while (_local_7 < GameConst.COL_COUNT)
-				{
-					if (_local_1[_local_6][_local_7] > 0)
-					{
-						_local_3 = _local_6;
-						break _loop_4;
-					}
-					;
-					_local_7++;
-				}
-				;
-				_local_6--;
-			}
-			;
-			var _local_12:int = ((GameConst.ROW_COUNT - _local_3) - _local_2);
-			var _local_13:int = ((GameConst.COL_COUNT - _local_5) - _local_4);
-			this.offsetX = (((Core.stage3DManager.canvasWidth - (GameConst.COL_COUNT * GameConst.CARD_W)) >> 1) + ((_local_13 * GameConst.CARD_W) * 0.5));
-//            this.offsetY = (((((Core.stage3DManager.canvasHeight ) - (GameConst.ROW_COUNT * GameConst.CARD_W)) >> 1) + ((_local_12 * GameConst.CARD_W) * 0.5)) + 100);
-			this.offsetY = GRoot.inst.height - GameConst.ROW_COUNT * GameConst.CARD_W - 35;
-			_local_6 = 0;
-			while (_local_6 < GameConst.ROW_COUNT)
-			{
-				_local_7 = 0;
-				while (_local_7 < GameConst.COL_COUNT)
-				{
-					_local_14 = _local_1[_local_6][_local_7];
-					if (_local_14 > 0)
-					{
-						_local_15 = (TileBg.pool.take() as TileBg);
-						_local_16 = this.getCandyPosition(_local_6, _local_7);
-						_local_15.x = _local_16.x;
-						_local_15.y = _local_16.y;
-						this.tileBgs[_local_6][_local_7] = _local_15;
-						this.tileBg_layer.addChild(_local_15);
-						if (((((this.isBlank(_local_6, (_local_7 - 1))) && (this.isBlank((_local_6 - 1), _local_7)))) && (this.isBlank((_local_6 - 1), (_local_7 - 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_up, this.tileBg_layer, (_local_16.x - 38), (_local_16.y - 38));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if ((((!(this.isBlank((_local_6 + 1), (_local_7 - 1))))) && (this.isBlank((_local_6 + 1), _local_7))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_up_x, this.tileBg_layer, (_local_16.x - 32), (_local_16.y + 32));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((((this.isBlank(_local_6, (_local_7 + 1))) && (this.isBlank((_local_6 - 1), _local_7)))) && (this.isBlank((_local_6 - 1), (_local_7 + 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_right_up, this.tileBg_layer, (_local_16.x - 3), (_local_16.y - 38));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if ((((!(this.isBlank((_local_6 + 1), (_local_7 + 1))))) && (this.isBlank((_local_6 + 1), _local_7))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_right_up_x, this.tileBg_layer, (_local_16.x - 4), (_local_16.y + 32));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((((this.isBlank((_local_6 - 1), _local_7)) && ((!(this.isBlank(_local_6, (_local_7 + 1))))))) && (this.isBlank((_local_6 - 1), (_local_7 + 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_heng_xia, this.tileBg_layer, _local_16.x, (_local_16.y - 38));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((((this.isBlank(_local_6, (_local_7 - 1))) && ((!(this.isBlank((_local_6 + 1), _local_7)))))) && (this.isBlank((_local_6 + 1), (_local_7 - 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_shu_you, this.tileBg_layer, (_local_16.x - 38), _local_16.y);
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((((this.isBlank(_local_6, (_local_7 + 1))) && ((!(this.isBlank((_local_6 + 1), _local_7)))))) && (this.isBlank((_local_6 + 1), (_local_7 + 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_shu_zuo, this.tileBg_layer, (_local_16.x + 32), _local_16.y);
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((((this.isBlank(_local_6, (_local_7 - 1))) && (this.isBlank((_local_6 + 1), _local_7)))) && (this.isBlank((_local_6 + 1), (_local_7 - 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_down, this.tileBg_layer, (_local_16.x - 38), (_local_16.y - 3));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((this.isBlank(_local_6, (_local_7 + 1))) && ((!(this.isBlank((_local_6 + 1), (_local_7 + 1)))))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_left_down_x, this.tileBg_layer, (_local_16.x + 32), (_local_16.y - 4));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((((this.isBlank(_local_6, (_local_7 + 1))) && (this.isBlank((_local_6 + 1), _local_7)))) && (this.isBlank((_local_6 + 1), (_local_7 + 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_right_down, this.tileBg_layer, (_local_16.x - 3), (_local_16.y - 3));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((this.isBlank(_local_6, (_local_7 - 1))) && ((!(this.isBlank((_local_6 + 1), (_local_7 - 1)))))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_right_down_x, this.tileBg_layer, (_local_16.x - 68), (_local_16.y - 4));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-						if (((((this.isBlank((_local_6 + 1), _local_7)) && ((!(this.isBlank(_local_6, (_local_7 + 1))))))) && (this.isBlank((_local_6 + 1), (_local_7 + 1)))))
-						{
-							_local_17 = TileBoarder.pool.take();
-							_local_17.setType(TileBoarder.x_border_heng_shang, this.tileBg_layer, _local_16.x, (_local_16.y + 32));
-							this.tileBoarders.push(_local_17);
-						}
-						;
-					}
-					;
-					_local_7++;
-				}
-				;
-				_local_6++;
-			}
-			;
+			};
+			bgLayer.numItems = 9 * 9;
+//			container.addChildAt(bg, 0);
 		}
 
-		private function isBlank(_arg_1:int, _arg_2:int):Boolean
+		private function setupFrame(x:int, y:int, frame:GComponent):void
 		{
-			if (!this.isValidPos(_arg_1, _arg_2))
+			var page:String = "";
+			if (isBlank(x - 1, y))
+			{
+				page = append(page, "left");
+			}
+			else if (isBlank(x + 1, y))
+			{
+				page = append(page, "right");
+			}
+			if (isBlank(x, y - 1))
+			{
+				page = append(page, "up");
+			}
+			else if (isBlank(x, y + 1))
+			{
+				page = append(page, "down");
+			}
+			frame.getController("frameType").selectedPage = page;
+		}
+
+		private function append(str:String, str2:String):String
+		{
+			if (str.length > 0)
+			{
+				str += "_";
+			}
+			return str + str2;
+		}
+
+		private function isBlank(x:int, y:int):Boolean
+		{
+			if (!this.isValidPos(y, x))
 			{
 				return (true);
 			}
-			;
-			if (this.currentLevel.tile[_arg_1][_arg_2] == 0)
+			if (this.currentLevel.tile[y][x] == 0)
 			{
 				return (true);
 			}
-			;
 			return (false);
 		}
 
@@ -551,13 +382,10 @@ package com.popchan.sugar.modules.game.view
 						this.brick_layer.addChild(_local_5);
 						this.bricks[_local_2][_local_3] = _local_5;
 					}
-					;
 					_local_3++;
 				}
-				;
 				_local_2++;
 			}
-			;
 		}
 
 		private function createIce(_arg_1:int, _arg_2:int, _arg_3:int):Ice
@@ -610,38 +438,25 @@ package com.popchan.sugar.modules.game.view
 								_local_6 = this.newCandy(_local_3, _local_4, (_local_5 - 5));
 								_local_6.setSpecialStatus(CandySpecialStatus.HORIZ);
 							}
+							else if ((((_local_5 >= 11)) && ((_local_5 <= 15))))
+							{
+								_local_6 = this.newCandy(_local_3, _local_4, (_local_5 - 10));
+								_local_6.setSpecialStatus(CandySpecialStatus.VERT);
+							}
+							else if ((((_local_5 >= 16)) && ((_local_5 <= 20))))
+							{
+								_local_6 = this.newCandy(_local_3, _local_4, (_local_5 - 15));
+								_local_6.setSpecialStatus(CandySpecialStatus.BOMB);
+							}
+							else if (_local_5 == TileConst.COLORFUL)
+							{
+								_local_6 = this.newCandy(_local_3, _local_4);
+								_local_6.setSpecialStatus(CandySpecialStatus.COLORFUL);
+							}
 							else
 							{
-								if ((((_local_5 >= 11)) && ((_local_5 <= 15))))
-								{
-									_local_6 = this.newCandy(_local_3, _local_4, (_local_5 - 10));
-									_local_6.setSpecialStatus(CandySpecialStatus.VERT);
-								}
-								else
-								{
-									if ((((_local_5 >= 16)) && ((_local_5 <= 20))))
-									{
-										_local_6 = this.newCandy(_local_3, _local_4, (_local_5 - 15));
-										_local_6.setSpecialStatus(CandySpecialStatus.BOMB);
-									}
-									else
-									{
-										if (_local_5 == TileConst.COLORFUL)
-										{
-											_local_6 = this.newCandy(_local_3, _local_4);
-											_local_6.setSpecialStatus(CandySpecialStatus.COLORFUL);
-										}
-										else
-										{
-											this.newCandy(_local_3, _local_4, _local_5);
-										}
-										;
-									}
-									;
-								}
-								;
+								this.newCandy(_local_3, _local_4, _local_5);
 							}
-							;
 							_local_1 = false;
 						}
 						else
@@ -649,9 +464,7 @@ package com.popchan.sugar.modules.game.view
 							_local_1 = true;
 							this.newCandy(_local_3, _local_4, _local_5);
 						}
-						;
 					}
-					;
 					_local_4++;
 				}
 				;
@@ -662,16 +475,14 @@ package com.popchan.sugar.modules.game.view
 			{
 				this.shuffle();
 			}
-			;
 		}
 
-		private function newCandy(_arg_1:int, _arg_2:int, _arg_3:int = 0):Candy
+		private function newCandy(_arg_1:int, _arg_2:int, color:int = 0):Candy
 		{
-			if (_arg_3 == 0)
+			if (color == 0)
 			{
-				_arg_3 = int(((Math.random() * this.currentLevel.colorCount) + 1));
+				color = int(((Math.random() * this.currentLevel.colorCount) + 1));
 			}
-			;
 			var _local_4:Candy = (Candy.pool.take() as Candy);
 			_local_4.reset();
 			var _local_5:Point = this.getCandyPosition(_arg_1, _arg_2);
@@ -679,7 +490,7 @@ package com.popchan.sugar.modules.game.view
 			_local_4.y = _local_5.y;
 			_local_4.row = _arg_1;
 			_local_4.col = _arg_2;
-			_local_4.color = _arg_3;
+			_local_4.color = color;
 			this.candys[_arg_1][_arg_2] = _local_4;
 			this.candy_layer.addChild(_local_4);
 			return (_local_4);
@@ -708,23 +519,15 @@ package com.popchan.sugar.modules.game.view
 						{
 							this.createIronWire(_local_2, _local_3, 1);
 						}
-						else
+						else if (_local_4 == TileConst.IRONWIRE2)
 						{
-							if (_local_4 == TileConst.IRONWIRE2)
-							{
-								this.createIronWire(_local_2, _local_3, 2);
-							}
-							;
+							this.createIronWire(_local_2, _local_3, 2);
 						}
-						;
 					}
-					;
 					_local_3++;
 				}
-				;
 				_local_2++;
 			}
-			;
 		}
 
 		private function createIronWire(_arg_1:int, _arg_2:int, _arg_3:int = 1):void
@@ -736,6 +539,16 @@ package com.popchan.sugar.modules.game.view
 			var _local_5:Point = this.getCandyPosition(_arg_1, _arg_2);
 			_local_4.x = _local_5.x;
 			_local_4.y = _local_5.y;
+			if (_arg_3 == 2)
+			{
+				_local_4.x -= 2;
+				_local_4.y += GameConst.CARD_W - 2;
+			}
+			else
+			{
+				_local_4.x -= 4;
+				_local_4.y -= 2;
+			}
 			this.ironWire_layer.addChild(_local_4);
 			this.ironWires[_arg_1][_arg_2] = _local_4;
 		}
@@ -943,7 +756,6 @@ package com.popchan.sugar.modules.game.view
 				this.gameState = STATE_GAME_WAIT;
 				Debug.log("居然有可以消除的，不用洗牌", _local_1[0]);
 			}
-			;
 		}
 
 		private function onTimer():void
@@ -956,7 +768,7 @@ package com.popchan.sugar.modules.game.view
 			}
 		}
 
-		private function onTouch(_arg_1:TouchEvent):void
+		private function onTouch(_arg_1:GTouchEvent):void
 		{
 			var _local_3:Point;
 			var _local_4:int;
@@ -970,62 +782,38 @@ package com.popchan.sugar.modules.game.view
 			{
 				return;
 			}
-			var _local_2:Touch = _arg_1.getTouch(Starling.current.stage);
-			if (!_local_2)
+			_local_3 = new Point(_arg_1.stageX, _arg_1.stageY);
+			_local_3 = globalToLocal(_local_3.x, _local_3.y)
+			if (_arg_1.type == GTouchEvent.BEGIN)
 			{
-				return;
-			}
-			if (_local_2.phase == TouchPhase.BEGAN)
-			{
-				_local_3 = _local_2.getLocation(Starling.current.stage);
-				_local_3 = container.globalToLocal(_local_3)
 				this.selectedCard = this.getCandyByTouch(_local_3);
 				if (this.selectedCard != null)
 				{
 					Debug.log(("选择的candy位置:row=" + this.selectedCard.row), ("col=" + this.selectedCard.col), this.selectedCard.x, this.selectedCard.y);
 				}
 			}
-			else
+			else if (_arg_1.type == GTouchEvent.DRAG)
 			{
-				if (_local_2.phase == TouchPhase.MOVED)
+				if (this.selectedCard != null)
 				{
-					if (this.selectedCard != null)
+					_local_4 = this.selectedCard.row;
+					_local_5 = this.selectedCard.col;
+					_local_6 = _local_3;
+					if (((((((((((((_local_5 - 1) >= 0)) && ((!((this.candys[_local_4][(_local_5 - 1)] == null)))))) && ((this.locks[_local_4][(_local_5 - 1)] == null)))) && ((this.monsters[_local_4][(_local_5 - 1)] == null)))) && (this.candys[_local_4][(_local_5 - 1)].collidePoint(_local_6)))) && ((!(this.hasIronWire(this.selectedCard.row, this.selectedCard.col, 1))))))
 					{
-						_local_4 = this.selectedCard.row;
-						_local_5 = this.selectedCard.col;
-						_local_6 = _local_2.getLocation(Starling.current.stage);
-						_local_6 = container.globalToLocal(_local_6)
-						if (((((((((((((_local_5 - 1) >= 0)) && ((!((this.candys[_local_4][(_local_5 - 1)] == null)))))) && ((this.locks[_local_4][(_local_5 - 1)] == null)))) && ((this.monsters[_local_4][(_local_5 - 1)] == null)))) && (this.candys[_local_4][(_local_5 - 1)].collidePoint(_local_6)))) && ((!(this.hasIronWire(this.selectedCard.row, this.selectedCard.col, 1))))))
-						{
-							this.makeSwap(this.selectedCard, this.candys[_local_4][(_local_5 - 1)]);
-						}
-						else
-						{
-							if (((((((((((((_local_5 + 1) < GameConst.COL_COUNT)) && ((!((this.candys[_local_4][(_local_5 + 1)] == null)))))) && ((this.locks[_local_4][(_local_5 + 1)] == null)))) && ((this.monsters[_local_4][(_local_5 + 1)] == null)))) && (this.candys[_local_4][(_local_5 + 1)].collidePoint(_local_6)))) && ((!(this.hasIronWire(_local_4, (_local_5 + 1), 1))))))
-							{
-								this.makeSwap(this.selectedCard, this.candys[_local_4][(_local_5 + 1)]);
-							}
-							else
-							{
-								if (((((((((((((_local_4 - 1) >= 0)) && ((!((this.candys[(_local_4 - 1)][_local_5] == null)))))) && ((this.locks[(_local_4 - 1)][_local_5] == null)))) && ((this.monsters[(_local_4 - 1)][_local_5] == null)))) && (this.candys[(_local_4 - 1)][_local_5].collidePoint(_local_6)))) && ((!(this.hasIronWire((_local_4 - 1), _local_5, 2))))))
-								{
-									this.makeSwap(this.selectedCard, this.candys[(_local_4 - 1)][_local_5]);
-								}
-								else
-								{
-									if (((((((((((((_local_4 + 1) < GameConst.ROW_COUNT)) && ((!((this.candys[(_local_4 + 1)][_local_5] == null)))))) && ((this.locks[(_local_4 + 1)][_local_5] == null)))) && ((this.monsters[(_local_4 + 1)][_local_5] == null)))) && (this.candys[(_local_4 + 1)][_local_5].collidePoint(_local_6)))) && ((!(this.hasIronWire(this.selectedCard.row, this.selectedCard.col, 2))))))
-									{
-										this.makeSwap(this.selectedCard, this.candys[(_local_4 + 1)][_local_5]);
-									}
-								}
-							}
-						}
+						this.makeSwap(this.selectedCard, this.candys[_local_4][(_local_5 - 1)]);
 					}
-				}
-				else
-				{
-					if (_local_2.phase == TouchPhase.ENDED)
+					else if (((((((((((((_local_5 + 1) < GameConst.COL_COUNT)) && ((!((this.candys[_local_4][(_local_5 + 1)] == null)))))) && ((this.locks[_local_4][(_local_5 + 1)] == null)))) && ((this.monsters[_local_4][(_local_5 + 1)] == null)))) && (this.candys[_local_4][(_local_5 + 1)].collidePoint(_local_6)))) && ((!(this.hasIronWire(_local_4, (_local_5 + 1), 1))))))
 					{
+						this.makeSwap(this.selectedCard, this.candys[_local_4][(_local_5 + 1)]);
+					}
+					else if (((((((((((((_local_4 - 1) >= 0)) && ((!((this.candys[(_local_4 - 1)][_local_5] == null)))))) && ((this.locks[(_local_4 - 1)][_local_5] == null)))) && ((this.monsters[(_local_4 - 1)][_local_5] == null)))) && (this.candys[(_local_4 - 1)][_local_5].collidePoint(_local_6)))) && ((!(this.hasIronWire((_local_4 - 1), _local_5, 2))))))
+					{
+						this.makeSwap(this.selectedCard, this.candys[(_local_4 - 1)][_local_5]);
+					}
+					else if (((((((((((((_local_4 + 1) < GameConst.ROW_COUNT)) && ((!((this.candys[(_local_4 + 1)][_local_5] == null)))))) && ((this.locks[(_local_4 + 1)][_local_5] == null)))) && ((this.monsters[(_local_4 + 1)][_local_5] == null)))) && (this.candys[(_local_4 + 1)][_local_5].collidePoint(_local_6)))) && ((!(this.hasIronWire(this.selectedCard.row, this.selectedCard.col, 2))))))
+					{
+						this.makeSwap(this.selectedCard, this.candys[(_local_4 + 1)][_local_5]);
 					}
 				}
 			}
@@ -1215,9 +1003,7 @@ package com.popchan.sugar.modules.game.view
 				{
 					Model.gameModel.step--;
 				}
-				;
 			}
-			;
 		}
 
 		private function checkHasMatches(_arg_1:Boolean = true):Boolean
@@ -1736,13 +1522,10 @@ package com.popchan.sugar.modules.game.view
 					{
 						_local_3.bombCountUpdate();
 					}
-					;
 					_local_2++;
 				}
-				;
 				_local_1++;
 			}
-			;
 		}
 
 		private function checkEatAndMonster():void
@@ -1786,11 +1569,8 @@ package com.popchan.sugar.modules.game.view
 						_local_7.y = _local_8.y;
 						this.eat_layer.addChild(_local_7);
 					}
-					;
 				}
-				;
 			}
-			;
 			this.eatRemoved = false;
 			var _local_1:Array = this.getMonsterAndAroundCandys();
 			if (_local_1.length > 0)
@@ -1806,31 +1586,20 @@ package com.popchan.sugar.modules.game.view
 					_local_12 = this.getCandyPosition(_local_11.x, _local_11.y);
 					Tweener.addTween(_local_10, {"time": 0.1, "x": _local_12.x, "y": _local_12.y});
 				}
-				;
 				SoundManager.instance.playSound("msc_moveable");
 			}
-			;
 			if (this.matchCountOnceSwap >= 40)
 			{
 				this.addGoodTip(3);
 			}
-			else
+			else if (this.matchCountOnceSwap >= 25)
 			{
-				if (this.matchCountOnceSwap >= 25)
-				{
-					this.addGoodTip(2);
-				}
-				else
-				{
-					if (this.matchCountOnceSwap >= 10)
-					{
-						this.addGoodTip(1);
-					}
-					;
-				}
-				;
+				this.addGoodTip(2);
 			}
-			;
+			else if (this.matchCountOnceSwap >= 10)
+			{
+				this.addGoodTip(1);
+			}
 			this.matchCountOnceSwap = 0;
 		}
 
@@ -1843,9 +1612,7 @@ package com.popchan.sugar.modules.game.view
 				{
 					return (true);
 				}
-				;
 			}
-			;
 			return (false);
 		}
 
@@ -2181,11 +1948,8 @@ package com.popchan.sugar.modules.game.view
 					{
 						_local_2.push(_local_6);
 					}
-					;
 				}
-				;
 			}
-			;
 			SoundManager.instance.playSound("boomcommon");
 			_local_4 = (_local_2.length - 1);
 			while (_local_4 >= 0)
@@ -2381,7 +2145,6 @@ package com.popchan.sugar.modules.game.view
 				Ice.pool.put(_arg_1);
 				_arg_1.removeFromParent();
 			}
-			;
 		}
 
 		private function removeBrick(_arg_1:Brick):void
@@ -2394,7 +2157,6 @@ package com.popchan.sugar.modules.game.view
 				_arg_1.removeFromParent();
 				Model.gameModel.offsetAim(AimType.BOARD, 1);
 			}
-			;
 		}
 
 		private function removeFruits(list:Array):void
@@ -2408,66 +2170,38 @@ package com.popchan.sugar.modules.game.view
 			Debug.log("移除水果");
 			for each (removeCandy in list)
 			{
-//                this.addScoreTip(removeCandy.x, removeCandy.y, 10, removeCandy.color);
+				this.addScoreTip(removeCandy.x, removeCandy.y, 10, removeCandy.color);
 				this.addEffect(removeCandy.status, removeCandy.x, removeCandy.y);
 				removeCandy.reset();
 				this.candys[removeCandy.row][removeCandy.col] = null;
 				this.addChild(removeCandy);
 				tp = new Point(0, 0);
-				if (removeCandy.color == 7)
-				{
-					tp = this.infoPanel.getIconPos(AimType.FRUIT1);
-				}
-				else
-				{
-					if (removeCandy.color == 8)
-					{
-						tp = this.infoPanel.getIconPos(AimType.FRUIT2);
-					}
-					else
-					{
-						if (removeCandy.color == 9)
-						{
-							tp = this.infoPanel.getIconPos(AimType.FRUIT3);
-						}
-						;
-					}
-					;
-				}
-				;
 				if (removeCandy.color == ColorType.FRUIT1)
 				{
 					Model.gameModel.offsetAim(AimType.FRUIT1, 1);
 				}
-				else
+				else if (removeCandy.color == ColorType.FRUIT2)
 				{
-					if (removeCandy.color == ColorType.FRUIT2)
-					{
-						Model.gameModel.offsetAim(AimType.FRUIT2, 1);
-					}
-					else
-					{
-						if (removeCandy.color == ColorType.FRUIT3)
-						{
-							Model.gameModel.offsetAim(AimType.FRUIT3, 1);
-						}
-						;
-					}
-					;
+					Model.gameModel.offsetAim(AimType.FRUIT2, 1);
 				}
-				;
-				disX = ((tp.x + this.infoPanel.x) - removeCandy.x);
-				disY = ((tp.y + this.infoPanel.y) - removeCandy.y);
+				else if (removeCandy.color == ColorType.FRUIT3)
+				{
+					Model.gameModel.offsetAim(AimType.FRUIT3, 1);
+				}
+				disX = 0;
+				disY = 0;
 				dis = Math.sqrt(((disX * disX) + (disY * disY)));
 				t = (dis / 600);
-				Tweener.addTween(removeCandy, {"time": t, "x": (tp.x + this.infoPanel.x), "y": (tp.y + this.infoPanel.y), "scaleX": 0.6, "scaleY": 0.6, "onCompleteParams": [removeCandy], "onComplete": function(_arg_1:Candy):void
-				{
-					Candy.pool.put(_arg_1);
-					_arg_1.reset();
-					_arg_1.removeFromParent();
-				}});
+				Tweener.addTween(removeCandy, {"time": t, "x": tp.x, //
+						"y": tp.y, //
+						"scaleX": 0.6, "scaleY": 0.6, "onCompleteParams": [removeCandy], // 
+						"onComplete": function(_arg_1:Candy):void
+						{
+							Candy.pool.put(_arg_1);
+							_arg_1.reset();
+							_arg_1.removeFromParent();
+						}});
 			}
-			;
 		}
 
 		private function searchSpecialRelativeCandys(_arg_1:Candy):Array
@@ -3198,12 +2932,9 @@ package com.popchan.sugar.modules.game.view
 						{
 							_local_3.push(_local_6);
 						}
-						;
 						_local_5++;
 					}
-					;
 				}
-				;
 				_local_7++;
 			}
 			;
@@ -3221,15 +2952,11 @@ package com.popchan.sugar.modules.game.view
 						{
 							_local_3.push(_local_6);
 						}
-						;
 						_local_4++;
 					}
-					;
 				}
-				;
 				_local_7++;
 			}
-			;
 			return (_local_3);
 		}
 
@@ -3239,17 +2966,14 @@ package com.popchan.sugar.modules.game.view
 			{
 				return (this.getCandysByRow(_arg_1.row));
 			}
-			;
 			if (_arg_1.status == CandySpecialStatus.VERT)
 			{
 				return (this.getCandysByCol(_arg_1.col));
 			}
-			;
 			if (_arg_1.status == CandySpecialStatus.BOMB)
 			{
 				return (this.getAroundCandys(_arg_1.row, _arg_1.col));
 			}
-			;
 			return ([]);
 		}
 
@@ -3690,9 +3414,7 @@ package com.popchan.sugar.modules.game.view
 				{
 					return (true);
 				}
-				;
 			}
-			;
 			return (false);
 		}
 
@@ -3737,7 +3459,11 @@ package com.popchan.sugar.modules.game.view
 				;
 				_local_3 = (_local_3 + 1);
 				if (_local_3 > 1000)
+				{
+					Model.gameModel.failReason = 1;
+					handleFailed();
 					break;
+				}
 				if ((((!(this.checkHasMatches()))) && ((this.checkConnectable().length > 0))))
 					break;
 			}
@@ -3762,15 +3488,11 @@ package com.popchan.sugar.modules.game.view
 							_local_13.x = _local_14.x;
 							_local_13.y = _local_14.y;
 						}
-						;
 					}
-					;
 					_local_12++;
 				}
-				;
 				_local_4++;
 			}
-			;
 		}
 
 		private function moveToRightPos(_arg_1:Candy, _arg_2:Function = null):void
@@ -3886,15 +3608,10 @@ package com.popchan.sugar.modules.game.view
 				{
 					step = Model.gameModel.step;
 				}
-				else
+				else if (currentLevel.mode == GameMode.TIME)
 				{
-					if (currentLevel.mode == GameMode.TIME)
-					{
-						step = (Model.gameModel.time / 5);
-					}
-					;
+					step = (Model.gameModel.time / 5);
 				}
-				;
 				if (step > 0)
 				{
 					candys = getNormalCandys();
@@ -3929,15 +3646,11 @@ package com.popchan.sugar.modules.game.view
 									Model.gameModel.step = 0;
 									queueToBouns();
 								}
-								;
 							}});
 							i = (i + 1);
 						}
-						;
 					}
-					;
 				}
-				;
 			}, 1200);
 		}
 
@@ -3973,50 +3686,33 @@ package com.popchan.sugar.modules.game.view
 				_local_4.play();
 				this.addChild(_local_4);
 			}
-			else
+			else if (_arg_1 == 1)
 			{
-				if (_arg_1 == 1)
-				{
-					_local_5 = LineBombEffect.pool.take();
-					_local_5.x = _arg_2;
-					_local_5.y = _arg_3;
-					_local_5.play(1);
-					addChild(_local_5);
-				}
-				else
-				{
-					if (_arg_1 == 2)
-					{
-						_local_6 = LineBombEffect.pool.take();
-						_local_6.x = _arg_2;
-						_local_6.y = _arg_3;
-						_local_6.play(2);
-						addChild(_local_6);
-					}
-					else
-					{
-						if (_arg_1 == 3)
-						{
-							_local_7 = BombEffect.pool.take();
-							_local_7.x = _arg_2;
-							_local_7.y = _arg_3;
-							_local_7.play();
-							this.addChild(_local_7);
-						}
-						else
-						{
-							if (_arg_1 == 4)
-							{
-							}
-							;
-						}
-						;
-					}
-					;
-				}
-				;
+				_local_5 = LineBombEffect.pool.take();
+				_local_5.x = _arg_2;
+				_local_5.y = _arg_3;
+				_local_5.play(1);
+				addChild(_local_5);
 			}
-			;
+			else if (_arg_1 == 2)
+			{
+				_local_6 = LineBombEffect.pool.take();
+				_local_6.x = _arg_2;
+				_local_6.y = _arg_3;
+				_local_6.play(2);
+				addChild(_local_6);
+			}
+			else if (_arg_1 == 3)
+			{
+				_local_7 = BombEffect.pool.take();
+				_local_7.x = _arg_2;
+				_local_7.y = _arg_3;
+				_local_7.play();
+				this.addChild(_local_7);
+			}
+			else if (_arg_1 == 4)
+			{
+			}
 		}
 
 		private function removeAll():void
@@ -4024,11 +3720,9 @@ package com.popchan.sugar.modules.game.view
 			var _local_1:int;
 			var _local_2:int;
 			var _local_3:int;
-			var _local_4:TileBoarder;
 			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, this.update);
 			Core.timerManager.remove(this, this.onTimer);
 			this.removeAllElements(this.candys, Candy.pool);
-			this.removeAllElements(this.tileBgs, TileBg.pool);
 			this.removeAllElements(this.bricks, Brick.pool);
 			this.removeAllElements(this.locks, Lock.pool);
 			this.removeAllElements(this.eats, Eat.pool);
@@ -4036,23 +3730,13 @@ package com.popchan.sugar.modules.game.view
 			this.removeAllElements(this.monsters, Monster.pool);
 			this.removeAllElements(this.tDoors, TransportDoor.pool);
 			this.removeAllElements(this.ironWires, IronWire.pool);
-			_local_3 = (this.tileBoarders.length - 1);
-			while (_local_3 >= 0)
-			{
-				_local_4 = this.tileBoarders[_local_3];
-				TileBoarder.pool.put(_local_4);
-				_local_4.removeFromParent();
-				this.tileBoarders.splice(_local_3, 1);
-				_local_3--;
-			}
-			;
 			Model.gameModel.reset();
 		}
 
 		private function removeAllElements(_arg_1:Array, _arg_2:BasePool):void
 		{
 			var _local_4:int;
-			var _local_5:Element;
+			var _local_5:*;
 			var _local_3:int;
 			while (_local_3 < GameConst.ROW_COUNT)
 			{
@@ -4062,25 +3746,25 @@ package com.popchan.sugar.modules.game.view
 					_local_5 = _arg_1[_local_3][_local_4];
 					if (_local_5 != null)
 					{
-						_local_5.reset();
+						if (_local_5.hasOwnProperty("reset"))
+							_local_5.reset();
 						_arg_2.put(_local_5);
 						_local_5.removeFromParent();
 						_arg_1[_local_3][_local_4] = null;
 					}
-					;
 					_local_4++;
 				}
-				;
 				_local_3++;
 			}
-			;
 		}
 
-		override public function destory():void
+		override public function dispose():void
 		{
+			GRoot.inst.removeEventListener(GTouchEvent.BEGIN, this.onTouch);
+			GRoot.inst.removeEventListener(GTouchEvent.DRAG, this.onTouch);
+			GRoot.inst.removeEventListener(GTouchEvent.END, this.onTouch);
 			this.removeAll();
-			super.destory();
+			super.dispose();
 		}
-
 	}
 } //package com.popchan.sugar.modules.game.view
