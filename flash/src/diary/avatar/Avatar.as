@@ -1,14 +1,16 @@
 package diary.avatar
 
 {
+	import com.greensock.TweenLite;
+
 	import flash.events.Event;
 	import flash.utils.clearTimeout;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-	
+
 	import diary.res.ResManager;
 	import diary.res.ZF3D;
-	
+
 	import flare.core.Label3D;
 	import flare.core.Mesh3D;
 	import flare.core.Pivot3D;
@@ -31,7 +33,6 @@ package diary.avatar
 		private var defaultS:String = "g2016_s_dod";
 		private var defaultH:String = "g2015_h_dod";
 		private var _index:int = 0;
-		private var _value:Number = 0;
 		private var acts:Array = [ //
 			"g_dod_body", //0
 			"g_dod_clothes", //1
@@ -45,11 +46,17 @@ package diary.avatar
 			"g_dod_shoes01", //10
 			"g_dod_hair" //11
 			];
+		
+		private var useful:Array = [
+		"pl_props_act_058" +
+		""]
 		private var tid:uint;
 		private var _poseInQueue:Boolean;
 		private var currentAnimation:Pivot3D;
 		private var numInQueue:int = 0;
 		private var poseSequence:Array;
+		private var defaultPoseCD:int = 500;
+		private var poseCD:int = defaultPoseCD
 
 		public function Avatar(name:String = "", //
 			defaultFace:String = "", //
@@ -105,7 +112,6 @@ package diary.avatar
 				{
 					applyAnimation();
 				}
-				_value = 0;
 			});
 		}
 
@@ -158,17 +164,17 @@ package diary.avatar
 		{
 			return updatePose(getPoseByPart(part));
 		}
-		
+
 		protected function getPoseByPart(part:String):String
 		{
 			// TODO Auto Generated method stub
 			return null;
 		}
-		
+
 		protected function animationCompleteHandler(event:Event):void
 		{
 			(event.target as Mesh3D).removeEventListener(Pivot3D.ANIMATION_COMPLETE_EVENT, animationCompleteHandler);
-			
+
 			//检查两次，队列弹出一个，这个动作是正在执行的
 			if (poseSequence.length > 0)
 			{
@@ -220,18 +226,22 @@ package diary.avatar
 
 			currentPose = poseName;
 			poseInvalid = true;
+			poseCD = defaultPoseCD;
 			return true;
 		}
 
 		public function updateRandomPose():void
 		{
+			if (defaultPoseCD > 0)
+				return;
+
 			var i:int = Math.random() * acts.length;
 			updatePose(acts[i]);
-			_value = 0;
 		}
 
 		public function tick(delta:Number):void
 		{
+			defaultPoseCD--;
 			if (poseInvalid && !poseInQueue)
 			{
 //				trace("loading pose: " + currentPose);
@@ -239,12 +249,6 @@ package diary.avatar
 				poseInQueue = true;
 				loadF3D(currentPose, poseLoaded, true);
 				return;
-			}
-			_value++;
-			if (_value >= 500)
-			{
-				_value = 0;
-				updateRandomPose();
 			}
 		}
 
@@ -313,6 +317,30 @@ package diary.avatar
 		{
 			takeOff("hjpsf")
 			super.dispose();
+		}
+
+		public function zoomInMatch():void
+		{
+			TweenLite.killTweensOf(scene);
+			TweenLite.to(scene.camera, 0.25, {fieldOfView: 18, //
+					x: -3, //
+					y: 230});
+		}
+
+		public function zoomIn():void
+		{
+			TweenLite.killTweensOf(scene);
+			TweenLite.to(scene.camera, 0.25, {fieldOfView: 11, //
+					x: -3, //
+					y: 230});
+		}
+
+		public function zoomOut():void
+		{
+			TweenLite.killTweensOf(scene);
+			TweenLite.to(scene.camera, 0.25, {fieldOfView: 28, //
+					x: 0, //
+					y: 195});
 		}
 	}
 }

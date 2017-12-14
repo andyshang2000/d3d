@@ -6,6 +6,10 @@ package diary.ui.view
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
 	
+	import diary.avatar.AnimationTicker;
+	import diary.avatar.Avatar;
+	import diary.avatar.RandomPoseComp;
+	import diary.avatar.RotationComponent;
 	import diary.services.ScreenShot;
 	import diary.ui.Carousel;
 	
@@ -16,6 +20,8 @@ package diary.ui.view
 	import fairygui.UIPackage;
 	import fairygui.event.ItemEvent;
 	import fairygui.event.StateChangeEvent;
+	
+	import flare.core.Camera3D;
 	
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -47,25 +53,25 @@ package diary.ui.view
 				Texture.fromAtfData(FileUtil.open("icon/texture.atf")), //
 				XML(FileUtil.open("icon/texture.xml", "text")));
 		}
-				
+
 		[Handler(clickGTouch)]
 		public function yesButtonClick():void
 		{
 			transferTo("show", removeBackground);
 		}
-		
+
 		[Handler(clickGTouch)]
 		public function showLeftButtonClick():void
 		{
 			backList.prev();
 		}
-		
+
 		[Handler(clickGTouch)]
 		public function showRightButtonClick():void
 		{
 			backList.next();
 		}
-		
+
 		[Handler(clickGTouch)]
 		public function returnButtonClick():void
 		{
@@ -83,13 +89,13 @@ package diary.ui.view
 				nextScreen(MapScreen);
 			}
 		}
-		
+
 		[Handler(clickGTouch)]
 		public function cancelButtonClick():void
 		{
 			transferTo("show", null, 0);
 		}
-		
+
 		[Handler(clickGTouch)]
 		public function nextSceneButtonClick():void
 		{
@@ -106,7 +112,7 @@ package diary.ui.view
 				getChild("photoFrame").visible = false;
 			}
 		}
-		
+
 		[Handler(clickGTouch)]
 		public function cameraButtonClick():void
 		{
@@ -114,14 +120,14 @@ package diary.ui.view
 			ScreenShot.draw(snapAtlas, null, ["back", "avatar"], function():void
 			{
 				GRoot.inst.visible = true;
-				
+
 				var t:Texture = Texture.fromBitmapData(snapAtlas);
 				getChild("photoFrame").asCom.getChild("image").asImage.texture = t; //
 				getChild("photoFrame").setXY(0, 0);
 				getChild("photoFrame").setScale(1, 1);
 				getChild("photoFrame").setSize(GRoot.inst.width, GRoot.inst.height);
 				getChild("photoFrame").rotation = 0;
-				
+
 				transferTo("confirm", function():void
 				{
 					getChild("photoFrame").visible = true;
@@ -129,7 +135,7 @@ package diary.ui.view
 					getChild("photoFrame").setScale(1, 1);
 					getChild("photoFrame").setSize(GRoot.inst.width, GRoot.inst.height);
 					getChild("photoFrame").rotation = 0;
-					
+
 					getChild("cancelButton").asButton.visible = true;
 					getChild("nextSceneButton").asButton.visible = true;
 					getChild("cancelButton").asButton.enabled = true;
@@ -143,7 +149,7 @@ package diary.ui.view
 		{
 			zoom(getChild("zoomSwitchButton").asButton.selected);
 		}
-		
+
 		[Handler(clickGTouch)]
 		public function mallButtonClick():void
 		{
@@ -152,8 +158,7 @@ package diary.ui.view
 				addBackground("mallBG");
 			});
 		}
-		
-		
+
 		[Handler(clickGTouch)]
 		public function hangerClick():void
 		{
@@ -168,7 +173,17 @@ package diary.ui.view
 			{
 				getChild("leftBar").asCom.getController("c1").selectedIndex = 1;
 				getChild("background").asImage.visible = false;
-				addAvatar("girl");
+				var avatar:Avatar = addAvatar("girl");
+
+				avatar.addComponent(rotationComp = new RotationComponent);
+				avatar.addComponent(new AnimationTicker);
+				avatar.addComponent(new RandomPoseComp);
+
+				scene.camera.setPosition(0, 195, -450);
+				scene.camera.setRotation(12, 0, 0);
+				scene.camera.fovMode = Camera3D.FOV_VERTICAL;
+				scene.camera.fieldOfView = 28;
+
 				addBackground();
 			});
 
@@ -224,7 +239,7 @@ package diary.ui.view
 					});
 				}
 			});
-			
+
 			backList = new Carousel;
 			var images:Array = [];
 			var len:int = 5;
@@ -232,63 +247,56 @@ package diary.ui.view
 			{
 				images.push("bg0" + (i) + ".png");
 			}
-			
+
 			backList.setImages(images);
 			back.addChild(backList);
 			//prepare ad
 			transferTo("map");
 		}
-		
+
 		public function zoom(zoomIn:Boolean):void
 		{
 			if (zoomIn)
 			{
-				TweenLite.killTweensOf(scene);
 				TweenLite.killTweensOf(backList);
-				TweenLite.to(scene.camera, 0.25, {fieldOfView: 11, //
-					x: -3, //
-					y: 230});
+				getAvatar("girl").zoomIn();
 				var fitRectZoomIn:Rectangle = getFitRect(backList, 1.5);
 				var fitRectZoomOut:Rectangle = getFitRect(backList, 1);
 				TweenLite.to(backList, 0.25, {x: fitRectZoomIn.x, //
-					y: fitRectZoomIn.y, //
-					scaleX: fitRectZoomIn.width / 480, //
-					scaleY: fitRectZoomIn.height / 800});
+						y: fitRectZoomIn.y, //
+						scaleX: fitRectZoomIn.width / 480, //
+						scaleY: fitRectZoomIn.height / 800});
 				TweenLite.to(backImage, 0.25, {x: fitRectZoomIn.x, //
-					y: fitRectZoomIn.y, //
-					scaleX: fitRectZoomIn.width / 480, //
-					scaleY: fitRectZoomIn.height / 800});
+						y: fitRectZoomIn.y, //
+						scaleX: fitRectZoomIn.width / 480, //
+						scaleY: fitRectZoomIn.height / 800});
 			}
 			else
 			{
-				TweenLite.killTweensOf(scene);
 				TweenLite.killTweensOf(backList);
-				TweenLite.to(scene.camera, 0.25, {fieldOfView: 28, //
-					x: 0, //
-					y: 195});
+				getAvatar("girl").zoomOut();
 				var fitRect:Rectangle = getFitRect(backList);
 				TweenLite.to(backList, 0.25, {x: fitRect.x, //
-					y: fitRect.y, //
-					scaleX: fitRect.width / 480, //
-					scaleY: fitRect.height / 800});
+						y: fitRect.y, //
+						scaleX: fitRect.width / 480, //
+						scaleY: fitRect.height / 800});
 				TweenLite.to(backImage, 0.25, {x: fitRect.x, //
-					y: fitRect.y, //
-					scaleX: fitRect.width / 480, //
-					scaleY: fitRect.height / 800});
+						y: fitRect.y, //
+						scaleX: fitRect.width / 480, //
+						scaleY: fitRect.height / 800});
 			}
 		}
-		
-		
+
 		public function addBackground(name:String = "bedroom2"):void
 		{
 			var image:GImage = UIPackage.createObject("zz3d.dressup.gui", name).asImage;
 			TweenLite.to(back, 0.5, {x: 0.1});
 			backImage.visible = true;
 			backList.visible = false;
-			
+
 			setTimeout(function():void
 			{
-				if(image.texture == null)
+				if (image.texture == null)
 				{
 					setTimeout(arguments.callee, 1);
 					return;
@@ -298,7 +306,7 @@ package diary.ui.view
 				fit(backImage);
 			}, 1);
 		}
-		
+
 		public function removeBackground():void
 		{
 			TweenLite.to(back, 0.5, {x: 0.1});

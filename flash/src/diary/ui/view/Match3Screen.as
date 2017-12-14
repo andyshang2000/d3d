@@ -9,19 +9,24 @@ package diary.ui.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.events.GameEvents;
 	import com.popchan.sugar.modules.game.view.GamePanel;
-
+	
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
-
+	
+	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
-
+	import diary.avatar.MatchRespond;
+	import diary.avatar.RotationComponent;
+	
 	import fairygui.GComponent;
 	import fairygui.GImage;
 	import fairygui.GRoot;
 	import fairygui.UIPackage;
 	import fairygui.Window;
-
+	
+	import flare.core.Camera3D;
+	
 	import starling.display.Image;
 	import starling.display.TextSprite;
 	import starling.textures.Texture;
@@ -84,14 +89,22 @@ package diary.ui.view
 			view.newGame(Config.levelConfig.getLevel(Model.levelModel.selectedLevel));
 			setInfo(Config.levelConfig.getLevel(Model.levelModel.selectedLevel));
 
-			addAvatar("girl");
+			var avatar:Avatar = addAvatar("girl");
+
+			avatar.addComponent(new AnimationTicker);
+			avatar.addComponent(new MatchRespond);
+
+			scene.camera.setPosition(0, 180, -450);
+			scene.camera.setRotation(12, 0, 0);
+			scene.camera.fovMode = Camera3D.FOV_VERTICAL;
+			scene.camera.fieldOfView = 23;
+
 			addBackground();
 
 			MsgDispatcher.add(GameEvents.OPEN_GAME_END_UI, function():void
 			{
 				var win:Window = new Window();
 				win.contentPane = UIPackage.createObject("zz3d.m3.gui", "EndPanel").asCom;
-//				win.contentPane.getChild(
 				GRoot.inst.showPopup(win);
 			});
 		}

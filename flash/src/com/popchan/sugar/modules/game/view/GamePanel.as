@@ -3942,7 +3942,7 @@ package com.popchan.sugar.modules.game.view
 		private function removeAllElements(_arg_1:Array, _arg_2:BasePool):void
 		{
 			var _local_4:int;
-			var _local_5:Element;
+			var _local_5:*;
 			var _local_3:int;
 			while (_local_3 < GameConst.ROW_COUNT)
 			{
@@ -3952,25 +3952,25 @@ package com.popchan.sugar.modules.game.view
 					_local_5 = _arg_1[_local_3][_local_4];
 					if (_local_5 != null)
 					{
-						_local_5.reset();
+						if(_local_5.hasOwnProperty("reset"))
+							_local_5.reset();
 						_arg_2.put(_local_5);
 						_local_5.removeFromParent();
 						_arg_1[_local_3][_local_4] = null;
 					}
-					;
 					_local_4++;
 				}
-				;
 				_local_3++;
 			}
-			;
 		}
 
 		override public function dispose():void
 		{
+			GRoot.inst.removeEventListener(GTouchEvent.BEGIN, this.onTouch);
+			GRoot.inst.removeEventListener(GTouchEvent.DRAG, this.onTouch);
+			GRoot.inst.removeEventListener(GTouchEvent.END, this.onTouch);
 			this.removeAll();
 			super.dispose();
 		}
-
 	}
 } //package com.popchan.sugar.modules.game.view

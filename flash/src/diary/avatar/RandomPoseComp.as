@@ -6,22 +6,14 @@ package diary.avatar
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
 
-	public class AnimationTicker implements IComponent, IAnimatable
+	public class RandomPoseComp implements IComponent, IAnimatable
 	{
 		private var avatar:Avatar;
-		private var _value:Number = 0;
 
 		public function advanceTime(time:Number):void
 		{
 			if (avatar)
 				avatar.tick(time);
-
-			_value++;
-			if (_value >= 500)
-			{
-				_value = 0;
-				avatar.updateRandomPose();
-			}
 		}
 
 		public function added(target:Pivot3D):Boolean
@@ -41,3 +33,4 @@ package diary.avatar
 		}
 	}
 }
+
