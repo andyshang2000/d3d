@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="480,800" overflow="hidden">
-  <controller name="sceneControl" pages="2,game,3,show,7,confirm,6,share,5,never,8,mall" selected="0">
+  <controller name="sceneControl" pages="2,game,3,show,7,confirm,6,share,5,never,8,mall" selected="5">
     <action type="play_transition" fromPage="" toPage="2" transition="t4" stopOnExit="true"/>
     <action type="play_transition" fromPage="" toPage="8" transition="t0" stopOnExit="true"/>
   </controller>
@@ -52,7 +52,7 @@
       <gearDisplay controller="sceneControl" pages="7"/>
       <relation target="" sidePair="right-right,bottom-bottom"/>
     </component>
-    <component id="n56" name="returnButton" src="tzxv1h" xy="6,7" size="82,82" aspect="true">
+    <component id="n56" name="returnButton" src="tzxv1h" xy="6,47" size="82,82" aspect="true">
       <gearDisplay controller="sceneControl" pages="2,3,8"/>
       <relation target="" sidePair="left-left,top-top"/>
     </component>
@@ -105,6 +105,8 @@
       <gearDisplay controller="sceneControl" pages="4,0,1,2,3,7,8"/>
       <relation target="" sidePair="width-width,height-height"/>
     </component>
+    <image id="n68_9icv" name="n68" src="x39n2g" xy="6,5" size="24,24"/>
+    <text id="n69_9icv" name="n69" xy="28,10" size="88,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="12345567"/>
   </displayList>
   <transition name="t0">
     <item time="0" type="XY" target="n57" tween="true" startValue="488,495" endValue="6,495" duration="18" ease="Quart.Out"/>

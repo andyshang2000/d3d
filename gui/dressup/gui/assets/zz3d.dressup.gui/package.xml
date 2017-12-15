@@ -56,7 +56,7 @@
     <image id="x39n2d" name="hanger.png" path="/assets/"/>
     <component id="x39n2e" name="hangerButton.xml" path="/"/>
     <image id="x39n2f" name="mallBG.png" path="/assets/" exported="true"/>
-    <image id="x39n2g" name="icon.png" path="/assets/"/>
+    <image id="x39n2g" name="coin.png" path="/assets/"/>
     <image id="x39n2h" name="playAD.png" path="/assets/"/>
     <component id="x39n2i" name="shoppingButton.xml" path="/"/>
     <image id="x39n2j" name="toMall2.png" path="/assets/"/>
@@ -69,6 +69,39 @@
     <component id="iybv2q" name="Map.xml" path="/" exported="true"/>
     <image id="u55n2r" name="dance.png" path="/"/>
     <image id="u55n2s" name="wedding.png" path="/"/>
+    <font id="9icv2t" name="Font_Number.fnt" path="/assets/font/" exported="true"/>
+    <image id="9icv2u" name="bombtxt_09.png" path="/assets/font/number/"/>
+    <image id="9icv2v" name="bombtxt_091.png" path="/assets/font/number/"/>
+    <image id="9icv2w" name="bombtxt_01.png" path="/assets/font/number/"/>
+    <image id="9icv2x" name="bombtxt_02.png" path="/assets/font/number/"/>
+    <image id="9icv2y" name="bombtxt_03.png" path="/assets/font/number/"/>
+    <image id="9icv2z" name="bombtxt_04.png" path="/assets/font/number/"/>
+    <image id="9icv30" name="bombtxt_05.png" path="/assets/font/number/"/>
+    <image id="9icv31" name="bombtxt_06.png" path="/assets/font/number/"/>
+    <image id="9icv32" name="bombtxt_07.png" path="/assets/font/number/"/>
+    <image id="9icv33" name="bombtxt_08.png" path="/assets/font/number/"/>
+    <font id="9icv34" name="Font_Number2.fnt" path="/assets/font/" exported="true"/>
+    <image id="9icv35" name="numtip3_09.png" path="/assets/font/number2/"/>
+    <image id="9icv36" name="numtip3_10.png" path="/assets/font/number2/"/>
+    <image id="9icv37" name="numtip3_11.png" path="/assets/font/number2/"/>
+    <image id="9icv38" name="numtip3_01.png" path="/assets/font/number2/"/>
+    <image id="9icv39" name="numtip3_02.png" path="/assets/font/number2/"/>
+    <image id="9icv3a" name="numtip3_03.png" path="/assets/font/number2/"/>
+    <image id="9icv3b" name="numtip3_04.png" path="/assets/font/number2/"/>
+    <image id="9icv3c" name="numtip3_05.png" path="/assets/font/number2/"/>
+    <image id="9icv3d" name="numtip3_06.png" path="/assets/font/number2/"/>
+    <image id="9icv3e" name="numtip3_07.png" path="/assets/font/number2/"/>
+    <image id="9icv3f" name="numtip3_08.png" path="/assets/font/number2/"/>
+    <image id="9icv3g" name="font1_09.png" path="/assets/font/number3/"/>
+    <image id="9icv3h" name="font1_10.png" path="/assets/font/number3/"/>
+    <image id="9icv3i" name="font1_01.png" path="/assets/font/number3/"/>
+    <image id="9icv3j" name="font1_02.png" path="/assets/font/number3/"/>
+    <image id="9icv3k" name="font1_03.png" path="/assets/font/number3/"/>
+    <image id="9icv3l" name="font1_04.png" path="/assets/font/number3/"/>
+    <image id="9icv3m" name="font1_05.png" path="/assets/font/number3/"/>
+    <image id="9icv3n" name="font1_06.png" path="/assets/font/number3/"/>
+    <image id="9icv3o" name="font1_07.png" path="/assets/font/number3/"/>
+    <image id="9icv3p" name="font1_08.png" path="/assets/font/number3/"/>
   </resources>
   <publish name="zz3d.dressup.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug">
     <atlas name="默认" index="0"/>

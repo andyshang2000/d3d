@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<component size="66,30">
-  <displayList>
-    <image id="n0_9icv" name="icon" src="mld8b" xy="1,4" size="22,22" group="n2_9icv" aspect="true"/>
-    <text id="n1_9icv" name="value" xy="13,2" size="61,31" group="n2_9icv" font="微软雅黑" fontSize="20" color="#ffff99" align="center" vAlign="bottom" autoSize="shrink" bold="true" strokeColor="#996600" text="256"/>
-    <group id="n2_9icv" name="n2" xy="1,2" size="73,31"/>
-  </displayList>
-</component>

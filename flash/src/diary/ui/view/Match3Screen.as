@@ -132,7 +132,7 @@ package diary.ui.view
 			view.scaleY = port.width / initWidth;
 			var actualWidth:int = initWidth * view.scaleX;
 			view.x = port.x;
-			view.y = port.bottom - actualWidth - 35;
+			view.y = port.bottom - actualWidth - 55;
 		}
 
 		public function addBackground(name:String = "bedroom2"):void

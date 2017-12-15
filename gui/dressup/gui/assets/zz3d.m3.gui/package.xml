@@ -148,7 +148,6 @@
     <image id="ljz944" name="rr0010.png" path="/rainbow/"/>
     <movieclip id="9icv45" name="RainBow.jta" path="/"/>
     <image id="9icv46" name="smallStar.png" path="/"/>
-    <component id="9icv47" name="AimItem.xml" path="/"/>
     <component id="9icv48" name="PauseButton.xml" path="/"/>
     <image id="9icv49" name="Pause.png" path="/"/>
     <image id="9icv4c" name="bubble.png" path="/" scale=""/>

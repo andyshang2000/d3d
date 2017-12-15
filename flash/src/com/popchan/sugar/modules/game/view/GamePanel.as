@@ -15,18 +15,18 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.data.TileConst;
 	import com.popchan.sugar.core.events.GameEvents;
-	
+
 	import flash.geom.Point;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-	
+
 	import caurina.transitions.Tweener;
-	
+
 	import fairygui.GComponent;
 	import fairygui.GList;
 	import fairygui.GRoot;
 	import fairygui.event.GTouchEvent;
-	
+
 	import starling.events.EnterFrameEvent;
 
 	public class GamePanel extends GComponent
@@ -644,7 +644,6 @@ package com.popchan.sugar.modules.game.view
 				this.checkSwapTip();
 				this.tipCount = 0;
 			}
-			;
 			switch (this.gameState)
 			{
 				case STATE_GAME_SWAP:
@@ -711,20 +710,17 @@ package com.popchan.sugar.modules.game.view
 							else
 							{
 								Debug.log("目标未完成，游戏没有胜利");
-								if ((((this.currentLevel.mode == GameMode.NORMAL)) && ((Model.gameModel.step == 0))))
+								if (this.currentLevel.mode == GameMode.NORMAL && Model.gameModel.step == 0)
 								{
 									Debug.log("游戏失败");
 									this.gameState = STATE_GAME_END;
 									this.handleFailed();
 								}
-								else
+								else if (this.currentLevel.mode == GameMode.TIME && Model.gameModel.time == 0)
 								{
-									if ((((this.currentLevel.mode == GameMode.TIME)) && ((Model.gameModel.time == 0))))
-									{
-										Debug.log("游戏失败");
-										this.gameState = STATE_GAME_END;
-										this.handleFailed();
-									}
+									Debug.log("游戏失败");
+									this.gameState = STATE_GAME_END;
+									this.handleFailed();
 								}
 								this.checkShuffle();
 							}
@@ -965,10 +961,8 @@ package com.popchan.sugar.modules.game.view
 					;
 					_local_2++;
 				}
-				;
 				_local_1++;
 			}
-			;
 		}
 
 		private function handleValidSwap():void
@@ -1480,7 +1474,6 @@ package com.popchan.sugar.modules.game.view
 				this.removeFruits(_local_1);
 				this.gameState = STATE_GAME_WAIT_DROP;
 			}
-			;
 			var _local_2:Array = this.searchMatchesAndMark();
 			if (_local_2.length >= 3)
 			{
@@ -1492,12 +1485,10 @@ package com.popchan.sugar.modules.game.view
 				{
 					this.tempScore = 300;
 				}
-				;
 				this.handleRemoveList(_local_2);
 				this.gameState = STATE_GAME_WAIT_DROP;
 				this.selectedCard = (this.aimCard = null);
 			}
-			;
 		}
 
 		private function checkBomb():void
