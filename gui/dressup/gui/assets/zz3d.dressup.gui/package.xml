@@ -102,6 +102,8 @@
     <image id="9icv3n" name="font1_06.png" path="/assets/font/number3/"/>
     <image id="9icv3o" name="font1_07.png" path="/assets/font/number3/"/>
     <image id="9icv3p" name="font1_08.png" path="/assets/font/number3/"/>
+    <component id="9icv3q" name="danceButton.xml" path="/"/>
+    <component id="9icv3r" name="weddingButton.xml" path="/"/>
   </resources>
   <publish name="zz3d.dressup.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug">
     <atlas name="默认" index="0"/>

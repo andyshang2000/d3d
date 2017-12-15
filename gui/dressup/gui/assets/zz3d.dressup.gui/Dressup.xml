@@ -105,8 +105,8 @@
       <gearDisplay controller="sceneControl" pages="4,0,1,2,3,7,8"/>
       <relation target="" sidePair="width-width,height-height"/>
     </component>
-    <image id="n68_9icv" name="n68" src="x39n2g" xy="6,5" size="24,24"/>
-    <text id="n69_9icv" name="n69" xy="28,10" size="88,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="12345567"/>
+    <image id="n68_9icv" name="n68" src="x39n2g" xy="6,5" size="28,28"/>
+    <text id="n69_9icv" name="n69" xy="31,12" size="34,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="125k"/>
   </displayList>
   <transition name="t0">
     <item time="0" type="XY" target="n57" tween="true" startValue="488,495" endValue="6,495" duration="18" ease="Quart.Out"/>

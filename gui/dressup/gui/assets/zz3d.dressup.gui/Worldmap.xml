@@ -2,25 +2,19 @@
 <component size="480,800" overflow="hidden">
   <displayList>
     <image id="n40" name="n40" src="mbkc7" xy="0,0"/>
-    <component id="n31" name="button" src="mbkcc" xy="398,641" pivot="0.5,0.5" group="n38">
+    <component id="n32" name="button" src="mbkcc" xy="159,700" pivot="0.5,0.5" group="n38">
       <Button page="6"/>
     </component>
-    <component id="n32" name="button" src="mbkcc" xy="174,699" pivot="0.5,0.5" group="n38">
+    <component id="n35" name="button" src="mbkcc" xy="125,282" pivot="0.5,0.5" group="n38">
       <Button page="6"/>
     </component>
-    <component id="n33" name="button" src="mbkcc" xy="241,492" pivot="0.5,0.5" group="n38">
+    <component id="n36" name="button" src="mbkcc" xy="366,141" pivot="0.5,0.5" group="n38">
       <Button page="6"/>
     </component>
-    <component id="n34" name="button" src="mbkcc" xy="0,408" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n35" name="button" src="mbkcc" xy="140,281" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <component id="n36" name="button" src="mbkcc" xy="381,140" pivot="0.5,0.5" group="n38">
-      <Button page="6"/>
-    </component>
-    <group id="n38" name="buttonGroup" xy="0,140" size="483,644" advanced="true" collapsed="true">
+    <component id="n42_9icv" name="button" src="9icv3q" xy="8,424" group="n38"/>
+    <component id="n43_9icv" name="button" src="9icv3r" xy="191,512" group="n38"/>
+    <component id="n44_9icv" name="button" src="x39n2k" xy="416,599" group="n38"/>
+    <group id="n38" name="buttonGroup" xy="8,141" size="464,644" advanced="true">
       <relation target="" sidePair="left-left,right-right"/>
       <relation target="" sidePair="top-top,bottom-bottom"/>
     </group>
