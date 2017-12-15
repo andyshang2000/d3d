@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="480,800">
+  <controller name="numAims" pages="0,single,1,two,2,three,3,time" selected="3"/>
   <displayList>
     <component id="n14_9icv" name="progressBar" src="ljz93l" xy="0,0" scale="1.3,1.2"/>
     <component id="n7_ljz9" name="board" src="ljz93i" xy="11,331" scale="0.8,0.8"/>
-    <image id="n0_m19y" name="infoBg" src="mld80" xy="0,99" visible="false">
-      <relation target="" sidePair="center-center,top-top"/>
-    </image>
-    <component id="n5_mld8" name="returnButton" src="mld87" xy="9,68"/>
     <text id="n13_ljz9" name="stepLabel" xy="0,12" size="50,37" font="微软雅黑" fontSize="30" color="#ffff99" align="center" vAlign="bottom" autoSize="shrink" bold="true" strokeColor="#cc6633" text="27"/>
-    <list id="n16_9icv" name="aimList" xy="103,2" size="287,71" touchable="false" layout="flow_hz" selectionMode="none" colGap="5" defaultItem="ui://5t4h99ba9icv47" align="center">
-      <relation target="" sidePair="top-top,width-width"/>
-      <item/>
-      <item/>
-      <item/>
-      <item/>
-      <item/>
-    </list>
+    <component id="n17_9icv" name="pauseButton" src="9icv48" xy="435,10">
+      <relation target="" sidePair="top-top,right-right"/>
+    </component>
+    <component id="n20_9icv" name="aim1" src="9icv4d" xy="53,102" group="n26_9icv">
+      <gearDisplay controller="numAims" pages="0,1,2,3"/>
+    </component>
+    <component id="n24_9icv" name="aim2" src="9icv4d" xy="311,84" group="n26_9icv">
+      <gearDisplay controller="numAims" pages="1,2,3"/>
+    </component>
+    <component id="n25_9icv" name="aim3" src="9icv4d" xy="364,157" group="n26_9icv" scale="0.8,0.8">
+      <gearDisplay controller="numAims" pages="2,3"/>
+    </component>
+    <component id="n27_9icv" name="aim4" src="9icv4d" xy="111,47" group="n26_9icv" scale="0.8,0.8">
+      <gearDisplay controller="numAims" pages="3"/>
+    </component>
+    <group id="n26_9icv" name="n26" xy="53,47" size="432,212" advanced="true">
+      <relation target="" sidePair="top-top,center-center"/>
+    </group>
   </displayList>
 </component>

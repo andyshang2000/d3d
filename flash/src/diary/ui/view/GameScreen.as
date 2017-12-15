@@ -167,6 +167,8 @@ package diary.ui.view
 
 		override protected function onCreate():void
 		{
+			var shopIndex:int = -1;
+
 			snapAtlas = new BitmapData(GRoot.inst.width, GRoot.inst.height, false, 0);
 			setGView("zz3d.dressup.gui", "Dressup");
 			transferTo("game", function():void
@@ -192,8 +194,7 @@ package diary.ui.view
 				var cat:String = getChild("leftBar").asCom.getController("c1").selectedPage;
 				var list:GList = getChild("rightBar").asCom.getChild("list").asList;
 				var shopList:GList = getChild("shopList").asList;
-				list.setVirtual();
-				shopList.setVirtual();
+				shopIndex = -1;
 				shopList.itemRenderer = function(i:int, renderer:GComponent):void
 				{
 					var item:* = json["game"][cat][i]["id"];
@@ -220,9 +221,11 @@ package diary.ui.view
 				}
 				getTransition("t4").play();
 			});
-			getChild("rightBar").asCom.getChild("list").asList.addEventListener(ItemEvent.CLICK, function(event:ItemEvent):void
+
+			var list:GList = getChild("rightBar").asCom.getChild("list").asList;
+			list.setVirtual();
+			list.addEventListener(ItemEvent.CLICK, function(event:ItemEvent):void
 			{
-				var list:GList = getChild("rightBar").asCom.getChild("list").asList
 				var i:int = list.childIndexToItemIndex(list.getChildIndex(event.itemObject));
 				var cat:String = getChild("leftBar").asCom.getController("c1").selectedPage;
 				var id:String = json["game"][cat][i]["id"];
@@ -237,6 +240,22 @@ package diary.ui.view
 					{
 						addBackground("mallBG");
 					});
+				}
+			});
+
+			var shopList:GList = getChild("shopList").asList;
+			shopList.setVirtual();
+			shopList.addEventListener("itemClick", function(event:ItemEvent):void
+			{
+				var item:GComponent = event.itemObject.asCom;
+				var i:int = shopList.childIndexToItemIndex(shopList.getChildIndex(item));
+				if (shopList.selectedIndex == shopIndex)
+				{
+					trace(":D" + event.itemObject);
+				}
+				else
+				{
+					shopIndex = shopList.selectedIndex;
 				}
 			});
 

@@ -9,7 +9,7 @@ package diary.ui.view
 	public class MapScreen extends GScreen implements IScreen
 	{
 		private var worldMapButtons:Array;
-		private var numSceneOpen:int = 3;		
+		private var numSceneOpen:int = 5;		
 		
 		override public function createLayer(name:String):*
 		{

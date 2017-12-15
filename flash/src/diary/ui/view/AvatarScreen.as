@@ -44,14 +44,6 @@ package diary.ui.view
 			if (avatarlist[name] != null)
 				return avatarlist[name];
 			var avatar:Avatar = gender == "girl" ? new AvatarGirl : new AvatarBoy;
-			FileUtil.dir = File.applicationDirectory;
-			ResManager.getResAsync("scene.zf3d", ZF3D, function(zf3d:ZF3D):void
-			{
-				scene.addChild(zf3d.content);
-				zf3d.content.z = 140;
-				zf3d.content.rotateY(12);
-			});
-			FileUtil.dir = File.applicationStorageDirectory;
 			scene.addChild(avatar);
 			scene.camera
 			avatarlist[name] = avatar;

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="53,50">
+  <displayList>
+    <graph id="n4_9icv" name="n4" xy="1,0" size="50,50" type="rect"/>
+    <text id="n5_9icv" name="n5" xy="0,16" size="53,16" fontSize="12" text="音效开关"/>
+  </displayList>
+</component>

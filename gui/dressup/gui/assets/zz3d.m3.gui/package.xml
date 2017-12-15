@@ -82,7 +82,7 @@
     <image id="mld826" name="wenxiang.png" path="/candys/" exported="true"/>
     <image id="mld827" name="sprite1.png" path="/candys/" exported="true"/>
     <image id="mld828" name="sprite2.png" path="/candys/" exported="true"/>
-    <image id="mld829" name="xxx.png" path="/frame/" exported="true"/>
+    <image id="mld829" name="xxx.png" path="/frame/" exported="true" scale=""/>
     <image id="mld82a" name="x_border_heng_shang.png" path="/frame/" exported="true"/>
     <image id="mld82b" name="x_border_heng_xia.png" path="/frame/" exported="true"/>
     <image id="mld82c" name="x_border_left_down.png" path="/frame/" exported="true"/>
@@ -149,6 +149,18 @@
     <movieclip id="9icv45" name="RainBow.jta" path="/"/>
     <image id="9icv46" name="smallStar.png" path="/"/>
     <component id="9icv47" name="AimItem.xml" path="/"/>
+    <component id="9icv48" name="PauseButton.xml" path="/"/>
+    <image id="9icv49" name="Pause.png" path="/"/>
+    <image id="9icv4c" name="bubble.png" path="/" scale=""/>
+    <component id="9icv4d" name="AimBubble.xml" path="/candys/"/>
+    <image id="9icv4e" name="downP.png" path="/candys/" exported="true"/>
+    <component id="9icv4f" name="Alert.xml" path="/" exported="true"/>
+    <component id="9icv4g" name="replayMatchButton.xml" path="/"/>
+    <component id="9icv4h" name="quitMatch.xml" path="/"/>
+    <component id="9icv4i" name="MusicSwitch.xml" path="/"/>
+    <component id="9icv4j" name="SoundSwitch.xml" path="/"/>
+    <component id="9icv4k" name="MatchHelpButton.xml" path="/"/>
+    <component id="9icv4l" name="CloseButton.xml" path="/"/>
   </resources>
   <publish name="zz3d.m3.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug"/>
 </packageDescription>

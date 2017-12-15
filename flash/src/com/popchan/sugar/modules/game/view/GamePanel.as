@@ -15,18 +15,18 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.data.TileConst;
 	import com.popchan.sugar.core.events.GameEvents;
-
+	
 	import flash.geom.Point;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-
+	
 	import caurina.transitions.Tweener;
-
+	
 	import fairygui.GComponent;
 	import fairygui.GList;
 	import fairygui.GRoot;
 	import fairygui.event.GTouchEvent;
-
+	
 	import starling.events.EnterFrameEvent;
 
 	public class GamePanel extends GComponent
@@ -321,8 +321,8 @@ package com.popchan.sugar.modules.game.view
 						_local_5 = (FruitDoor.pool.take() as FruitDoor);
 						_local_6 = this.getCandyPosition(_local_2, _local_3);
 						_local_5.x = _local_6.x;
-						_local_5.y = (_local_6.y + 30);
-						_local_5.alpha = 0.7;
+						_local_5.y = (_local_6.y + GameConst.CARD_W + 2);
+//						_local_5.alpha = 0.7;
 						this.door_layer.addChild(_local_5);
 					}
 					else
@@ -331,15 +331,11 @@ package com.popchan.sugar.modules.game.view
 						{
 							this.createTransportDoor(_local_2, _local_3, _local_4);
 						}
-						;
 					}
-					;
 					_local_3++;
 				}
-				;
 				_local_2++;
 			}
-			;
 		}
 
 		private function createTransportDoor(_arg_1:int, _arg_2:int, _arg_3:int):void
@@ -944,13 +940,10 @@ package com.popchan.sugar.modules.game.view
 					{
 						return (true);
 					}
-					;
 					_local_2++;
 				}
-				;
 				_local_1++;
 			}
-			;
 			return (false);
 		}
 

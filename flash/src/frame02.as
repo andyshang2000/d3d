@@ -17,8 +17,6 @@ package
 	
 	import payment.ane.PaymentANE;
 	
-	import starling.textures.Texture;
-	
 	import zzsdk.utils.FileUtil;
 
 	[SWF(width = "480", height = "800", frameRate = "45")]
@@ -36,7 +34,6 @@ package
 
 			var stage:Stage = this.stage;
 			var screenMgr:ScreenManager = new ScreenManager(stage);
-			Texture.asyncBitmapUploadEnabled = true;
 			screenMgr.addService(ScreenShot.inst);
 			screenMgr.addService(ShareService.inst);
 			screenMgr.addEventListener(Event.COMPLETE, function():void

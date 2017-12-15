@@ -1,17 +1,19 @@
 package diary.ui.view
 {
 	import com.greensock.TweenNano;
-	
+
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
-	
+
 	import avmplus.DescribeTypeJSON;
 	import avmplus.HIDE_OBJECT;
 	import avmplus.INCLUDE_METADATA;
 	import avmplus.INCLUDE_METHODS;
 	import avmplus.INCLUDE_TRAITS;
 	import avmplus.INCLUDE_VARIABLES;
-	
+
+	import diary.ui.util.GViewSupport;
+
 	import fairygui.Controller;
 	import fairygui.GComponent;
 	import fairygui.GLoader;
@@ -23,20 +25,20 @@ package diary.ui.view
 	import fairygui.UIPackage;
 	import fairygui.event.GTouchEvent;
 	import fairygui.utils.ToolSet;
-	
+
 	import flare.basic.Scene3D;
-	
+
 	import starling.display.Sprite;
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
-	
+
 	import zzsdk.display.Screen;
 	import zzsdk.utils.FileUtil;
 
 	public class GScreen implements IScreen
 	{
 		public var scene:Scene3D;
-		
+
 		private var gView:GComponent;
 
 		private var initialized:Boolean = false;
@@ -52,7 +54,7 @@ package diary.ui.view
 		{
 			loadAssets();
 		}
-		
+
 		protected function loadAssets():void
 		{
 			FileUtil.dir = File.applicationDirectory;
@@ -60,11 +62,11 @@ package diary.ui.view
 			UIPackage.waitToLoadCompleted(initializeHandler);
 			FileUtil.dir = File.applicationStorageDirectory;
 		}
-		
+
 		protected function doLoadAssets():void
 		{
 		}
-		
+
 		protected function initializeHandler():void
 		{
 			initialized = true;
@@ -84,7 +86,7 @@ package diary.ui.view
 				callback();
 			}
 		}
-		
+
 		public function nextScreen(clazz:Class):void
 		{
 			screenMgr.changeScreen(clazz);
@@ -102,58 +104,14 @@ package diary.ui.view
 			gView.addRelation(GRoot.inst, RelationType.Size);
 			GRoot.inst.addChild(gView);
 
-			var json:* = DescribeTypeJSON.describeType(this, INCLUDE_VARIABLES | INCLUDE_METHODS | INCLUDE_METADATA | INCLUDE_TRAITS | HIDE_OBJECT);
-			trace(json);
-
-			for each (var v:Object in json.traits.variables)
-			{
-				if (ToolSet.startsWith(v.type, "fairygui"))
-				{
-					this[v.name] = getChild(v.name);
-					for each (var metadata:Object in v.metadata)
-					{
-						if (metadata.name == "G")
-						{
-							for each (var value:Object in metadata.value)
-							{
-								this[v.name].addEventListener(value.key, this[value.value]);
-							}
-						}
-					}
-				}
-			}
-			for each (var m:Object in json.traits.methods)
-			{
-				for each (var metadata:Object in m.metadata)
-				{
-					if (metadata.name == "Handler")
-					{
-						for each (var value:Object in metadata.value)
-						{
-							try
-							{
-								switch (value.value)
-								{
-									case GTouchEvent.CLICK:
-										getChild(m.name.substr(0, m.name.length - 5)).addEventListener(GTouchEvent.CLICK, this[m.name]);
-										break;
-								}
-							}
-							catch (err:Error)
-							{
-								throw new Error("cannot found coresponding pair on method " + m.name + ".");
-							}
-						}
-					}
-				}
-			}
+			GViewSupport.assign(this, gView);
 		}
-		
+
 		public function update2DLayer(name:String, root:Sprite):void
 		{
-			if(!initialized)
+			if (!initialized)
 				return;
-			
+
 			var view:* = createLayer(name);
 			if (view != null)
 			{
@@ -161,12 +119,12 @@ package diary.ui.view
 				layers.push(view);
 			}
 		}
-		
+
 		public function createLayer(name:String):*
 		{
 			return GRoot.inst.displayObject as Sprite;
 		}
-		
+
 		public function update3DLayer(scene:Scene3D):void
 		{
 			this.scene = scene;
@@ -176,7 +134,7 @@ package diary.ui.view
 		{
 			var obj:GObject = gView.getChild(name);
 			var c:Object = savedRectList[name];
-			if(c == null)
+			if (c == null)
 				return;
 			obj.setXY(c.x, c.y);
 			obj.setSize(c.width, c.height);
@@ -222,7 +180,7 @@ package diary.ui.view
 		{
 			gView.dispose();
 		}
-		
+
 		public static function getFitRect(obj:*, scale:Number = 1.0):Rectangle
 		{
 			var port:Rectangle;
@@ -252,7 +210,7 @@ package diary.ui.view
 			result = RectangleUtil.fit(port, target, ScaleMode.NO_BORDER);
 			return result;
 		}
-		
+
 		public static function fit(obj:*):void
 		{
 			var result:Rectangle = getFitRect(obj);
@@ -274,7 +232,7 @@ package diary.ui.view
 				obj.height = result.height;
 			}
 		}
-		
+
 		public function transferTo(target:String, onCompleteHandler:Function = null, dur1:Number = 0.25, dur2:Number = 0.25):void
 		{
 			getChild("transferMask").asCom.visible = true;
@@ -290,7 +248,7 @@ package diary.ui.view
 			}
 			if (dur2 < 0.01)
 				dur2 = dur1;
-			
+
 			TweenNano.to(getChild("transferMask").asCom.getChild("graphic"), dur1, {alpha: 1, onComplete: function():void
 			{
 				getController("sceneControl").selectedPage = target;

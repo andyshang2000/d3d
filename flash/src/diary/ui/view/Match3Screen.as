@@ -1,7 +1,6 @@
 package diary.ui.view
 {
 	import com.greensock.TweenLite;
-	import com.greensock.easing.Back;
 	import com.greensock.easing.Bounce;
 	import com.popchan.framework.core.MsgDispatcher;
 	import com.popchan.sugar.core.Model;
@@ -13,28 +12,24 @@ package diary.ui.view
 	import com.popchan.sugar.core.events.GameEvents;
 	import com.popchan.sugar.modules.game.view.GamePanel;
 	import com.popchan.sugar.modules.game.view.XImage;
-	
+
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
-	
+
 	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
 	import diary.avatar.MatchRespond;
-	
+
 	import fairygui.GComponent;
 	import fairygui.GImage;
-	import fairygui.GList;
 	import fairygui.GRoot;
 	import fairygui.UIObjectFactory;
 	import fairygui.UIPackage;
 	import fairygui.Window;
-	
+
 	import flare.core.Camera3D;
-	
-	import starling.display.Image;
-	import starling.display.Quad;
-	import starling.display.TextSprite;
+
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.utils.RectangleUtil;
@@ -60,11 +55,15 @@ package diary.ui.view
 
 		private var view:GamePanel;
 		private var imageLoaded:Boolean;
-		private var aimDic:Array = [];
+
+		private var aimList:Array;
+		private var aimViews:Array = [];
 
 		override protected function onCreate():void
 		{
 			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/GamePanel", GamePanel);
+			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/Alert", Alert);
+			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/EndPanel", EndPanel);
 
 			setGView("zz3d.m3.gui", "Match3");
 			view = GamePanel(getChild("board"));
@@ -94,14 +93,25 @@ package diary.ui.view
 
 			MsgDispatcher.add(GameEvents.OPEN_GAME_END_UI, function():void
 			{
-				var win:Window = new Window();
-				win.contentPane = UIPackage.createObject("zz3d.m3.gui", "EndPanel").asCom;
-				Model.gameModel.isScoreAimLevel()
-				win.contentPane.getTransition("t0").play();
-				win.contentPane.getTransition("t1").play();
-				win.contentPane.getTransition("t2").play();
-				GRoot.inst.showPopup(win);
+				EndPanel.show();
 			});
+		}
+
+		private function setupAim(aim:Array):void
+		{
+			aimList = [getChild("aim1"), getChild("aim2"), getChild("aim3"), getChild("aim4")];
+			getController("numAims").selectedIndex = aim.length - 1;
+			for (var i:int = 0; i < aim.length; i++)
+			{
+				var aimView:GComponent = aimList[i];
+				var seg:Array = aim[i].split(",");
+				var aimID:int = int(seg[0]);
+				var aimOrg:int = int(seg[1]);
+				Model.gameModel.addAim(aimID, aimOrg);
+				new XImage(aimView.getChild("icon").asImage).texture2 = AimType.AIM_ICONS[aimID];
+				aimView.getChild("value").asTextField.text = aimOrg + "";
+				aimViews[aimID] = aimView;
+			}
 		}
 
 		private function setupCircle():void
@@ -109,15 +119,6 @@ package diary.ui.view
 			var bar:GComponent = getChild("progressBar").asCom;
 			bar.getChild("bar").rotation = 20;
 			bar.getChild("bar").asMovieClip.playing = false;
-			var a = function():void
-			{
-//				bar.getChild("bar").asMovieClip.playing = false;
-//				bar.getChild("bar").asMovieClip.setPlaySettings(0, -1, 30, -1, function():void
-//				{
-//					setTimeout(a, 3000);
-//				});
-			};
-			a();
 		}
 
 		private function setupViewSize():void
@@ -131,7 +132,7 @@ package diary.ui.view
 			view.scaleY = port.width / initWidth;
 			var actualWidth:int = initWidth * view.scaleX;
 			view.x = port.x;
-			view.y = port.bottom - actualWidth - 10;
+			view.y = port.bottom - actualWidth - 35;
 		}
 
 		public function addBackground(name:String = "bedroom2"):void
@@ -152,36 +153,25 @@ package diary.ui.view
 		}
 
 		[Handler(clickGTouch)]
-		public function returnButtonClick():void
+		public function pauseButtonClick():void
 		{
-			nextScreen(MapScreen);
+			Alert.show();
 		}
 
-		public function setInfo(_arg_1:LevelCO):void
+		public function setInfo(level:LevelCO):void
 		{
 			var _local_7:Array;
 			var aimID:int;
 			var amiOrg:int;
-			if (_arg_1.mode == GameMode.NORMAL)
+			if (level.mode == GameMode.NORMAL)
 			{
-				Model.gameModel.step = (_arg_1.step);
+				Model.gameModel.step = (level.step);
 			}
-			else if (_arg_1.mode == GameMode.TIME)
+			else if (level.mode == GameMode.TIME)
 			{
-				Model.gameModel.time = (_arg_1.step);
+				Model.gameModel.time = (level.step);
 			}
-
-			getChild("aimList").asList.itemRenderer = function(i:int, item:GComponent):void
-			{
-				_local_7 = _arg_1.aim[i].split(",");
-				aimID = int(_local_7[0]);
-				amiOrg = int(_local_7[1]);
-				Model.gameModel.addAim(aimID, amiOrg);
-				new XImage(item.getChild("icon").asImage).texture2 = AimType.AIM_ICONS[aimID];
-				aimDic[aimID] = item;
-				item.getChild("value").asTextField.text = amiOrg + "";
-			};
-			getChild("aimList").asList.numItems = _arg_1.aim.length;
+			setupAim(level.aim);
 		}
 
 		private function onTimeChange():void
@@ -224,15 +214,21 @@ package diary.ui.view
 			{
 				return;
 			}
-			var list:GList = getChild("aimList").asList
-			var item:GComponent = aimDic[_arg_1.type];
-			item.getChild("value").text = (_arg_1.orgValue - _arg_1.value) + "";
+			var aimView:GComponent = aimViews[_arg_1.type];
+			aimView.getChild("value").text = (_arg_1.orgValue - _arg_1.value) + "";
 			if (_arg_1.orgValue - _arg_1.value == 0)
 			{
-				TweenLite.to(item, 0.8, {scaleX:0.1, scaleY:0.1, ease:Back.easeIn, onComplete:function():void
+				aimView.getTransition("t1").play(function():void
 				{
-					item.visible = false;
-				}});
+					aimView.visible = false;
+				});
+			}
+			else
+			{
+				aimView.getTransition("t0").play(function():void
+				{
+					aimView.getTransition("t2").play(null, null, -1);
+				});
 			}
 		}
 

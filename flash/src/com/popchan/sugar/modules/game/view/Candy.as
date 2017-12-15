@@ -9,15 +9,13 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.sugar.core.data.CandySpecialStatus;
 	import com.popchan.sugar.core.data.ColorType;
 	import com.popchan.sugar.core.events.GameEvents;
-
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import caurina.transitions.Tweener;
-
+	
 	import fairygui.GComponent;
-
-	import starling.display.TextSprite;
 
 	public class Candy extends GComponent
 	{
@@ -34,7 +32,7 @@ package com.popchan.sugar.modules.game.view
 		private var _bombLeftCount:int = 0;
 		public var path:Array;
 		private var queue:Array;
-		private var bomb_txt:TextSprite;
+//		private var bomb_txt:TextSprite;
 		private var r:Number = 0;
 		private var rspeed:Number = 0.2;
 		private var _isShake:Boolean;
@@ -237,10 +235,10 @@ package com.popchan.sugar.modules.game.view
 			this.img.texture2 = ("candytimer" + (this.color - 1));
 			this._bombLeftCount = _arg_1;
 			Debug.log(("炸弹步数:" + _arg_1));
-			if (!this.bomb_txt)
-			{
+//			if (!this.bomb_txt)
+//			{
 //				this.bomb_txt = ToolKit.createTextSprite(this, Core.getTextures("bombtxt_"), -22, 0, 8, "0123456789", 24);
-			}
+//			}
 //			addChild(this.bomb_txt);
 //			this.bomb_txt.text = (_arg_1 + "");
 		}
@@ -259,7 +257,7 @@ package com.popchan.sugar.modules.game.view
 				Model.gameModel.isSuccess = false;
 				MsgDispatcher.execute(GameEvents.OPEN_GAME_END_UI);
 			}
-			this.bomb_txt.text = (this._bombLeftCount + "");
+//			this.bomb_txt.text = (this._bombLeftCount + "");
 		}
 
 		public function getBombCount():int

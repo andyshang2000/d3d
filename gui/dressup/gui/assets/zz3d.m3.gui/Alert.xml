@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="320,200">
+  <displayList>
+    <graph id="n0_9icv" name="bg" xy="0,0" size="320,200" type="rect"/>
+    <graph id="n1_9icv" name="n1" xy="32,60" size="265,62" type="rect"/>
+    <component id="n2_9icv" name="quitButton" src="9icv4h" xy="173,137"/>
+    <component id="n3_9icv" name="replayButton" src="9icv4g" xy="63,137"/>
+    <component id="n4_9icv" name="musicButton" src="9icv4i" xy="41,66"/>
+    <component id="n6_9icv" name="soundButton" src="9icv4j" xy="137,66"/>
+    <component id="n7_9icv" name="helpButton" src="9icv4k" xy="229,66"/>
+    <text id="n8_9icv" name="n8" xy="111,21" size="29,16" fontSize="12" text="暂停"/>
+    <component id="n9_9icv" name="closeButton" src="9icv4l" xy="272,1"/>
+  </displayList>
+</component>

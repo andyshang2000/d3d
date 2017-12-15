@@ -1,10 +1,7 @@
 ﻿//Created by Action Script Viewer - http://www.buraks.com/asv
 package com.popchan.sugar.modules.game.view
 {
-    import com.popchan.framework.core.Core;
     import com.popchan.framework.ds.BasePool;
-    
-    import fairygui.GImage;
 
     public class FruitDoor extends XImage 
     {
@@ -12,7 +9,7 @@ package com.popchan.sugar.modules.game.view
 
         public function FruitDoor()
         {
-            texture2 = ("downP");
+            texture2 = ("xxx");
         }
     }
 }//package com.popchan.sugar.modules.game.view
