@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="480,32">
+  <displayList>
+    <image id="n68_9icv" name="n68" src="x39n2g" xy="5,3" size="28,28"/>
+    <text id="n69_9icv" name="money1" xy="30,10" size="34,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="125k"/>
+    <image id="n70_o12c" name="n70" src="x39n2g" xy="93,3" size="28,28" flip="hz"/>
+    <text id="n71_o12c" name="money2" xy="118,10" size="34,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="125k"/>
+    <image id="n72_o12c" name="n72" src="x39n2g" xy="181,3" size="28,28" flip="vt"/>
+    <text id="n73_o12c" name="money3" xy="206,10" size="34,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="125k"/>
+    <image id="n74_o12c" name="n74" src="x39n2g" xy="323,3" size="28,28" flip="both"/>
+    <text id="n75_o12c" name="money4" xy="348,10" size="34,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="125k"/>
+    <image id="n76_o12c" name="n76" src="x39n2g" xy="411,3" size="28,28"/>
+    <text id="n77_o12c" name="money5" xy="436,10" size="34,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="125k"/>
+  </displayList>
+</component>

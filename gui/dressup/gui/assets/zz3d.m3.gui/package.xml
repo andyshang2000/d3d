@@ -82,7 +82,7 @@
     <image id="mld826" name="wenxiang.png" path="/candys/" exported="true"/>
     <image id="mld827" name="sprite1.png" path="/candys/" exported="true"/>
     <image id="mld828" name="sprite2.png" path="/candys/" exported="true"/>
-    <image id="mld829" name="xxx.png" path="/frame/" exported="true" scale=""/>
+    <image id="mld829" name="xxx.png" path="/frame/" exported="true"/>
     <image id="mld82a" name="x_border_heng_shang.png" path="/frame/" exported="true"/>
     <image id="mld82b" name="x_border_heng_xia.png" path="/frame/" exported="true"/>
     <image id="mld82c" name="x_border_left_down.png" path="/frame/" exported="true"/>
@@ -150,7 +150,7 @@
     <image id="9icv46" name="smallStar.png" path="/"/>
     <component id="9icv48" name="PauseButton.xml" path="/"/>
     <image id="9icv49" name="Pause.png" path="/"/>
-    <image id="9icv4c" name="bubble.png" path="/" scale=""/>
+    <image id="9icv4c" name="bubble.png" path="/"/>
     <component id="9icv4d" name="AimBubble.xml" path="/candys/"/>
     <image id="9icv4e" name="downP.png" path="/candys/" exported="true"/>
     <component id="9icv4f" name="Alert.xml" path="/" exported="true"/>

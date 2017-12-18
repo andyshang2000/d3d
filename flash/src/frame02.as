@@ -1,22 +1,25 @@
 package
 {
 	import com.popchan.framework.core.Core;
-	
+
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.filesystem.File;
-	
+
 	import deng.fzip.FZip;
 	import deng.fzip.FZipEvent;
-	
+
+	import diary.game.Item;
 	import diary.services.ScreenShot;
 	import diary.services.ShareService;
 	import diary.ui.view.EnterScreen;
 	import diary.ui.view.ScreenManager;
-	
+
 	import payment.ane.PaymentANE;
-	
+
+	import starling.core.Starling;
+
 	import zzsdk.utils.FileUtil;
 
 	[SWF(width = "480", height = "800", frameRate = "45")]
@@ -78,12 +81,13 @@ package
 			var json:Object = JSON.parse(FileUtil.readFile(File.applicationDirectory.resolvePath("map.json"), "text"));
 			var game:Object = json["game"];
 			var distrib:Array = [];
-			for each (var items:Array in game)
+			for (var cat:String in game)
 			{
-				for (var i:int = 4; i < items.length; i++)
+				var items:Array = game[cat];
+				var itemIndex:Array = json[cat + "_index"] = [];
+				for (var i:int = 0; i < items.length; i++)
 				{
-					items[i].locked = true;
-					items[i].scene = 0;
+					itemIndex[i] = Item.getHash(items[i]);
 				}
 			}
 			FileUtil.save(json, "gameconfig");

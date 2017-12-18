@@ -15,18 +15,20 @@ package com.popchan.sugar.modules.game.view
 	import com.popchan.sugar.core.data.GameMode;
 	import com.popchan.sugar.core.data.TileConst;
 	import com.popchan.sugar.core.events.GameEvents;
-
+	
 	import flash.geom.Point;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-
+	
 	import caurina.transitions.Tweener;
-
+	
+	import diary.ui.util.GViewSupport;
+	
 	import fairygui.GComponent;
 	import fairygui.GList;
 	import fairygui.GRoot;
 	import fairygui.event.GTouchEvent;
-
+	
 	import starling.events.EnterFrameEvent;
 
 	public class GamePanel extends GComponent
@@ -89,9 +91,16 @@ package com.popchan.sugar.modules.game.view
 		private var matchCountOnceSwap:int = 0;
 		private var _instanceName:String = "GamePanel";
 
+		[G]
+		public var bgLayer:GList;
+		
 		override protected function constructFromXML(xml:XML):void
 		{
 			super.constructFromXML(xml);
+			
+			GViewSupport.assign(this);
+//			bgLayer.removeFromParent();
+			
 			this.brick_layer = new GComponent();
 			addChild(this.brick_layer);
 			this.ice_layer = new GComponent();

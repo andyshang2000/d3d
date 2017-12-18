@@ -10,7 +10,7 @@ package com.popchan.sugar.modules.game.model
 
 	public class GameModel
 	{
-		
+
 		private var aim:Dictionary;
 		private var aimOrg:Dictionary;
 		private var _step:int;
@@ -79,7 +79,6 @@ package com.popchan.sugar.modules.game.model
 			{
 				delete this.aimOrg[_local_1];
 			}
-			;
 			this.isSuccess = false;
 			this.score = 0;
 			failReason = -1;

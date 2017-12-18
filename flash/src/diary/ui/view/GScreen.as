@@ -1,19 +1,12 @@
 package diary.ui.view
 {
 	import com.greensock.TweenNano;
-
+	
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
-
-	import avmplus.DescribeTypeJSON;
-	import avmplus.HIDE_OBJECT;
-	import avmplus.INCLUDE_METADATA;
-	import avmplus.INCLUDE_METHODS;
-	import avmplus.INCLUDE_TRAITS;
-	import avmplus.INCLUDE_VARIABLES;
-
+	
 	import diary.ui.util.GViewSupport;
-
+	
 	import fairygui.Controller;
 	import fairygui.GComponent;
 	import fairygui.GLoader;
@@ -23,15 +16,13 @@ package diary.ui.view
 	import fairygui.ScreenMatchMode;
 	import fairygui.Transition;
 	import fairygui.UIPackage;
-	import fairygui.event.GTouchEvent;
-	import fairygui.utils.ToolSet;
-
+	
 	import flare.basic.Scene3D;
-
+	
 	import starling.display.Sprite;
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
-
+	
 	import zzsdk.display.Screen;
 	import zzsdk.utils.FileUtil;
 

@@ -1,68 +1,154 @@
 package diary.game
 {
+	import com.popchan.framework.utils.DataUtil;
+
 	import flash.events.EventDispatcher;
-	import flash.utils.setTimeout;
+
+	import nblib.util.TabTxtPaser;
+
+	import zzsdk.utils.FileUtil;
 
 	public class Inventory extends EventDispatcher
 	{
-		public var gold:Number = 500;
+		protected static var json:*;
 
-		//items belong to player
-		public var owned:Array;
-		public var shop:Array;
+		private var items:Object = {};
 
-		public function get(index:int):Item
+		public function Inventory():void
 		{
-			return owned[index];
+			if (!json)
+				json = FileUtil.open("gameconfig", "AMF");
 		}
 
-		public function buy(index:int):int
+		public function load():void
 		{
-			var item:Item = shop[index];
-			var cost:int = item.cost;
-			if (!canAfford(cost))
+			DataUtil.load(DataUtil.id);
+			var data:String = DataUtil.readString("inventory", defaultInv()); // xxx,xxx,xxx|
+			var value:Object;
+			for each (var ii:ItemIndex in TabTxtPaser.parse(data, ItemIndex))
 			{
-				return 1;
+				if (json[ii.type + "_index"].indexOf(ii.id) != -1)
+				{
+					if (items[ii.type] == null)
+					{
+						items[ii.type] = [];
+					}
+					items[ii.type].push(ii);
+				}
 			}
-			var order:Object = pay(cost);
-			order.onSuccess = function():void
+		}
+
+		public function save():void
+		{
+			DataUtil.load(DataUtil.id);
+			DataUtil.writeString("inventory", serialize());
+		}
+
+		private function serialize():String
+		{
+			var res:String = "";
+			res += "type\tid\tamount\r\n";
+			for (var cat:String in items)
 			{
-				owned.push(shop.splice(index, 1));
+				var catItems:Array = items[cat];
+				for (var obj:Object in catItems)
+				{
+					res += cat + "\t" + obj.id + "\t" + obj.amount + "\r\n";
+				}
 			}
-			order.onError = function():void
-			{
-//				owned.push(shop.splice(index, 1));
-			}
+			return "";
+		}
+
+		private static function defaultInv():String
+		{
+			return "type\tid\tamount\r\n" + // 
+				"h\tg0033_h_dod\t1\r\n" + //
+				"j\tg0037_j_dod\t1\r\n" + //
+				"j\tg0052_j_dod\t1\r\n" + //
+				"p\tg0037_p_dod\t1\r\n" + //
+				"s\tg0024_s_dod\t1\r\n"
+		}
+
+		public function hasItem(item:Object):Boolean
+		{
+			var i:int = getIndex(item);
+			return i != -1;
+		}
+
+		public function getAmount(item:Object):int
+		{
+			var i:int = getIndex(item);
+			if (i != -1)
+				return items[item.type][i].amount;
 			return 0;
 		}
 
-		public function gain(item:*):void
+		public function remove(item:Object):void
 		{
-			if (!(item is Item))
-				item = Item.getItem(item);
-			var index:int = shop.indexOf(item)
-			item = shop.splice(index, 1)[0];
-			owned.push(item);
+			var indexName:String = item.type + "_index";
+			var i:int = getIndex(item);
+			if (i == -1)
+				items[item.type].push(new ItemIndex(item));
+			items[item.type].splice(i, 1);
+			items[indexName].splice(i, 1);
 		}
 
-		public function canAfford(cost:*):Boolean
+		public function add(item:Object, amount:int = 1):void
 		{
-			return cost <= gold;
-		}
-
-		private function pay(cost:*):Object
-		{
-			var res:Object = {};
-			if (cost > 0)
+			var indexName:String = item.type + "_index";
+			var i:int = getIndex(item);
+			if (i == -1)
 			{
-				gold -= cost;
-				setTimeout(res.onSuccess, 1);
+				items[item.type].push(new ItemIndex(item));
+				items[indexName].push(Item.getHash(item))
 			}
 			else
+				items[item.type][i].amount += amount;
+		}
+
+		private function getIndex(item:Object):int
+		{
+			var indexName:String = item.type + "_index";
+			var i:int = items[indexName].indexOf(Item.getHash(item));
+			return i;
+		}
+
+		public function filterBy(cat:String):Array
+		{
+			var res:Array = [];
+			if (items[cat] == null)
+				return res;
+			for (var i:int = 0; i < items[cat].length; i++)
 			{
-				setTimeout(res.onSuccess, 1);
+				var ii:ItemIndex = items[cat][i];
+				var item:Object = getItem(ii);
+				res.push(item);
 			}
 			return res;
+		}
+
+		public function getItem(ii:ItemIndex):Object
+		{
+			var jIndex:int = json[ii.type + "_index"].indexOf(ii.id);
+			return json.game[ii.type][jIndex];
+		}
+	}
+}
+import diary.game.Item;
+
+class ItemIndex
+{
+	public var type:String; //1,2,3,4,9 cat
+	public var id:*;
+	public var amount:int;
+
+	public function ItemIndex(item:Object = null)
+	{
+		if (item != null)
+		{
+			type = item.getCat();
+			id = Item.getHash(item);
+			amount = 0;
 		}
 	}
 }

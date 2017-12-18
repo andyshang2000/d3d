@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="135,75">
+  <displayList>
+    <graph id="n24_o12c" name="n24" xy="0,0" size="135,75" type="rect"/>
+    <graph id="n25_o12c" name="icon" xy="5,5" size="65,65" type="rect" fillColor="#ff6666ff"/>
+    <graph id="n26_o12c" name="icon" xy="81,17" size="63,42" type="rect" fillColor="#ff6666ff"/>
+  </displayList>
+</component>

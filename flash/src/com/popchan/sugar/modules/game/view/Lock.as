@@ -44,7 +44,6 @@ package com.popchan.sugar.modules.game.view
 				this._vx = -3;
 				this._vr = -0.1;
 			}
-			;
 			this._count = 0;
 			this._vy = (Math.random() * -4);
 			Core.timerManager.add(this, this.update, 16);
@@ -63,8 +62,6 @@ package com.popchan.sugar.modules.game.view
 				pool.put(this);
 				this.removeFromParent();
 			}
-			;
 		}
-
 	}
 } //package com.popchan.sugar.modules.game.view

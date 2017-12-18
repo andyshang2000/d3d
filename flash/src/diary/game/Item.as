@@ -108,6 +108,25 @@ package diary.game
 				"prop1", "prop2", "prop3", "prop4", "prop5", "tag"][i];
 		}
 
+		public function getCat():String
+		{
+			switch (type)
+			{
+				case 1:
+					return "h";
+				case 2:
+					return "j";
+				case 3:
+					return "p";
+				case 4:
+					return "s";
+				case 9:
+					return "x";
+				default:
+					return "g";
+			}
+		}
+
 		public function serialize():String
 		{
 			var str:String = name + "\t" + model + "\t";
@@ -123,6 +142,12 @@ package diary.game
 			if (type2 == "gld")
 				return "金币";
 			return name + (/^g\d{4}_(.*)_/.exec(model)[1]) + "(" + (/^g(\d{4})/.exec(model)[1]) + ")"
+		}
+
+		public static function getHash(item:Object):String
+		{
+			// TODO Auto Generated method stub
+			return item.model;
 		}
 	}
 }

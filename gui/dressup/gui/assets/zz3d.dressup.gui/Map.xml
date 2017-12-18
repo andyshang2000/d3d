@@ -5,13 +5,30 @@
     <action type="play_transition" fromPage="" toPage="8" transition="t0" stopOnExit="true"/>
   </controller>
   <displayList>
-    <component id="n1" name="worldmap" src="mbkc9" xy="0,0">
-      <gearDisplay controller="sceneControl" pages="1"/>
-    </component>
+    <image id="n16_o12c" name="background" src="mbkc7" xy="0,0">
+      <relation target="" sidePair="width-width,middle-middle"/>
+    </image>
     <component id="n15" name="transferMask" src="x39n2l" xy="0,0" hideByEditor="true" touchable="false">
       <gearDisplay controller="sceneControl" pages="4,0,1,2,3,7,8"/>
       <relation target="" sidePair="width-width,height-height"/>
     </component>
+    <component id="n28_o12c" name="module01" src="o12c3t" xy="50,100"/>
+    <component id="n29_o12c" name="module02" src="o12c3t" xy="255,125"/>
+    <component id="n30_o12c" name="module04" src="o12c3t" xy="255,250"/>
+    <component id="n31_o12c" name="module03" src="o12c3t" xy="50,250"/>
+    <component id="n32_o12c" name="module05" src="o12c3t" xy="50,390"/>
+    <component id="n33_o12c" name="module06" src="o12c3t" xy="255,375"/>
+    <component id="n36_o12c" name="playButton" src="o12c3u" xy="387,720">
+      <relation target="" sidePair="bottom-bottom,right-right%"/>
+    </component>
+    <component id="n37_o12c" name="titleBar" src="o12c3v" xy="0,0"/>
+    <list id="n38_o12c" name="buyList" xy="0,720" size="360,80" layout="row" margin="0,5,15,0" colGap="10" defaultItem="ui://iznig4xzo12c3s" vAlign="bottom">
+      <relation target="" sidePair="bottom-bottom,left-left%"/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+    </list>
   </displayList>
   <transition name="t0"/>
   <transition name="t1"/>

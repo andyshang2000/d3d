@@ -57,9 +57,7 @@ package com.popchan.sugar.modules.map.model
 					this.levelsMap[_local_6.id] = _local_6;
 					_local_3++;
 				}
-				;
 			}
-			;
 			this.currentLevel = DataUtil.readInt("currentLevel", 1);
 		}
 
@@ -71,7 +69,6 @@ package com.popchan.sugar.modules.map.model
 			{
 				_local_1 = (_local_1 + _local_2.highscore);
 			}
-			;
 			return (_local_1);
 		}
 
@@ -85,12 +82,10 @@ package com.popchan.sugar.modules.map.model
 			{
 				_local_1.push(((((_local_2.id + "&") + _local_2.star) + "&") + _local_2.highscore));
 			}
-			;
 			_local_3 = _local_1.join("|");
 			_local_3 = Base64.encode(_local_3);
 			DataUtil.writeString("levels", _local_3);
 			DataUtil.save(DataUtil.id);
 		}
-
 	}
 } //package com.popchan.sugar.modules.map.model
