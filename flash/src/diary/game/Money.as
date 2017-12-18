@@ -2,7 +2,9 @@ package diary.game
 {
 	import com.popchan.framework.utils.DataUtil;
 
-	public class Money
+	import starling.events.EventDispatcher;
+
+	public class Money extends EventDispatcher
 	{
 		public var m1:int = 0; //coin
 		public var m2:int = 0; //vitality
@@ -79,6 +81,7 @@ package diary.game
 			m3 += model.m3;
 			m4 += model.m4;
 			m5 += model.m5;
+			dispatchEventWith("change");
 		}
 
 		public function substract(model:Money):void
@@ -88,6 +91,7 @@ package diary.game
 			m3 -= model.m3;
 			m4 -= model.m4;
 			m5 -= model.m5;
+			dispatchEventWith("change");
 		}
 
 		public function save():void
@@ -108,6 +112,7 @@ package diary.game
 			m3 = DataUtil.readInt("m3");
 			m4 = DataUtil.readInt("m4");
 			m5 = DataUtil.readInt("m5");
+			dispatchEventWith("change");
 		}
 	}
 }

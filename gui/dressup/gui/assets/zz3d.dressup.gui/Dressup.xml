@@ -105,7 +105,9 @@
       <gearDisplay controller="sceneControl" pages="4,0,1,2,3,7,8"/>
       <relation target="" sidePair="width-width,height-height"/>
     </component>
-    <component id="n68_9icv" name="n68" src="o12c3v" xy="0,0"/>
+    <component id="n68_9icv" name="n68" src="o12c3v" xy="0,0">
+      <relation target="" sidePair="top-top,width-width"/>
+    </component>
   </displayList>
   <transition name="t0">
     <item time="0" type="XY" target="n57" tween="true" startValue="488,495" endValue="6,495" duration="18" ease="Quart.Out"/>

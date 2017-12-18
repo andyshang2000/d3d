@@ -1,25 +1,31 @@
 package
 {
 	import com.popchan.framework.core.Core;
-
+	import com.popchan.sugar.modules.game.view.GamePanel;
+	
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.filesystem.File;
-
+	
 	import deng.fzip.FZip;
 	import deng.fzip.FZipEvent;
-
+	
 	import diary.game.Item;
+	import diary.game.Shop;
 	import diary.services.ScreenShot;
 	import diary.services.ShareService;
+	import diary.ui.view.Alert;
+	import diary.ui.view.EndPanel;
 	import diary.ui.view.EnterScreen;
 	import diary.ui.view.ScreenManager;
-
+	import diary.ui.view.ShopItemRenderer;
+	import diary.ui.view.TitleBar;
+	
+	import fairygui.UIObjectFactory;
+	
 	import payment.ane.PaymentANE;
-
-	import starling.core.Starling;
-
+	
 	import zzsdk.utils.FileUtil;
 
 	[SWF(width = "480", height = "800", frameRate = "45")]
@@ -60,6 +66,11 @@ package
 
 		private function start():void
 		{
+			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/GamePanel", GamePanel);
+			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/Alert", Alert);
+			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/EndPanel", EndPanel);
+			UIObjectFactory.setPackageItemExtension("ui://zz3d.dressup.gui/TitleBar", TitleBar);
+			UIObjectFactory.setPackageItemExtension("ui://zz3d.dressup.gui/ShopItemRenderer", ShopItemRenderer);
 			trace(":)");
 		}
 

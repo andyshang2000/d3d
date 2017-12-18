@@ -12,6 +12,7 @@ package diary.ui.view
 	import com.popchan.sugar.core.events.GameEvents;
 	import com.popchan.sugar.modules.game.view.GamePanel;
 	import com.popchan.sugar.modules.game.view.XImage;
+	import com.popchan.sugar.modules.map.model.LevelModel;
 
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
@@ -20,13 +21,12 @@ package diary.ui.view
 	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
 	import diary.avatar.MatchRespond;
+	import diary.game.Money;
 
 	import fairygui.GComponent;
 	import fairygui.GImage;
 	import fairygui.GRoot;
-	import fairygui.UIObjectFactory;
 	import fairygui.UIPackage;
-	import fairygui.Window;
 
 	import flare.core.Camera3D;
 
@@ -61,10 +61,6 @@ package diary.ui.view
 
 		override protected function onCreate():void
 		{
-			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/GamePanel", GamePanel);
-			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/Alert", Alert);
-			UIObjectFactory.setPackageItemExtension("ui://zz3d.m3.gui/EndPanel", EndPanel);
-
 			setGView("zz3d.m3.gui", "Match3");
 			view = GamePanel(getChild("board"));
 
@@ -94,7 +90,20 @@ package diary.ui.view
 			MsgDispatcher.add(GameEvents.OPEN_GAME_END_UI, function():void
 			{
 				EndPanel.show();
+				Model.money.add(getSuccessBonus());
 			});
+		}
+
+		private function getSuccessBonus():Money
+		{
+			var m:Money = new Money;
+			m.m1 = 200;
+			m.m2 = 200;
+			m.m3 = 200;
+			m.m4 = Model.levelModel.currentLevel;
+			m.m5 = Model.gameModel.score;
+
+			return m;
 		}
 
 		private function setupAim(aim:Array):void
@@ -155,7 +164,10 @@ package diary.ui.view
 		[Handler(clickGTouch)]
 		public function pauseButtonClick():void
 		{
-			Alert.show();
+			Alert.show({quit: function():void
+			{
+				nextScreen(MapScreen);
+			}});
 		}
 
 		public function setInfo(level:LevelCO):void

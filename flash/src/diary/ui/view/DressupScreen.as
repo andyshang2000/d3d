@@ -35,8 +35,6 @@ package diary.ui.view
 
 	public class DressupScreen extends AvatarScreen implements IScreen
 	{
-		private var iconAtlas:TextureAtlas;
-
 		private var snapAtlas:BitmapData;
 		private var snapTextures:Array = [];
 
@@ -182,7 +180,7 @@ package diary.ui.view
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function():void
 			{
 				loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, arguments.callee);
-				iconAtlas = new TextureAtlas( //
+				Model.iconAtlas = new TextureAtlas( //
 					Texture.fromBitmap(loader.content as Bitmap), //
 					XML(FileUtil.open("icon/texture.xml", "text")));
 				initializeHandler();
@@ -260,11 +258,10 @@ package diary.ui.view
 		private function setupShopList(shopList:GList):void
 		{
 			shopList.setVirtual();
-			shopList.itemRenderer = function(i:int, renderer:GComponent):void
+			shopList.itemRenderer = function(i:int, r:ShopItemRenderer):void
 			{
 				var item:* = shopData[i]["model"];
-				var image:GImage = renderer.getChild("image").asImage;
-				image.texture = iconAtlas.getTexture(item);
+				r.setItem(currentCat, item);
 			};
 			shopList.addEventListener("itemClick", function(event:ItemEvent):void
 			{
@@ -294,8 +291,7 @@ package diary.ui.view
 				var item:* = data[i]["model"];
 				var image:GImage = renderer.getChild("image").asImage;
 				var lock:GImage = renderer.getChild("lock").asImage;
-				image.texture = iconAtlas.getTexture(item);
-				trace(iconAtlas.getTexture(item) + "XXXXXXXXXXXXXXXXX")
+				image.texture = Model.iconAtlas.getTexture(item);
 				lock.visible = false;
 			}
 			list.addEventListener(ItemEvent.CLICK, function(event:ItemEvent):void

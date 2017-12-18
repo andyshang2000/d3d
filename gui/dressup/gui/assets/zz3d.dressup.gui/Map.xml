@@ -21,7 +21,9 @@
     <component id="n36_o12c" name="playButton" src="o12c3u" xy="387,720">
       <relation target="" sidePair="bottom-bottom,right-right%"/>
     </component>
-    <component id="n37_o12c" name="titleBar" src="o12c3v" xy="0,0"/>
+    <component id="n37_o12c" name="titleBar" src="o12c3v" xy="0,0">
+      <relation target="" sidePair="width-width,top-top"/>
+    </component>
     <list id="n38_o12c" name="buyList" xy="0,720" size="360,80" layout="row" margin="0,5,15,0" colGap="10" defaultItem="ui://iznig4xzo12c3s" vAlign="bottom">
       <relation target="" sidePair="bottom-bottom,left-left%"/>
       <item/>

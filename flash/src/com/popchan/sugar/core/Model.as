@@ -6,11 +6,11 @@ package com.popchan.sugar.core
 	import com.popchan.sugar.modules.game.model.GameModel;
 	import com.popchan.sugar.modules.map.model.LevelModel;
 	
-	import diary.game.Bonus;
 	import diary.game.BonusModel;
 	import diary.game.Inventory;
 	import diary.game.Money;
 	import diary.game.Shop;
+	import starling.textures.TextureAtlas;
 
 	public class Model
 	{
@@ -21,6 +21,7 @@ package com.popchan.sugar.core
 		public static var bonusModel:BonusModel = new BonusModel;
 		public static var inventory:Inventory;
 		public static var shop:Inventory;
+		public static var iconAtlas:TextureAtlas;
 
 		public static function save():void
 		{

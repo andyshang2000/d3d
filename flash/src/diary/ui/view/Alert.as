@@ -24,6 +24,8 @@ package diary.ui.view
 		[Handler(clickGTouch)]
 		public function quitButtonClick():void
 		{
+			if (quit != null)
+				quit();
 			trace("quitButtonClick!");
 		}
 
@@ -50,10 +52,25 @@ package diary.ui.view
 		{
 		}
 
-		public static function show():void
+		private var quit:Function;
+		private var replay:Function;
+		private var help:Function;
+		private var sound:Function;
+		private var music:Function;
+
+		public static function show(param:* = null):void
 		{
 			var win:Window = new Window();
 			win.contentPane = UIPackage.createObject("zz3d.m3.gui", "Alert").asCom;
+			if (param != null)
+			{
+				var inst:Alert = win.contentPane as Alert;
+				inst.quit = param.quit;
+				inst.replay = param.quit;
+				inst.help = param.quit;
+				inst.sound = param.quit;
+				inst.music = param.quit;
+			}
 			GRoot.inst.showPopup(win);
 		}
 	}
