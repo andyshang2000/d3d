@@ -2,21 +2,22 @@ package diary.ui.view
 {
 	import com.greensock.TweenLite;
 	import com.popchan.sugar.core.Model;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
-	
+
 	import diary.avatar.AnimationTicker;
 	import diary.avatar.Avatar;
 	import diary.avatar.RandomPoseComp;
 	import diary.avatar.RotationComponent;
+	import diary.game.Buy;
 	import diary.services.ScreenShot;
 	import diary.ui.Carousel;
-	
+
 	import fairygui.GComponent;
 	import fairygui.GImage;
 	import fairygui.GList;
@@ -24,12 +25,12 @@ package diary.ui.view
 	import fairygui.UIPackage;
 	import fairygui.event.ItemEvent;
 	import fairygui.event.StateChangeEvent;
-	
+
 	import flare.core.Camera3D;
-	
+
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
-	
+
 	import zzsdk.utils.FileUtil;
 
 	public class DressupScreen extends AvatarScreen implements IScreen
@@ -45,20 +46,24 @@ package diary.ui.view
 		private var onInitCallback:Function = null;
 		private var initialized:Boolean;
 
-		public var leftBar:GComponent;
 		private var backList:Carousel;
 
-		public function DressupScreen()
-		{
-			var loader:Loader = new Loader;
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function():void
-			{
-				iconAtlas = new TextureAtlas( //
-					Texture.fromBitmap(loader.content as Bitmap), //
-					XML(FileUtil.open("icon/texture.xml", "text")));
-			});
-			loader.loadBytes(FileUtil.open("icon/texture.png"));
-		}
+		private var currentCat:String;
+
+		[G]
+		public var shopList:GList;
+
+		[G]
+		public var leftBar:GComponent;
+
+		[G]
+		public var background:GImage;
+
+		private var data:Array;
+
+		private var shopData:Array;
+
+		private var shopIndex:int;
 
 		[Handler(clickGTouch)]
 		public function yesButtonClick():void
@@ -171,17 +176,36 @@ package diary.ui.view
 			getTransition("t5").play();
 		}
 
+		override protected function loadAssets():void
+		{
+			var loader:Loader = new Loader;
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function():void
+			{
+				loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, arguments.callee);
+				iconAtlas = new TextureAtlas( //
+					Texture.fromBitmap(loader.content as Bitmap), //
+					XML(FileUtil.open("icon/texture.xml", "text")));
+				initializeHandler();
+			});
+			loader.loadBytes(FileUtil.open("icon/texture.png"));
+		}
+
 		override protected function onCreate():void
 		{
-			var shopIndex:int = -1;
-
 			snapAtlas = new BitmapData(GRoot.inst.width, GRoot.inst.height, false, 0);
 			setGView("zz3d.dressup.gui", "Dressup");
 
+			var list:GList = getChild("rightBar").asCom.getChild("list").asList;
+
+			setupRightList(list);
+			setupShopList(shopList);
+			setupLeftBar(list);
+			setupBackground();
+
 			transferTo("game", function():void
 			{
-				getChild("leftBar").asCom.getController("c1").selectedIndex = 1;
-				getChild("background").asImage.visible = false;
+				leftBar.getController("c1").selectedIndex = 1;
+				background.asImage.visible = false;
 				var avatar:Avatar = addAvatar("girl");
 
 				avatar.addComponent(rotationComp = new RotationComponent);
@@ -195,29 +219,16 @@ package diary.ui.view
 
 				addBackground();
 			});
+		}
 
-			getChild("leftBar").asCom.getController("c1").addEventListener(StateChangeEvent.CHANGED, function():void
+		private function setupLeftBar(list:GList):void
+		{
+			leftBar.getController("c1").addEventListener(StateChangeEvent.CHANGED, function():void
 			{
-				var cat:String = getChild("leftBar").asCom.getController("c1").selectedPage;
-				var list:GList = getChild("rightBar").asCom.getChild("list").asList;
-				var shopList:GList = getChild("shopList").asList;
-				var data:Array = Model.inventory.filterBy(cat);
-				var shopData:Array = Model.shop.filterBy(cat);
+				currentCat = leftBar.getController("c1").selectedPage;
+				data = Model.inventory.filterBy(currentCat);
+				shopData = Model.shop.filterBy(currentCat);
 				shopIndex = -1;
-				shopList.itemRenderer = function(i:int, renderer:GComponent):void
-				{
-					var item:* = shopData[i]["model"];
-					var image:GImage = renderer.getChild("image").asImage;
-					image.texture = iconAtlas.getTexture(item);
-				};
-				list.itemRenderer = function(i:int, renderer:GComponent):void
-				{
-					var item:* = data[i]["model"];
-					var image:GImage = renderer.getChild("image").asImage;
-					var lock:GImage = renderer.getChild("lock").asImage;
-					image.texture = iconAtlas.getTexture(item);
-					lock.visible = i > 4;
-				}
 				if (data != null)
 				{
 					list.numItems = data.length;
@@ -230,45 +241,10 @@ package diary.ui.view
 				}
 				getTransition("t4").play();
 			});
+		}
 
-			var list:GList = getChild("rightBar").asCom.getChild("list").asList;
-			list.setVirtual();
-			list.addEventListener(ItemEvent.CLICK, function(event:ItemEvent):void
-			{
-				var cat:String = getChild("leftBar").asCom.getController("c1").selectedPage;
-				var data:Array = Model.inventory.filterBy(cat);
-				var i:int = list.childIndexToItemIndex(list.getChildIndex(event.itemObject));
-				var id:String = data[i]["model"];
-
-				if (i < 4)
-				{
-					updatePart(id);
-				}
-				else
-				{
-					transferTo("mall", function():void
-					{
-						addBackground("mallBG");
-					});
-				}
-			});
-
-			var shopList:GList = getChild("shopList").asList;
-			shopList.setVirtual();
-			shopList.addEventListener("itemClick", function(event:ItemEvent):void
-			{
-				var item:GComponent = event.itemObject.asCom;
-				var i:int = shopList.childIndexToItemIndex(shopList.getChildIndex(item));
-				if (shopList.selectedIndex == shopIndex)
-				{
-					trace(":D" + event.itemObject);
-				}
-				else
-				{
-					shopIndex = shopList.selectedIndex;
-				}
-			});
-
+		private function setupBackground():void
+		{
 			backList = new Carousel;
 			var images:Array = [];
 			var len:int = 5;
@@ -279,8 +255,57 @@ package diary.ui.view
 
 			backList.setImages(images);
 			back.addChild(backList);
-			//prepare ad
-			transferTo("map");
+		}
+
+		private function setupShopList(shopList:GList):void
+		{
+			shopList.setVirtual();
+			shopList.itemRenderer = function(i:int, renderer:GComponent):void
+			{
+				var item:* = shopData[i]["model"];
+				var image:GImage = renderer.getChild("image").asImage;
+				image.texture = iconAtlas.getTexture(item);
+			};
+			shopList.addEventListener("itemClick", function(event:ItemEvent):void
+			{
+				var item:GComponent = event.itemObject.asCom;
+				var i:int = shopList.childIndexToItemIndex(shopList.getChildIndex(item));
+				if (shopList.selectedIndex == shopIndex)
+				{
+					var cat:String = getChild("leftBar").asCom.getController("c1").selectedPage;
+					var data:Array = Model.shop.filterBy(cat);
+					var i:int = shopList.childIndexToItemIndex(shopList.getChildIndex(event.itemObject));
+					var id:String = data[i]["model"];
+					var shopItem = Model.shop.getItem(cat, id);
+					new Buy(shopItem).execute();
+				}
+				else
+				{
+					shopIndex = shopList.selectedIndex;
+				}
+			});
+		}
+
+		private function setupRightList(list:GList):void
+		{
+			list.setVirtual();
+			list.itemRenderer = function(i:int, renderer:GComponent):void
+			{
+				var item:* = data[i]["model"];
+				var image:GImage = renderer.getChild("image").asImage;
+				var lock:GImage = renderer.getChild("lock").asImage;
+				image.texture = iconAtlas.getTexture(item);
+				trace(iconAtlas.getTexture(item) + "XXXXXXXXXXXXXXXXX")
+				lock.visible = false;
+			}
+			list.addEventListener(ItemEvent.CLICK, function(event:ItemEvent):void
+			{
+				var cat:String = getChild("leftBar").asCom.getController("c1").selectedPage;
+				var data:Array = Model.inventory.filterBy(cat);
+				var i:int = list.childIndexToItemIndex(list.getChildIndex(event.itemObject));
+				var id:String = data[i]["model"];
+				updatePart(id);
+			});
 		}
 
 		public function zoom(zoomIn:Boolean):void

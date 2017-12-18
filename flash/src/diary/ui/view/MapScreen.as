@@ -31,7 +31,7 @@ package diary.ui.view
 		{
 			setGView("zz3d.dressup.gui", "Map");
 
-			buyList.itemRenderer = function(i:GComponent):void
+			buyList.itemRenderer = function(i:int, renderer:GComponent):void
 			{
 			};
 			//prepare ad

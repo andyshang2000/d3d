@@ -5,12 +5,12 @@ package diary.game
 	public class Money
 	{
 		public var m1:int = 0; //coin
-		public var m2:int = 0; //coin
+		public var m2:int = 0; //vitality
 		public var m3:int = 0; //ingenious
 		public var m4:int = 0; //score?
 		public var m5:int = 0; //level?
 
-		public static var free:Money = new Money	;
+		public static var free:Money = new Money;
 
 		public function Money()
 		{
@@ -45,11 +45,6 @@ package diary.game
 			res.m4 = Math.min(0, m4 - m.m4)
 			res.m5 = Math.min(0, m5 - m.m5)
 			return res;
-		}
-
-		public static function getPrice(item:Item):Money
-		{
-			return free;
 		}
 
 		public static function add(m1:Money, m2:Money):Money

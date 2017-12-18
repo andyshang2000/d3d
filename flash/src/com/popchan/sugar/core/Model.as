@@ -6,6 +6,8 @@ package com.popchan.sugar.core
 	import com.popchan.sugar.modules.game.model.GameModel;
 	import com.popchan.sugar.modules.map.model.LevelModel;
 	
+	import diary.game.Bonus;
+	import diary.game.BonusModel;
 	import diary.game.Inventory;
 	import diary.game.Money;
 	import diary.game.Shop;
@@ -16,6 +18,7 @@ package com.popchan.sugar.core
 		public static var gameModel:GameModel = new GameModel();
 		public static var levelModel:LevelModel = new LevelModel();
 		public static var money:Money = new Money;
+		public static var bonusModel:BonusModel = new BonusModel;
 		public static var inventory:Inventory;
 		public static var shop:Inventory;
 
@@ -37,7 +40,7 @@ package com.popchan.sugar.core
 			if (!shop)
 				shop = new Shop;
 			inventory.load();
-
+			bonusModel.load();
 			Sounds.init();
 		}
 	}

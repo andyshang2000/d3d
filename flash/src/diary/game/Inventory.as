@@ -1,11 +1,11 @@
 package diary.game
 {
 	import com.popchan.framework.utils.DataUtil;
-
+	
 	import flash.events.EventDispatcher;
-
+	
 	import nblib.util.TabTxtPaser;
-
+	
 	import zzsdk.utils.FileUtil;
 
 	public class Inventory extends EventDispatcher
@@ -121,16 +121,16 @@ package diary.game
 			for (var i:int = 0; i < items[cat].length; i++)
 			{
 				var ii:ItemIndex = items[cat][i];
-				var item:Object = getItem(ii);
+				var item:Object = getItem(ii.type, ii.id);
 				res.push(item);
 			}
 			return res;
 		}
 
-		public function getItem(ii:ItemIndex):Object
+		public function getItem(cat:String, id:String):Object
 		{
-			var jIndex:int = json[ii.type + "_index"].indexOf(ii.id);
-			return json.game[ii.type][jIndex];
+			var jIndex:int = json[cat + "_index"].indexOf(id);
+			return json.game[cat][jIndex];
 		}
 	}
 }
