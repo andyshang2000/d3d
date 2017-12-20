@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="800,800" overflow="hidden">
+  <displayList>
+    <image id="n1_muek" name="bg" src="muek3y" xy="0,0" size="800,800" aspect="true">
+      <relation target="" sidePair="center-center,middle-middle"/>
+      <relation target="" sidePair="height-height"/>
+    </image>
+    <component id="n2_muek" name="n2" src="muek50" xy="347,-75" group="n10_muek" scale="0.55,0.55"/>
+    <component id="n3_muek" name="n3" src="muek50" xy="481,-11" group="n10_muek" scale="0.55,0.55"/>
+    <component id="n4_muek" name="n4" src="muek4l" xy="264,481" group="n10_muek" scale="0.55,0.55"/>
+    <component id="n5_muek" name="n5" src="muek4w" xy="229,165" group="n10_muek" scale="0.55,0.55"/>
+    <component id="n6_muek" name="n6" src="muek4z" xy="107,364" group="n10_muek" scale="0.55,0.55"/>
+    <component id="n7_muek" name="n7" src="muek4x" xy="385,546" group="n10_muek" scale="0.55,0.55"/>
+    <component id="n8_muek" name="n8" src="muek4y" xy="352,227" group="n10_muek" scale="0.55,0.55"/>
+    <component id="n9_muek" name="n9" src="muek50" xy="539,311" group="n10_muek" scale="0.55,0.55"/>
+    <component id="n11_muek" name="n11" src="muek50" xy="89,8" group="n10_muek" scale="0.55,0.55"/>
+    <group id="n10_muek" name="n10" xy="89,-75" size="810,974" advanced="true">
+      <relation target="n1_muek" sidePair="left-left,top-top"/>
+    </group>
+  </displayList>
+</component>

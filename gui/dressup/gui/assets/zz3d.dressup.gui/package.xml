@@ -4,7 +4,7 @@
     <component id="hp1h0" name="Dressup.xml" path="/" exported="true"/>
     <image id="hp1h1" name="bedroom.png" path="/assets/"/>
     <image id="hp1h2" name="bedroom2.png" path="/assets/"/>
-    <image id="mbkc7" name="map1.png" path="/assets/" atlas="2"/>
+    <image id="mbkc7" name="map1.jpg" path="/assets/" atlas="2"/>
     <component id="mbkc9" name="Worldmap.xml" path="/"/>
     <image id="mbkca" name="base_selectA.png" path="/assets/"/>
     <image id="mbkcb" name="base_selectB.png" path="/assets/"/>
@@ -108,6 +108,114 @@
     <component id="o12c3t" name="ModuleListItem.xml" path="/"/>
     <component id="o12c3u" name="PlayMatchButton.xml" path="/"/>
     <component id="o12c3v" name="TitleBar.xml" path="/"/>
+    <image id="muek3w" name="map.png" path="/"/>
+    <component id="muek3x" name="CityMap.xml" path="/map/" exported="true"/>
+    <image id="muek3y" name="citymap2.png" path="/map/assets/" scale="" atlas="alone"/>
+    <component id="muek3z" name="MapBackground.xml" path="/map/"/>
+    <image id="muek40" name="WallSide.png" path="/map/"/>
+    <image id="muek41" name="WallBottom.png" path="/map/"/>
+    <image id="muek42" name="WallTopC.png" path="/map/"/>
+    <image id="muek43" name="WallTop.png" path="/map/"/>
+    <image id="muek45" name="3101400.png" path="/map/"/>
+    <image id="muek46" name="5100300.png" path="/map/"/>
+    <image id="muek47" name="5104900.png" path="/map/"/>
+    <image id="muek48" name="5002800.png" path="/map/"/>
+    <image id="muek49" name="warehouse.png" path="/map/assets/"/>
+    <image id="muek4a" name="house.png" path="/map/assets/"/>
+    <image id="muek4b" name="IcnFunctionHeart.png" path="/map/assets/"/>
+    <image id="muek4c" name="IcnCmnEnergy.png" path="/map/assets/"/>
+    <image id="muek4d" name="IcnCmnHeart.png" path="/map/assets/"/>
+    <image id="muek4e" name="IcnCmnLevel.png" path="/map/assets/"/>
+    <image id="muek4f" name="IcnCmnLv.png" path="/map/assets/"/>
+    <image id="muek4g" name="IcnCmnCoin.png" path="/map/assets/"/>
+    <image id="muek4h" name="IcnCmnSpeed.png" path="/map/assets/"/>
+    <image id="muek4i" name="BG_Sale.png" path="/map/assets/"/>
+    <image id="muek4j" name="BG_Ship_Box.png" path="/map/assets/"/>
+    <image id="muek4k" name="BG_Ramp.png" path="/map/assets/"/>
+    <component id="muek4l" name="InHouseA.xml" path="/map/"/>
+    <image id="muek4m" name="2308700.png" path="/map/"/>
+    <image id="muek4n" name="5001102.png" path="/map/"/>
+    <image id="muek4o" name="5104900(1).png" path="/map/"/>
+    <image id="muek4p" name="3209100.png" path="/map/"/>
+    <image id="muek4q" name="3205300.png" path="/map/"/>
+    <image id="muek4r" name="3203300.png" path="/map/"/>
+    <image id="muek4s" name="3103700_1_1.png" path="/map/"/>
+    <image id="muek4t" name="WallBottom(1).png" path="/map/"/>
+    <image id="muek4u" name="WallSide.png" path="/"/>
+    <image id="muek4v" name="WallTop.png" path="/"/>
+    <component id="muek4w" name="InHouseB.xml" path="/map/"/>
+    <component id="muek4x" name="InHouseC.xml" path="/map/"/>
+    <component id="muek4y" name="InHouseD.xml" path="/map/"/>
+    <component id="muek4z" name="InHouseE.xml" path="/map/"/>
+    <component id="muek50" name="InHouseF.xml" path="/map/"/>
+    <image id="muek51" name="2002300.png" path="/map/"/>
+    <image id="muek52" name="2203200.png" path="/map/"/>
+    <image id="muek53" name="2307400.png" path="/map/"/>
+    <image id="muek54" name="2313200.png" path="/map/"/>
+    <image id="muek55" name="3000900.png" path="/map/"/>
+    <image id="muek56" name="3001400.png" path="/map/"/>
+    <image id="muek57" name="5102500.png" path="/map/"/>
+    <image id="muek58" name="3102900.png" path="/map/"/>
+    <image id="muek59" name="2001100.png" path="/map/"/>
+    <image id="muek5a" name="2100000_02_1.png" path="/map/"/>
+    <image id="muek5b" name="2100000_01_2.png" path="/map/"/>
+    <image id="muek5c" name="4203400_1.png" path="/map/"/>
+    <image id="muek5d" name="4203400_2.png" path="/map/"/>
+    <image id="muek5e" name="4202500_2.png" path="/map/"/>
+    <image id="muek5f" name="4201100.png" path="/map/"/>
+    <image id="muek5g" name="4302504.png" path="/map/"/>
+    <image id="muek5h" name="4400000.png" path="/map/"/>
+    <image id="muek5i" name="3202800.png" path="/map/"/>
+    <image id="muek5j" name="3002200_RF.png" path="/map/"/>
+    <image id="muek5k" name="2305300.png" path="/map/"/>
+    <image id="muek5l" name="2306300.png" path="/map/"/>
+    <image id="muek5m" name="2305500.png" path="/map/"/>
+    <image id="muek5n" name="4100500_2.png" path="/map/"/>
+    <image id="muek5o" name="4001900.png" path="/map/"/>
+    <image id="muek5p" name="3208700.png" path="/map/"/>
+    <image id="muek5q" name="4100100.png" path="/map/"/>
+    <image id="muek5r" name="4000800.png" path="/map/"/>
+    <image id="muek5s" name="3100600.png" path="/map/"/>
+    <image id="muek5t" name="3100000.png" path="/map/"/>
+    <image id="muek5u" name="5102901.png" path="/map/"/>
+    <image id="muek5v" name="5100400.png" path="/map/"/>
+    <image id="muek5w" name="5100800.png" path="/map/"/>
+    <image id="muek5x" name="4205600.png" path="/map/"/>
+    <image id="muek5y" name="4200100.png" path="/map/"/>
+    <image id="muek5z" name="4102700_2.png" path="/map/"/>
+    <image id="muek60" name="4102000_1.png" path="/map/"/>
+    <image id="muek61" name="3204300.png" path="/map/"/>
+    <image id="muek62" name="3204200.png" path="/map/"/>
+    <image id="muek63" name="2406100.png" path="/map/"/>
+    <image id="muek64" name="2300100.png" path="/map/"/>
+    <image id="muek65" name="4401200.png" path="/map/"/>
+    <image id="muek66" name="4401500.png" path="/map/"/>
+    <image id="muek67" name="4400000(1).png" path="/map/"/>
+    <image id="muek68" name="4301200.png" path="/map/"/>
+    <image id="muek69" name="3210000.png" path="/map/"/>
+    <image id="muek6a" name="2500300.png" path="/map/"/>
+    <image id="muek6b" name="2501401.png" path="/map/"/>
+    <image id="muek6c" name="2501401(1).png" path="/map/"/>
+    <image id="muek6d" name="2500700.png" path="/map/"/>
+    <image id="muek6e" name="2500801.png" path="/map/"/>
+    <image id="muek6f" name="2500900.png" path="/map/"/>
+    <image id="muek6g" name="2501000.png" path="/map/"/>
+    <image id="muek6h" name="2501200.png" path="/map/"/>
+    <image id="muek6i" name="2501400.png" path="/map/"/>
+    <image id="muek6j" name="2502000.png" path="/map/"/>
+    <image id="muek6k" name="2501700.png" path="/map/"/>
+    <image id="muek6l" name="2501900.png" path="/map/"/>
+    <image id="muek6m" name="2405500.png" path="/map/"/>
+    <image id="muek6n" name="3100200.png" path="/map/"/>
+    <image id="muek6o" name="3103900.png" path="/map/"/>
+    <image id="muek6p" name="3201600.png" path="/map/"/>
+    <image id="muek6q" name="3209200.png" path="/map/"/>
+    <image id="muek6r" name="3209400.png" path="/map/"/>
+    <image id="muek6s" name="3207300.png" path="/map/"/>
+    <image id="muek6t" name="DL.png" path="/map/"/>
+    <image id="muek6u" name="3209300.png" path="/map/"/>
+    <image id="muek6v" name="3206800.png" path="/map/"/>
+    <image id="muek6w" name="2317400.png" path="/map/"/>
   </resources>
   <publish name="zz3d.dressup.gui" path="F:\zz2018\Dressup3D2\flash\bin-debug">
     <atlas name="默认" index="0"/>

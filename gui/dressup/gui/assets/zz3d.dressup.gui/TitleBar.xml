@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="480,32">
   <displayList>
-    <image id="n68_9icv" name="n68" src="x39n2g" xy="5,3" size="28,28"/>
     <text id="n69_9icv" name="m1" xy="30,10" size="58,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="12521"/>
-    <image id="n70_o12c" name="n70" src="x39n2g" xy="93,3" size="28,28" flip="hz"/>
-    <text id="n71_o12c" name="m2" xy="118,10" size="58,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="12521"/>
-    <image id="n72_o12c" name="n72" src="x39n2g" xy="181,3" size="28,28" flip="vt"/>
+    <text id="n71_o12c" name="m2" xy="118,10" size="58,19" font="ui://iznig4xz9icv34" fontSize="15" color="#3399ff" align="right" vAlign="bottom" letterSpacing="-4" text="12521"/>
     <text id="n73_o12c" name="m3" xy="206,10" size="58,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="12521"/>
-    <image id="n74_o12c" name="n74" src="x39n2g" xy="306,3" size="28,28" flip="both">
+    <image id="n74_o12c" name="n74" src="x39n2g" xy="326,3" size="28,28">
       <relation target="" sidePair="top-top,right-right"/>
     </image>
-    <text id="n75_o12c" name="m4" xy="331,10" size="58,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="12521">
+    <text id="n75_o12c" name="m4" xy="351,10" size="58,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="12521">
       <relation target="n74_o12c" sidePair="top-top,left-left"/>
     </text>
-    <image id="n76_o12c" name="n76" src="x39n2g" xy="394,3" size="28,28">
+    <text id="n77_o12c" name="m5" xy="439,10" size="38,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="222&#xA;"/>
+    <image id="n79_muek" name="n79" src="muek4c" xy="184,3">
+      <relation target="" sidePair="left-left,top-top"/>
+    </image>
+    <image id="n80_muek" name="n80" src="muek4d" xy="92,4">
+      <relation target="" sidePair="left-left,top-top"/>
+    </image>
+    <image id="n81_muek" name="n81" src="muek4e" xy="11,4">
+      <relation target="" sidePair="left-left,top-top"/>
+    </image>
+    <image id="n82_muek" name="n82" src="muek4f" xy="413,4">
       <relation target="" sidePair="top-top,right-right"/>
     </image>
-    <text id="n77_o12c" name="m5" xy="419,10" size="58,19" font="ui://iznig4xz9icv34" fontSize="15" color="#ffffff" align="right" vAlign="bottom" letterSpacing="-4" text="12521">
-      <relation target="n76_o12c" sidePair="top-top,left-left"/>
-    </text>
   </displayList>
 </component>
